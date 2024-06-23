@@ -1,0 +1,35 @@
+<svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="58" height="58" fill="#1E1E1E"/>
+<g id="teacher week plan" clip-path="url(#clip0_0_1)">
+<rect width="430" height="932" transform="translate(-334 -232)" fill="#EEEEEE"/>
+<g id="lesson card">
+<g id="Rectangle 22" filter="url(#filter0_d_0_1)">
+<rect x="-312" y="-13" width="387" height="84" rx="10" fill="white"/>
+<rect x="-311.75" y="-12.75" width="386.5" height="83.5" rx="9.75" stroke="#C1C1C1" stroke-width="0.5"/>
+</g>
+<g id="syllabus-svgrepo-com 1" clip-path="url(#clip1_0_1)">
+<path id="Vector" d="M55.5833 4.83333H31.4167V2.41667C31.4167 1.0875 30.3292 0 29 0C27.6708 0 26.5833 1.0875 26.5833 2.41667V4.83333H2.41667C1.0875 4.83333 0 5.92083 0 7.25C0 8.57917 1.0875 9.66667 2.41667 9.66667H4.83333V29C4.83333 34.3408 9.15917 38.6667 14.5 38.6667H26.5833V42.485L15.2008 53.8675C14.2583 54.81 14.2583 56.3567 15.2008 57.2992C15.6842 57.7583 16.2883 58 16.9167 58C17.545 58 18.1492 57.7583 18.6325 57.2992L26.5833 49.3483V55.5833C26.5833 56.9125 27.6708 58 29 58C30.3292 58 31.4167 56.9125 31.4167 55.5833V49.3483L39.3675 57.2992C39.8508 57.7583 40.455 58 41.0833 58C41.7117 58 42.3158 57.7583 42.7992 57.2992C43.7417 56.3567 43.7417 54.81 42.7992 53.8675L31.4167 42.485V38.6667H43.5C48.8408 38.6667 53.1667 34.3408 53.1667 29V9.66667H55.5833C56.9125 9.66667 58 8.57917 58 7.25C58 5.92083 56.9125 4.83333 55.5833 4.83333ZM48.3333 29C48.3333 31.6583 46.1583 33.8333 43.5 33.8333H14.5C11.8417 33.8333 9.66667 31.6583 9.66667 29V9.66667H48.3333V29Z" fill="#157DBC"/>
+<path id="Vector_2" d="M38.6667 19.3333H16.9167C15.5803 19.3333 14.5 18.2507 14.5 16.9167C14.5 15.5827 15.5803 14.5 16.9167 14.5H38.6667C40.0031 14.5 41.0833 15.5827 41.0833 16.9167C41.0833 18.2507 40.0031 19.3333 38.6667 19.3333ZM29 29H16.9167C15.5803 29 14.5 27.9173 14.5 26.5833C14.5 25.2493 15.5803 24.1667 16.9167 24.1667H29C30.3364 24.1667 31.4167 25.2493 31.4167 26.5833C31.4167 27.9173 30.3364 29 29 29Z" fill="#157DBC"/>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_0_1" x="-315" y="-13" width="393" height="91" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feMorphology radius="7" operator="erode" in="SourceAlpha" result="effect1_dropShadow_0_1"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="5"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_1"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_1" result="shape"/>
+</filter>
+<clipPath id="clip0_0_1">
+<rect width="430" height="932" fill="white" transform="translate(-334 -232)"/>
+</clipPath>
+<clipPath id="clip1_0_1">
+<rect width="58" height="58" fill="white"/>
+</clipPath>
+</defs>
+</svg>
