@@ -47,7 +47,7 @@ class DataService {
     // }
   }
 
-  Future<DataState<T>> postDataWithPhotor<T>({
+  Future<DataState<T>> postDataWithPhoto<T>({
     String? token,
     required String endPoint,
     required dynamic data,

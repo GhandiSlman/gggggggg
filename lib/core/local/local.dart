@@ -123,7 +123,11 @@ class MyLocal implements Translations {
           'Enter title of advertisement' : 'ادخل عنوان الاعلان',
           'Enter text of advertisement' : 'ادخل نص الاعلان',
           'Advertisements' : 'الاعلانات',
+          'Advertisement' : 'اعلان',
+          'News' : 'الاخبار',
           'My advertisements' : 'اعلاناتي',
+          'Type' : 'النوع',
+          'Update Advertisement' : 'تعديل الاعلان',
 
           //parent
           "Number of attendance's days": 'عدد أيام الحضور',
@@ -254,7 +258,11 @@ class MyLocal implements Translations {
           'Enter title of advertisement' : 'Enter title of advertisement',
           'Enter text of advertisement' : 'Enter text of advertisement',
           'Advertisements' : 'Advertisements',
-         'My advertisements' : 'My advertisements',
+          'Advertisement' : 'Advertisement',
+          'News' : 'News',
+          'My advertisements' : 'My advertisements',
+          'Type' : 'Type',
+          'Update Advertisement' : 'Update Advertisement',
 
           //parent
           "Number of attendance's days": "Number of attendance's days",

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart'; // Make sure to add this package for formatting dates
 import 'package:lms/core/data/data_state.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
+import 'package:lms/core/widgets/custom_toast.dart';
 import 'package:lms/features/students/data/student_repo.dart';
 import 'package:lms/features/students/model/student_attendance.dart';
 import 'package:drop_down_list/model/selected_list_item.dart';
@@ -75,12 +78,14 @@ class StudentController extends GetxController with GetTickerProviderStateMixin 
           }
         }
       }
-    } else {
-      Get.snackbar(
-        'Error',
-        'Failed to load classes or no data available',
+    } else  if(result is DataFailed){
+      CustomToast.showToast(
+        message: result.errorMessage!,
         backgroundColor: AppColor.redColor,
-        colorText: AppColor.whiteColor,
+        fontSize: 15.sp,
+        gravity: ToastGravity.BOTTOM,
+        isLongDuration: false,
+        textColor: AppColor.whiteColor,
       );
     }
   }

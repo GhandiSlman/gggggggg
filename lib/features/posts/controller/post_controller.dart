@@ -34,6 +34,7 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
   RxBool isLoadingAddPost = false.obs;
   RxBool isLoadingGetPost = false.obs;
   RxBool isLoadingDeletePost = false.obs;
+  RxBool isLoadingGetClasses = false.obs;
 
   var classList = <SelectedListItem>[].obs;
   Map<String, Map<String, List<Students>>> studentList =
@@ -76,9 +77,6 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
   }
 
   var selectedDropdownValue = RxnString();
-
-  List<String> dropdownItems = ['Option 1', 'Option 2', 'Option 3'];
-
   void selectValue(String value) {
     selectedDropdownValue.value = value;
   }
@@ -93,17 +91,17 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
         imagePath.add(pickedFile.path);
         images.add(pickedFile.path);
       } else {
- CustomToast.showToast(
-        message:"You don't choose an image.".tr,
-        backgroundColor: AppColor.redColor,
-        fontSize: 15.sp,
-        gravity: ToastGravity.BOTTOM,
-        isLongDuration: false,
-        textColor: AppColor.whiteColor,
-      );
+        CustomToast.showToast(
+          message: "You don't choose an image.".tr,
+          backgroundColor: AppColor.redColor,
+          fontSize: 15.sp,
+          gravity: ToastGravity.BOTTOM,
+          isLongDuration: false,
+          textColor: AppColor.whiteColor,
+        );
       }
     } catch (e) {
-       CustomToast.showToast(
+      CustomToast.showToast(
         message: 'Error $e'.tr,
         backgroundColor: AppColor.redColor,
         fontSize: 15.sp,
@@ -183,11 +181,10 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
     final DataState result = await postRepo.addPost(
       addPostModel: addPostModel,
     );
-
+    isLoadingAddPost.value = false;
     if (result is DataSuccess<Homework>) {
       descController.clear();
       images.clear();
-      isLoadingAddPost.value = false;
       CustomToast.showToast(
         message: 'Post added successfully',
         backgroundColor: AppColor.greenColor,
@@ -197,7 +194,6 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
         textColor: AppColor.whiteColor,
       );
     } else {
-      isLoadingAddPost.value = false;
       CustomToast.showToast(
         message: 'Failed to add post',
         backgroundColor: AppColor.redColor,
@@ -210,7 +206,9 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
   }
 
   Future<void> getClasses() async {
+    isLoadingGetClasses.value = true;
     final DataState result = await studentRepo.getClasses(StudentAttendance());
+    isLoadingGetClasses.value = false;
     if (result is DataSuccess<StudentAttendance>) {
       var attendance = result.data!;
       classList.clear();
@@ -268,13 +266,12 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void _handleTabChange() {
-    if (!controller.indexIsChanging) {
-      int selectedGradeId =
-          int.parse(gradeToIdMap[myTabs[controller.index].text]!);
-      getPostsByGradeId(selectedGradeId);
-    }
+  if (!controller.indexIsChanging) {
+    isLoadingGetPost.value = true; 
+    int selectedGradeId = int.parse(gradeToIdMap[myTabs[controller.index].text]!);
+    getPostsByGradeId(selectedGradeId);
   }
-
+}
   Future<void> deletePost(int postId) async {
     isLoadingDeletePost.value = true;
     final result = await postRepo.deletePost(postId: postId);
@@ -302,38 +299,36 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  Future<void> getPostsByGradeId(int gradeId) async {
-    currentPage = 1;
-    hasMorePages = true;
-    posts.clear();
-    // isLoadingGetPost.value = true;
+Future<void> getPostsByGradeId(int gradeId) async {
+  currentPage = 1;
+  hasMorePages = true;
+  posts.clear();
+  isLoadingGetPost.value = true; // Set loading to true when fetching posts
 
-    final response = await postRepo.getPosts(
-        page: currentPage, postModel: PostModel(), gradeId: gradeId);
-    isLoadingGetPost.value = false;
-    if (response is DataSuccess<PostModel>) {
-      if (response.data!.data!.data!.isEmpty) {
-        hasMorePages = false;
-      } else {
-        posts.addAll(response.data!.data!.data!);
-      }
-      // isLoadingGetPost.value = false;
-      isMoreLoading.value = false;
-    } else if (response is DataFailed) {
-      errorMessage.value = response.errorMessage!;
-      //  isLoadingGetPost.value = false;
-      isMoreLoading.value = false;
-      CustomToast.showToast(
-        message: errorMessage.value,
-        backgroundColor: AppColor.redColor,
-        fontSize: 15.sp,
-        gravity: ToastGravity.BOTTOM,
-        isLongDuration: false,
-        textColor: AppColor.whiteColor,
-      );
+  final response = await postRepo.getPosts(
+      page: currentPage, postModel: PostModel(), gradeId: gradeId);
+  isLoadingGetPost.value = false; // Set loading to false after fetching posts
+
+  if (response is DataSuccess<PostModel>) {
+    if (response.data!.data!.data!.isEmpty) {
+      hasMorePages = false;
+    } else {
+      posts.addAll(response.data!.data!.data!);
     }
+    isMoreLoading.value = false;
+  } else if (response is DataFailed) {
+    errorMessage.value = response.errorMessage!;
+    isMoreLoading.value = false;
+    CustomToast.showToast(
+      message: errorMessage.value,
+      backgroundColor: AppColor.redColor,
+      fontSize: 15.sp,
+      gravity: ToastGravity.BOTTOM,
+      isLongDuration: false,
+      textColor: AppColor.whiteColor,
+    );
   }
-
+}
   void loadNextPage() {
     if (hasMorePages && !isMoreLoading.value) {
       isMoreLoading.value = true;

@@ -19,13 +19,16 @@ class AddUpdateAdvScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AdvertisementsController advertisementsController = Get.find();
-    //final arguments = Get.arguments;
-    //final postId = arguments['postId'];
-   // final isUpdate = arguments['isUpdate'];
+    final arguments = Get.arguments;
+    final adId = arguments['AdId'];
+    final isUpdate = arguments['isUpdate'];
 
     return Scaffold(
       backgroundColor: AppColor.scaffoldColor,
-      appBar: CustomAppBar(title: 'Add Advertisement'.tr),
+      appBar: CustomAppBar(
+          title: isUpdate == false
+              ? 'Add Advertisement'.tr
+              : 'Update Advertisement'.tr),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
         child: ListView(
@@ -34,14 +37,17 @@ class AddUpdateAdvScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 20.verticalSpace,
-                CustomText(
-                  color: AppColor.greyColor2,
-                  text: 'Images'.tr,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+                isUpdate == false
+                    ? CustomText(
+                        color: AppColor.greyColor2,
+                        text: 'Images'.tr,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                      )
+                    : const SizedBox(),
                 5.verticalSpace,
-                Obx(() {
+                isUpdate == false
+                    ? Obx(() {
                         return SizedBox(
                           height: 80.h,
                           child: ListView.separated(
@@ -49,7 +55,8 @@ class AddUpdateAdvScreen extends StatelessWidget {
                               width: 10.w,
                             ),
                             scrollDirection: Axis.horizontal,
-                            itemCount: advertisementsController.images.length + 1,
+                            itemCount:
+                                advertisementsController.images.length + 1,
                             itemBuilder: (context, index) {
                               if (index == 0) {
                                 return const AddImageButton();
@@ -75,20 +82,68 @@ class AddUpdateAdvScreen extends StatelessWidget {
                             },
                           ),
                         );
-                      }),
-                      5.verticalSpace,
-                       CustomText(
+                      })
+                    : const SizedBox(),
+                5.verticalSpace,
+                isUpdate == false
+                    ? CustomText(
+                        color: AppColor.greyColor2,
+                        text: 'Type'.tr,
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                      )
+                    : const SizedBox(),
+                5.verticalSpace,
+                isUpdate == false
+                    ? Obx(() {
+                        return Row(
+                          children: [
+                            Checkbox(
+                              activeColor: AppColor.primaryColor,
+                              value: advertisementsController
+                                  .isAdvertisement.value,
+                              onChanged: (bool? value) {
+                                advertisementsController.isAdvertisement.value =
+                                    value ?? true;
+                              },
+                            ),
+                            CustomText(
+                              text: 'Advertisements'.tr,
+                              color: AppColor.greyColor2,
+                              fontSize: 18.sp,
+                            ),
+                            Checkbox(
+                              activeColor: AppColor.primaryColor,
+                              value: !advertisementsController
+                                  .isAdvertisement.value,
+                              onChanged: (bool? value) {
+                                advertisementsController.isAdvertisement.value =
+                                    !(value ?? false);
+                              },
+                            ),
+                            CustomText(
+                              text: 'News'.tr,
+                              color: AppColor.greyColor2,
+                              fontSize: 18.sp,
+                            ),
+                          ],
+                        );
+                      })
+                    : const SizedBox(),
+                5.verticalSpace,
+                CustomText(
                   color: AppColor.greyColor2,
-                  text: 'Title'.tr,
+                  text: 'Text'.tr,
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
                 5.verticalSpace,
                 CustomTextField(
-                  controller: advertisementsController.descController,
+                  controller: advertisementsController.descControllerAr,
                   filled: true,
                   filledColor: AppColor.whiteColor,
-                  hint: 'Enter title of advertisement'.tr,
+                  maxLine: 6,
+                  hint: 'Enter text of advertisement'.tr,
                 ),
                 25.verticalSpace,
                 CustomText(
@@ -99,7 +154,7 @@ class AddUpdateAdvScreen extends StatelessWidget {
                 ),
                 5.verticalSpace,
                 CustomTextField(
-                  controller: advertisementsController.descController,
+                  controller: advertisementsController.descControllerEn,
                   filled: true,
                   filledColor: AppColor.whiteColor,
                   maxLine: 6,
@@ -113,11 +168,11 @@ class AddUpdateAdvScreen extends StatelessWidget {
                   () => advertisementsController.isLoadingAddUpdateAd.value
                       ? const LoadingWidget()
                       : CustomButton(
-                          text: 'Add'.tr,
+                          text: isUpdate == false ? 'Add'.tr : 'Update'.tr,
                           onTap: () {
-                            // postController.isUpdatePost
-                            //     ? postController.updatePost(postId)
-                            //     : postController.addPost();
+                            isUpdate == false
+                                ? advertisementsController.addAd()
+                                : advertisementsController.updateAd(adId.toString());
                           },
                           color: AppColor.primaryColor,
                           textColor: AppColor.whiteColor,

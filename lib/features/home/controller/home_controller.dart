@@ -51,6 +51,7 @@ class HomeController extends GetxController {
     'Daily Coverage'.tr,
     'Activity'.tr,
     'Advertisements'.tr,
+    'News'.tr,
   ];
 
   final List<SvgPicture> superVisorImages = [
@@ -59,14 +60,15 @@ class HomeController extends GetxController {
     SvgPicture.asset(AppImages.dailyCoverImage),
     SvgPicture.asset(AppImages.activityImage),
     SvgPicture.asset(AppImages.adImage),
+    SvgPicture.asset(AppImages.newsImage),
   ];
 
   final List superVisorOnPressed = [
     () => Get.toNamed(AppRouter.studentScreen),
     () => Get.toNamed(AppRouter.chatScreen),
-      () => Get.toNamed(AppRouter.postScreen),
-       () => Get.toNamed(AppRouter.activityScreen),
-           () => Get.toNamed(AppRouter.advertisementsScreen),
-   
+    () => Get.toNamed(AppRouter.postScreen),
+    () => Get.toNamed(AppRouter.activityScreen),
+    () => Get.toNamed(AppRouter.advertisementsScreen),
+    () => Get.toNamed(AppRouter.newsScreen),
   ];
 }

@@ -15,7 +15,7 @@ class PostRepoImp implements PostRepo {
 
   @override
   Future<DataState> addPost({required Homework addPostModel}) async {
-    final response = await _dataService.postDataWithPhotor(
+    final response = await _dataService.postDataWithPhoto(
       endPoint: 'teacher/dailyUpdatePost/store',
       data: addPostModel.toJson(),
       baseUrl: baseUrl,
@@ -30,8 +30,15 @@ class PostRepoImp implements PostRepo {
     required int page,
     required int gradeId,
   }) async {
+    print('-----------------------------');
+    print(box.read('userType'));
+    print('-----------------------------');
     final response = await _dataService.getData<PostModel>(
-      endPoint: box.read('userType')=='teacher'? 'teacher/dailyUpdatePost/index/$gradeId?page=$page' : 'supervisor/dailyUpdatePost/index/$gradeId?page=$page',
+      endPoint: 
+      // box.read('userType') == 'teacher'
+      //     ? 'teacher/dailyUpdatePost/index/$gradeId?page=$page'
+      //     :
+           'supervisor/dailyUpdatePost/index/$gradeId?page=$page',
       baseUrl: baseUrl,
       queryParameters: {'page': '$page'},
       fromJson: (json) => PostModel.fromJson(json),
@@ -65,7 +72,7 @@ class PostRepoImp implements PostRepo {
   Future<DataState> like(
       {required LikeModel addCommentModel, required int postId}) async {
     final response = await _dataService.getData<LikeModel>(
-      endPoint: 'teacher/dailyUpdatePost/like/$postId',
+      endPoint: box.read('userType') == 'teacher'?'teacher/dailyUpdatePost/like/$postId' : 'supervisor/dailyUpdatePost/like/$postId',
       baseUrl: baseUrl,
       fromJson: (json) => LikeModel.fromJson(json),
     );

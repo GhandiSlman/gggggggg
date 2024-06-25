@@ -26,7 +26,7 @@ class CarouselSliderAd extends StatelessWidget {
           itemCount: images.length,
           options: CarouselOptions(
             viewportFraction: 1.0,
-            aspectRatio: 8 / 5,
+            aspectRatio: 8 / 2,
             onPageChanged: (index, reason) =>
                 advertisementsController.currentIndexCarousel.value = index,
           ),

@@ -40,4 +40,5 @@ class AppImages {
   static String clockImage = 'assets/clock.svg';
   static String studentH = 'assets/studentHHH.png';
   static String adImage = 'assets/Ad.svg';
+  static String newsImage = 'assets/news.svg';
 }

@@ -4,6 +4,7 @@ import 'package:lms/features/parent/presentation/screens/parent_chat_screen.dart
 import 'package:lms/features/posts/presentation/screens/add_update_post_screen.dart';
 import 'package:lms/features/supervisor/presentation/screens/add_update_adv_screen.dart';
 import 'package:lms/features/supervisor/presentation/screens/advertisements_screen.dart';
+import 'package:lms/features/supervisor/presentation/screens/news_screen.dart';
 import 'package:lms/features/teacher/presentation/screens/honor_board_screen.dart';
 import 'package:lms/features/parent/presentation/screens/son_achievement_screen.dart';
 import 'package:lms/features/parent/presentation/screens/sons_screen.dart.dart';
@@ -54,6 +55,7 @@ class AppRouter {
   static const String classScheduleScreen = '/classScheduleScreen';
   static const String addUpdateAdvScreen = '/addUpdateAdvScreen';
   static const String advertisementsScreen = '/advertisementsScreen';
+  static const String newsScreen = '/newsScreen';
 
   static final List<GetPage> pages = [
     GetPage(name: loginScreen, page: () => const LoginScreen()),
@@ -88,6 +90,7 @@ class AppRouter {
     GetPage(name: studentScreen, page: () => const StudentScreen()),
         GetPage(name: classScheduleScreen, page: () => const ClassScheduleScreen()),
         GetPage(name: addUpdateAdvScreen, page: () => const AddUpdateAdvScreen()),
-        GetPage(name: advertisementsScreen, page: () => const AdvertisementsScreen()),
+        GetPage(name: advertisementsScreen, page: () =>  const AdvertisementsScreen()),
+        GetPage(name: newsScreen, page: () =>  const NewsScreen()),
   ];
 }

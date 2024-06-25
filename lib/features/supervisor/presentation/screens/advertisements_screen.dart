@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/widgets/custom_app_bar.dart';
+import 'package:lms/core/widgets/shimmer.dart';
 import 'package:lms/features/supervisor/controller/advertisements_controller.dart';
 import 'package:lms/features/supervisor/presentation/widgets/advertisement_card.dart';
 
@@ -17,7 +18,9 @@ class AdvertisementsScreen extends StatelessWidget {
       backgroundColor: AppColor.scaffoldColor,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.toNamed(AppRouter.addUpdateAdvScreen);
+          Get.toNamed(AppRouter.addUpdateAdvScreen, arguments: {
+            'isUpdate': advertisementsController.isUpdate == true,
+          });
         },
         backgroundColor: AppColor.primaryColor,
         child: Icon(
@@ -47,19 +50,59 @@ class AdvertisementsScreen extends StatelessWidget {
       body: Obx(() => TabBarView(
             controller: advertisementsController.controller,
             children: advertisementsController.myTabs.map((Tab tab) {
-              return ListView.builder(
-                itemCount: advertisementsController.advertisementsList.length,
-                itemBuilder: (context, index) {
-                  final advertisement =
-                      advertisementsController.advertisementsList[index];
-                  return Padding(
-                    padding: EdgeInsets.all(10.h),
-                    child: AdvertisementsCard(
-                     advertisementsData: advertisement,
-                    ),
-                  );
-                },
-              );
+              if (tab.text == 'Advertisements'.tr) {
+                return advertisementsController.isLoadingGetAd.value
+                    ? ListView.builder(
+                        itemCount: 3,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.all(10.h),
+                            child: ShimmerWidget(height: 250.h),
+                          );
+                        },
+                      )
+                    : ListView.builder(
+                        itemCount:
+                            advertisementsController.advertisementsList.length,
+                        itemBuilder: (context, index) {
+                          final advertisement = advertisementsController
+                              .advertisementsList[index];
+                          return Padding(
+                            padding: EdgeInsets.all(10.h),
+                            child: AdvertisementsCard(
+                              isAdvertisement: false,
+                              advertisementsData: advertisement,
+                            ),
+                          );
+                        },
+                      );
+              } else {
+                return advertisementsController.isLoadingGetMyAd.value
+                    ? ListView.builder(
+                        itemCount: 3,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.all(10.h),
+                            child: ShimmerWidget(height: 250.h),
+                          );
+                        },
+                      )
+                    : ListView.builder(
+                        itemCount: advertisementsController
+                            .myAdvertisementsList.length,
+                        itemBuilder: (context, index) {
+                          final advertisement = advertisementsController
+                              .myAdvertisementsList[index];
+                          return Padding(
+                            padding: EdgeInsets.all(10.h),
+                            child: AdvertisementsCard(
+                              isAdvertisement: true,
+                              advertisementsData: advertisement,
+                            ),
+                          );
+                        },
+                      );
+              }
             }).toList(),
           )),
     );

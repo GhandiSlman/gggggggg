@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
+import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/utils/app_images.dart';
 import 'package:lms/core/widgets/custom_text.dart';
 import 'package:lms/core/widgets/loading_widget.dart';
@@ -50,7 +51,7 @@ class PostCard extends StatelessWidget {
                         ),
                       ),
                       50.horizontalSpace,
-                      IconButton(
+                    box.read('userType')=='teacher'?  IconButton(
                           onPressed: () {
                             showDialog(
                               context: context,
@@ -96,7 +97,7 @@ class PostCard extends StatelessWidget {
                               },
                             );
                           },
-                          icon: const Icon(Icons.more_horiz))
+                          icon: const Icon(Icons.more_horiz)): const SizedBox()
                     ],
                   ),
                   SizedBox(

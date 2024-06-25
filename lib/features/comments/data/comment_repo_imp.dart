@@ -13,7 +13,9 @@ class CommentRepoImp implements CommentRepo {
   Future<DataState> addComment(
       {required AddCommentData addCommentModel, required int postId}) async {
     final response = await _dataService.postData(
-      endPoint: 'teacher/dailyUpdatePost/addComment',
+      endPoint: box.read('userType') == 'teacher'
+          ? 'teacher/dailyUpdatePost/addComment'
+          : 'supervisor/dailyUpdatePost/addComment',
       data: addCommentModel.toJson(),
       baseUrl: baseUrl,
       fromJson: (Map<String, dynamic> json) => AddCommentData.fromJson(json),
@@ -25,7 +27,9 @@ class CommentRepoImp implements CommentRepo {
   Future<DataState> getComment(
       {required GetCommentModel comments, required int postId}) async {
     final response = await _dataService.getData<GetCommentModel>(
-      endPoint: 'teacher/dailyUpdatePost/getComments/$postId',
+      endPoint: box.read('userType') == 'teacher'
+          ? 'teacher/dailyUpdatePost/getComments/$postId'
+          : 'supervisor/dailyUpdatePost/getComments/$postId',
       baseUrl: baseUrl,
       fromJson: (json) => GetCommentModel.fromJson(json),
     );
