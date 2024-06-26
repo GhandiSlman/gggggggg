@@ -21,6 +21,11 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<DataState> logOut() async {
-    throw UnimplementedError();
+    final response =
+        await _dataService.getData(endPoint: 'logout', baseUrl: baseUrl,
+        fromJson: (Map<String, dynamic> json) => GetLoginModel.fromJson(json),
+        token: box.read('token'),
+        );
+    return response;
   }
 }

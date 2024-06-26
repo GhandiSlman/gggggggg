@@ -78,7 +78,7 @@ class ActivityScreen extends StatelessWidget {
                         )
                       : ListView.builder(
                           itemCount:
-                              activityController.activityListIndex.length,
+                             box.read('userType') == 'teacher'?   activityController.activityList.length : activityController.activityListIndex.length,
                           itemBuilder: (context, index) => Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 20.w, vertical: 10.h),
@@ -106,17 +106,7 @@ class ActivityScreen extends StatelessWidget {
                                           .activityListIndex[index],
                                     )
                                   : ActivityCard(
-                                      sectionName: box.read('langCode') == 'ar'
-                                          ? activityController
-                                              .activityListIndex[index]
-                                              .section!
-                                              .name!
-                                              .ar!
-                                          : activityController
-                                              .activityListIndex[index]
-                                              .section!
-                                              .name!
-                                              .en!,
+                                      sectionName: '',
                                       date: activityController
                                           .activityList[index].date!,
                                       desc: activityController

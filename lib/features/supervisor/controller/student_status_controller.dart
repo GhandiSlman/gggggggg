@@ -1,35 +1,33 @@
+import 'dart:ui';
+
+import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart'; // Make sure to add this package for formatting dates
+import 'package:intl/intl.dart';
 import 'package:lms/core/data/data_state.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_toast.dart';
-import 'package:lms/features/students/data/student_repo.dart';
 import 'package:lms/features/students/model/student_attendance.dart';
-import 'package:drop_down_list/model/selected_list_item.dart';
-import 'package:lms/features/students/model/student_status.dart';
+import 'package:lms/features/supervisor/data/student_status_repo.dart';
+import 'package:lms/features/supervisor/model/student_attendance_status.dart';
 
-class StudentController extends GetxController
-    with GetTickerProviderStateMixin {
-  final StudentRepo studentRepo;
+class StudentStatusController extends GetxController {
+  StudentStatusRepo studentStatusRepo;
+  StudentStatusController(this.studentStatusRepo);
 
-  StudentController(this.studentRepo);
+  RxList<StudentAttendanceStatusData> studentStatusList =
+      <StudentAttendanceStatusData>[].obs;
 
-  late TextEditingController classController;
-  late TabController tabController;
-  var isLoading = false.obs;
+  RxBool isLoadingSections = false.obs;
+  RxBool isLoadingStudentStatus = false.obs;
   RxList<String> selectedClass = <String>[].obs;
-
+  RxInt selectedSectionId = 0.obs;
+  RxInt selectedSubjectId = 0.obs;
+  late final TextEditingController classController;
   var classList = <SelectedListItem>[].obs;
-  RxList<Tab> myTabs = <Tab>[].obs;
-  RxList<Tab> noDataTabs = <Tab>[
-    Tab(
-      text: 'No subjects'.tr,
-    )
-  ].obs;
   Map<String, Map<String, List<Students>>> studentList =
       <String, Map<String, List<Students>>>{};
   Map<String, Map<String, List<Subject>>> subjectList =
@@ -39,32 +37,22 @@ class StudentController extends GetxController
 
   @override
   void onInit() {
-    super.onInit();
     classController = TextEditingController();
-    tabController = TabController(
-        length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
-        vsync: this);
-    classController.addListener(updateOnClassChange);
-    getClasses();
+    geSectionSubject();
+    super.onInit();
   }
 
-  void updateOnClassChange() {
-    if (classController.text.isNotEmpty) {
-      updateSelectedClass(classController.text);
-    }
-  }
-
-  Future<void> getClasses() async {
-    isLoading.value = true;
-    final DataState result = await studentRepo.getClasses(StudentAttendance());
-    isLoading.value = false;
+  Future<void> geSectionSubject() async {
+    isLoadingSections.value = true;
+    final DataState result =
+        await studentStatusRepo.getSectionSubject(StudentAttendance());
+    isLoadingSections.value = false;
     if (result is DataSuccess<StudentAttendance>) {
       var attendance = result.data!;
       classList.clear();
       studentList.clear();
       subjectList.clear();
       sectionSubjectList.clear();
-      myTabs.clear();
 
       String currentDay = DateFormat('EEEE').format(DateTime.now());
 
@@ -88,16 +76,10 @@ class StudentController extends GetxController
                 if (!subjectList[combinedClassName]!.containsKey(subjectName)) {
                   subjectList[combinedClassName]![subjectName] = [];
                 }
-                studentList[combinedClassName]![subjectName]!
-                    .addAll(section.students!);
-
                 subjectList[combinedClassName]![subjectName]!
                     .add(sectionSubject.subject!);
 
                 sectionSubjectList[combinedClassName]!.add(sectionSubject);
-                print('======================================');
-                print(sectionSubjectList);
-                print('======================================');
               }
             }
           }
@@ -117,43 +99,26 @@ class StudentController extends GetxController
 
   void updateSelectedClass(String className) {
     selectedClass.value = [className];
-    myTabs.clear();
     if (sectionSubjectList.containsKey(className)) {
       for (var sectionSubject in sectionSubjectList[className]!) {
-        String subjectName = box.read('langCode') == 'ar'
-            ? sectionSubject.subject!.name!.ar!
-            : sectionSubject.subject!.name!.en!;
-        myTabs.add(Tab(text: subjectName));
+        selectedSectionId.value = sectionSubject.sectionId!;
+        //   selectedSubjectId.value = sectionSubject.subject!.id!;
       }
-      tabController = TabController(
-          length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
-          vsync: this);
+      //geSectionSubject();
+      getStudentStatus(selectedSectionId.value, selectedSubjectId.value);
     }
   }
 
-  Future<void> handleAttendance(
-      String status, int studentId, int subjectId) async {
-    String date = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-    final studentStatusModel = StudentStatus(
-      status: status,
-      date: date,
-      studentId: studentId,
-      subjectId: subjectId,
-    );
-
-    final DataState result = await studentRepo.studentStatusSend(
-        studentAttendance: studentStatusModel);
-
-    if (result is DataSuccess<GetStudentStatus>) {
-      CustomToast.showToast(
-        message: 'Status send successfully',
-        backgroundColor: AppColor.green2Color,
-        fontSize: 15.sp,
-        gravity: ToastGravity.BOTTOM,
-        isLongDuration: false,
-        textColor: AppColor.whiteColor,
-      );
-    } else if (result is DataFailed) {
+  Future<void> getStudentStatus(int sectionId, int subjectId) async {
+    isLoadingStudentStatus.value = true;
+    final result = await studentStatusRepo.getStudentStatus(
+        studentAttendanceStatus: StudentAttendanceStatus(),
+        sectoinId: sectionId,
+        subjectId: subjectId);
+    isLoadingStudentStatus.value = false;
+    if (result is DataSuccess<StudentAttendanceStatus>) {
+      studentStatusList.value = result.data!.data!;
+    } else {
       CustomToast.showToast(
         message: result.errorMessage!,
         backgroundColor: AppColor.redColor,
@@ -165,9 +130,11 @@ class StudentController extends GetxController
     }
   }
 
-  @override
-  void onClose() {
-    tabController.dispose();
-    super.onClose();
+  List<String> getSubjectList() {
+    if (selectedClass.isEmpty) {
+      return [];
+    }
+    String className = selectedClass.first;
+    return subjectList[className]?.keys.toList() ?? [];
   }
 }

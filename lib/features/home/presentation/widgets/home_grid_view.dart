@@ -17,15 +17,27 @@ class HomeGridView extends StatelessWidget {
 
     final List<String> titles = userType == 'teacher'
         ? homeController.techerTitle
-        : homeController.superVisorTitle;
+        : userType == 'supervisor'
+            ? homeController.superVisorTitle
+            : userType == 'guardian'
+                ? homeController.parentTitle
+                : [];
 
     final List<SvgPicture> images = userType == 'teacher'
         ? homeController.teacherImages
-        : homeController.superVisorImages;
+        : userType == 'supervisor'
+            ? homeController.superVisorImages
+            : userType == 'guardian'
+                ? homeController.parentImages
+                : [];
 
-    final List onPressedActions = userType == 'teacher'
+    final List onPressedActions = userType =='teacher'
         ? homeController.teacherOnPressed
-        : homeController.superVisorOnPressed;
+        : userType == 'supervisor'
+            ? homeController.superVisorOnPressed
+            : userType == 'guardian'
+                ? homeController.parentPressed
+                : [];
 
     final int itemCount = titles.length;
 
@@ -40,7 +52,8 @@ class HomeGridView extends StatelessWidget {
         itemBuilder: (context, index) {
           BoxDecoration boxDecoration = BoxDecoration(
             borderRadius: BorderRadius.circular(15.r),
-            color: homeController.teacherColorList[index % homeController.teacherColorList.length],
+            color: homeController.teacherColorList[
+                index % homeController.teacherColorList.length],
             gradient: index == 2 ||
                     index == 3 ||
                     index == 4 ||

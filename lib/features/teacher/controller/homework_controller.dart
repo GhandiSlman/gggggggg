@@ -211,7 +211,6 @@ class HomeWorkController extends GetxController
     final DataState result =
         await homeWorkRepo.updateHomeWork(homework: homeWork);
     isLoadingAddUpdateHomeWork.value = false;
-    print(result.statusCode);
     if (result is DataSuccess) {
       titleHomeWorkController.clear();
       detailsHomeWorkController.clear();

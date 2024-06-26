@@ -1,7 +1,6 @@
 import 'package:lms/core/data/data_state.dart';
 import 'package:lms/features/supervisor/model/add_advertisements_model.dart';
 import 'package:lms/features/supervisor/model/advertisements_model.dart';
-import 'package:lms/features/supervisor/model/news_model.dart';
 import 'package:lms/features/supervisor/model/update_ad_model.dart';
 
 abstract class AdvertisementsRepo {
@@ -15,5 +14,5 @@ abstract class AdvertisementsRepo {
        Future<DataState> deleteAdvertisement(
       {required int id});
 
-   Future<DataState> getNews({required NewsModel newsModel});
+  
 }

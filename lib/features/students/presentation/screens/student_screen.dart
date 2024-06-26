@@ -82,7 +82,10 @@ class StudentScreen extends StatelessWidget {
                               : 'No Data';
                       Map<String, List<Students>>? subjects =
                           studentController.studentList[currentClassName];
+                      Map<String, List<Subject>>? subjectIds =
+                          studentController.subjectList[currentClassName];
                       List<Students>? students = subjects?[tab.text];
+                      List<Subject>? subjectList = subjectIds?[tab.text];
                       return students!.isEmpty
                           ? Center(
                               child: CustomText(
@@ -95,13 +98,13 @@ class StudentScreen extends StatelessWidget {
                               itemCount: students.length,
                               itemBuilder: (context, index) {
                                 var student = students[index];
-
+                                var subject = subjectList![0]; // Assuming there's only one subject per tab
                                 return Padding(
                                   padding: EdgeInsets.all(15.h),
                                   child: StudentCard(
                                     name: student.name!,
                                     studentId: student.id!,
-                                    subjectId: 1,
+                                    subjectId: subject.id!, // Access the subject ID here
                                   ),
                                 );
                               },

@@ -18,6 +18,8 @@ class AppColor {
   static Color offsetGreenColor = const Color(0XFFE0FAE8);
   static Color offsetRedColor = const Color(0XFFFFE7E8);
   static Color blackColor = Colors.black;
+  static Color orangeColor = const Color(0XFFFF9100);
+  static Color greenHeader = const Color(0XFF008B86);
 
   static List<Color> colorList = [
     const Color(0XFF4B97D0),

@@ -5,7 +5,7 @@ import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/widgets/custom_app_bar.dart';
 import 'package:lms/core/widgets/shimmer.dart';
 
-import 'package:lms/features/supervisor/controller/advertisements_controller.dart';
+import 'package:lms/features/supervisor/controller/news_controller.dart';
 import 'package:lms/features/supervisor/presentation/widgets/news_card.dart';
 
 class NewsScreen extends StatelessWidget {
@@ -13,13 +13,13 @@ class NewsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AdvertisementsController advertisementsController = Get.find();
+    NewsController newsController = Get.find();
     return Scaffold(
       backgroundColor: AppColor.scaffoldColor,
       appBar: CustomAppBar(
         title: 'News'.tr,
       ),
-      body: Obx(() => advertisementsController.isLoadingGetNews.value
+      body: Obx(() => newsController.isLoadingGetNews.value
           ? ListView.builder(
             itemCount: 3,
             itemBuilder: (context, index) {
@@ -29,9 +29,9 @@ class NewsScreen extends StatelessWidget {
               );
             })
           : ListView.builder(
-              itemCount: advertisementsController.newsList.length,
+              itemCount: newsController.newsList.length,
               itemBuilder: (context, index) {
-                final news = advertisementsController.newsList[index];
+                final news = newsController.newsList[index];
                 return Padding(
                   padding: EdgeInsets.all(10.h),
                   child: NewsCard(

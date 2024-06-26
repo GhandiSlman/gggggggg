@@ -19,8 +19,10 @@ class PostsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final PostController postController = Get.find();
     return Scaffold(
-        floatingActionButton: box.read('teacher') == 'teacher'
-            ? FloatingActionButton(
+        floatingActionButton:
+         box.read('userType') == 'teacher'
+            ? 
+            FloatingActionButton(
                 onPressed: () {
                   Get.toNamed(AppRouter.addPostScreen, arguments: {
                     'isUpdate': postController.isUpdatePost == true
@@ -32,7 +34,7 @@ class PostsScreen extends StatelessWidget {
                   color: AppColor.whiteColor,
                 ),
               )
-            : null,
+            : const SizedBox(),
         backgroundColor: AppColor.scaffoldColor,
         appBar: CustomAppBar(
           title: 'Posts'.tr,
@@ -43,9 +45,7 @@ class PostsScreen extends StatelessWidget {
                   ? Align(
                       alignment: Alignment.centerLeft,
                       child: postController.isLoadingGetClasses.value
-                          ? ShimmerWidget(
-                              height:
-                                  50.h) 
+                          ? ShimmerWidget(height: 50.h)
                           : TabBar(
                               isScrollable: true,
                               indicatorColor: AppColor.primaryColor,

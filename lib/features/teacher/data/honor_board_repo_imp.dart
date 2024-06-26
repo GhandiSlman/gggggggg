@@ -37,6 +37,7 @@ class HonorBoardRepoImp implements HonorBoardRepo {
   @override
   Future<DataState> getHonorBoard(
       {required GetHonorBoardModel getHonorBoardModel}) async {
+    print('sdffrfdsfddddddddddddddddddddddddddddddddddddddddddddd');
     final response = await _dataService.getData(
       endPoint: 'teacher/honorBoard/create',
       baseUrl: baseUrl,
@@ -57,9 +58,13 @@ class HonorBoardRepoImp implements HonorBoardRepo {
   }
 
   @override
-  Future<DataState> getStudentHonorBoard({required GetStudentHonorBoardModel getStudentHonorBoardModel , required int subjectId}) async{
-     final response = await _dataService.getData(
-      endPoint: 'teacher/honorBoard/index/$subjectId',
+  Future<DataState> getStudentHonorBoard(
+      {required GetStudentHonorBoardModel getStudentHonorBoardModel,
+      required int subjectId}) async {
+    final response = await _dataService.getData(
+      endPoint: box.read('userType') == 'teacher'
+          ? 'teacher/honorBoard/index/$subjectId'
+          : 'parent/honorBoard/index/$subjectId',
       baseUrl: baseUrl,
       fromJson: (json) => GetStudentHonorBoardModel.fromJson(json),
     );

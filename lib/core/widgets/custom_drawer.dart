@@ -26,9 +26,9 @@ class CustomDrawer extends StatelessWidget {
             children: [
               Container(
                 width: double.infinity,
-                color: box.read('userType') == 'teacher'
-                    ? AppColor.redColor
-                    : AppColor.amberColor,
+                color: box.read('userType') == 'teacher'?
+                   AppColor.redColor : box.read('userType') == 'supervisor'?AppColor.orangeColor : box.read('userType') == 'guardian'?
+                  AppColor.greenHeader : null,
                 height: 140.h,
                 child: Row(
                   children: [
@@ -71,7 +71,7 @@ class CustomDrawer extends StatelessWidget {
               ),
             ],
           ),
-          ListTile(
+          box.read('userType') == 'supervisor' ? ListTile(
             title: Row(
               children: [
                 SvgPicture.asset(AppImages.teacherBlueImage),
@@ -89,8 +89,8 @@ class CustomDrawer extends StatelessWidget {
               color: AppColor.primaryColor,
               size: 20.sp,
             ),
-          ),
-          InkWell(
+           ) : const SizedBox(),
+         box.read('userType') =='teacher' ?InkWell(
             onTap: () {
               Get.toNamed(AppRouter.parentHonorBoardScreen);
             },
@@ -113,7 +113,7 @@ class CustomDrawer extends StatelessWidget {
                 size: 20.sp,
               ),
             ),
-          ),
+          ) : const SizedBox(),
           ListTile(
             title: Row(
               children: [

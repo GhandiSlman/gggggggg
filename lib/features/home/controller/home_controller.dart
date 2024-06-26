@@ -64,11 +64,35 @@ class HomeController extends GetxController {
   ];
 
   final List superVisorOnPressed = [
-    () => Get.toNamed(AppRouter.studentScreen),
+    () => Get.toNamed(AppRouter.superVisorPresence),
     () => Get.toNamed(AppRouter.chatScreen),
     () => Get.toNamed(AppRouter.postScreen),
     () => Get.toNamed(AppRouter.activityScreen),
     () => Get.toNamed(AppRouter.advertisementsScreen),
     () => Get.toNamed(AppRouter.newsScreen),
   ];
+
+  //parent
+
+   final List<String> parentTitle = [
+    'My children'.tr,
+    'Honor board'.tr,
+    'Daily Coverage'.tr,
+    'Chats'.tr,
+  ];
+
+   final List parentPressed = [
+    () => Get.toNamed(AppRouter.sonsScreen),
+    () => Get.toNamed(AppRouter.parentHonorBoardScreen),
+    () => Get.toNamed(AppRouter.postScreen),
+    () => Get.toNamed(AppRouter.chatScreen),
+  ];
+
+  final List<SvgPicture> parentImages = [
+    SvgPicture.asset(AppImages.myChildrenImage),
+    SvgPicture.asset(AppImages.honorPanelImage),
+    SvgPicture.asset(AppImages.dailyCoverImage),
+    SvgPicture.asset(AppImages.mmessageImage),
+  ];
+  
 }

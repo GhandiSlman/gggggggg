@@ -4,7 +4,6 @@ import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/features/supervisor/data/advertisements_repo.dart';
 import 'package:lms/features/supervisor/model/add_advertisements_model.dart';
 import 'package:lms/features/supervisor/model/advertisements_model.dart';
-import 'package:lms/features/supervisor/model/news_model.dart';
 import 'package:lms/features/supervisor/model/update_ad_model.dart';
 
 class AdvertisementsRepoImp implements AdvertisementsRepo {
@@ -63,13 +62,5 @@ class AdvertisementsRepoImp implements AdvertisementsRepo {
     return response;
   }
 
-  @override
-  Future<DataState> getNews({required NewsModel newsModel})async{
-     final response = await _dataService.getData<NewsModel>(
-      endPoint: 'supervisor/news/index', 
-      baseUrl: baseUrl,
-      fromJson: (Map<String, dynamic> json) => NewsModel.fromJson(json),
-    );
-    return response;
-  }
+  
 }

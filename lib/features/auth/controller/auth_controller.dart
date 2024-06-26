@@ -11,7 +11,7 @@ class AuthController extends GetxController {
   late final TextEditingController password;
 
   RxBool isLoading = false.obs;
-  var userType = ''.obs;
+//  var userType = ''.obs;
   RxnString loginErrorMessage = RxnString();
 
   final AuthRepo authRepo;
@@ -34,33 +34,23 @@ class AuthController extends GetxController {
     );
 
     final DataState loginResult = await authRepo.logIn(loginModel: loginModel);
+     isLoading.value = false;
     if (loginResult is DataSuccess<GetLoginModel>) {
       await box.write('token', loginResult.data!.accessToken);
       await box.write('userType', loginResult.data!.user!.role);
-      print(box.write('userType', loginResult.data!.user!.role));
-      isLoading.value = false;
-      Get.toNamed(AppRouter.homeScreen);
+     
+      Get.offAllNamed(AppRouter.homeScreen);
     } else if (loginResult is DataFailed) {
-      isLoading.value = false;
-      loginErrorMessage.value =
-          loginResult.errorMessage ?? 'An unknown error occurred';
+      
     }
   }
 
   Future<void> logOut() async {
-    isLoading.value = true;
     final DataState logoutResult = await authRepo.logOut();
-    // print('======================');
-    // print(logoutResult.statusCode);
-    // print('======================');
-    if (logoutResult is DataSuccess) {
-      //   print(logoutResult.statusCode);
+    if (logoutResult is DataSuccess<GetLoginModel>) {
       await box.remove('token');
-      isLoading.value = false;
-      Get.toNamed(AppRouter.loginScreen);
+      Get.offAllNamed(AppRouter.loginScreen);
     } else if (logoutResult is DataFailed) {
-      isLoading.value = false;
-      logoutResult.errorMessage ?? 'An unknown error occurred';
     }
   }
 }

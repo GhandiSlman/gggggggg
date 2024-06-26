@@ -90,7 +90,9 @@ class HomeHeader extends StatelessWidget {
                         blurRadius: 2.r)
                   ],
                   borderRadius: BorderRadius.circular(20.r),
-                  color:  box.read('userType') == 'teacher'? AppColor.redColor : AppColor.amberColor,
+                  color:  box.read('userType') == 'teacher'?
+                   AppColor.redColor : box.read('userType') == 'supervisor'?AppColor.orangeColor : box.read('userType') == 'guardian'?
+                  AppColor.greenHeader : null,
                 ),
                 width: double.infinity,
                 height: 125.h,

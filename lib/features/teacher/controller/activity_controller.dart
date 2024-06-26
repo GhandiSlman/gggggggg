@@ -41,7 +41,7 @@ class ActivityController extends GetxController {
 
   void updateSelectedSectionId(String sectionId) {
     selectedSectionId.value = sectionId;
-    getActivity(sectionId); // Fetch activities based on selected section ID
+    getActivity(sectionId); 
   }
 
   void updateSelectedSection(String className) {
@@ -204,7 +204,6 @@ class ActivityController extends GetxController {
     final result = await activityRepo.getActivity(
         sectionId: sectionId, getActivity: GetActivity());
     isGetActivity.value = false;
-    print(result.statusCode);
     if (result is DataSuccess<GetActivity>) {
       activityList.clear();
       if (result.data?.activity != null) {
@@ -223,14 +222,10 @@ class ActivityController extends GetxController {
   }
 
   Future<void> getActivitySuper() async {
-    print('[[[[[[[[[[]]]]]]]]]]');
-    print(box.read('userType'));
-    print('[[[[[[[[[[]]]]]]]]]]');
     isGetActivity.value = true;
     final result =
         await activityRepo.getActivitySuper(getActivity: GetActivityIndex());
     isGetActivity.value = false;
-    print(result.statusCode);
     if (result is DataSuccess<GetActivityIndex>) {
       activityListIndex.clear();
       if (result.data?.activity != null) {
@@ -246,9 +241,7 @@ class ActivityController extends GetxController {
         textColor: AppColor.whiteColor,
       );
     } else {
-      print('0000000000000000000000');
-      print(result.statusCode);
-      print('0000000000000000000000');
+    
     }
   }
 

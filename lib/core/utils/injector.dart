@@ -19,8 +19,14 @@ import 'package:lms/features/students/controller/student_controller.dart';
 import 'package:lms/features/students/data/student_repo.dart';
 import 'package:lms/features/students/data/student_repo_imp.dart';
 import 'package:lms/features/supervisor/controller/advertisements_controller.dart';
+import 'package:lms/features/supervisor/controller/news_controller.dart';
+import 'package:lms/features/supervisor/controller/student_status_controller.dart';
 import 'package:lms/features/supervisor/data/advertisements_repo.dart';
 import 'package:lms/features/supervisor/data/advertisements_rpeo_imp.dart';
+import 'package:lms/features/supervisor/data/news_repo.dart';
+import 'package:lms/features/supervisor/data/news_repo_imp.dart';
+import 'package:lms/features/supervisor/data/student_status_repo.dart';
+import 'package:lms/features/supervisor/data/student_status_repo_imp.dart';
 import 'package:lms/features/teacher/controller/activity_controller.dart';
 import 'package:lms/features/teacher/controller/class_schedule_controller.dart';
 import 'package:lms/features/teacher/controller/honor_board_controller.dart';
@@ -128,5 +134,19 @@ class DependencyInjection {
     // Ad Controller lazy
     Get.lazyPut<AdvertisementsController>(() => AdvertisementsController(Get.find()),
         fenix: true);
+
+    // studend status repo init
+    Get.lazyPut<StudentStatusRepo>(() => StudentStatusRepoImp(Get.find()), fenix: true);
+   // studend status controler init
+    Get.lazyPut<StudentStatusController>(() => StudentStatusController(Get.find()),
+        fenix: true);
+
+         // Ad Repo lazy Initialization;
+    Get.lazyPut<NewsRepo>(() => NewsRepImp(Get.find()), fenix: true);
+
+    // Ad Controller lazy
+    Get.lazyPut<NewsController>(() => NewsController(Get.find()),
+        fenix: true);
+
   }
 }

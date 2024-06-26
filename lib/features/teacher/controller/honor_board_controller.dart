@@ -9,6 +9,7 @@ import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_toast.dart';
 import 'package:lms/features/students/model/student_attendance.dart';
+import 'package:lms/features/supervisor/controller/student_status_controller.dart';
 import 'package:lms/features/teacher/data/honor_board_repo.dart';
 import 'package:lms/features/teacher/model/honor_board.dart';
 import 'package:lms/features/teacher/model/student_honor_board.dart';
@@ -27,6 +28,7 @@ class HonorBoardController extends GetxController {
   late final TextEditingController classController;
   late final TextEditingController classControllerAdd;
   late final TextEditingController subjectController;
+  StudentStatusController studentStatusController = Get.find();
 
   RxList<GetHonorBoardModel> honorBoardList = <GetHonorBoardModel>[].obs;
   RxList<GetHonorBoardModel> filteredHonorBoardList =
@@ -107,7 +109,7 @@ class HonorBoardController extends GetxController {
         studentAttendance: StudentAttendance());
 
     isLoading.value = false;
-
+    subjectList.clear();
     if (result is DataSuccess<StudentAttendance>) {
       var attendance = result.data!;
       classList.clear();
@@ -176,7 +178,6 @@ class HonorBoardController extends GetxController {
   }
 
   void updateSelectedStudent(String studentName, int index) {
-    // Ensure the student is added to the selected list
     if (selectedStudents.length > index) {
       selectedStudents[index] = studentName;
     } else {
@@ -287,8 +288,10 @@ class HonorBoardController extends GetxController {
     classController = TextEditingController();
     subjectController = TextEditingController();
     classControllerAdd = TextEditingController();
-    getClassSubjectStudent();
-    // getStudentHonorBoard(1);
+    box.read('userType') == 'teacher'
+    ?
+    getClassSubjectStudent()
+    : studentStatusController.geSectionSubject();
     super.onInit();
   }
 }

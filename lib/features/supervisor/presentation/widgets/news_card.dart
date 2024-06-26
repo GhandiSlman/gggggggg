@@ -1,23 +1,21 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
+import 'package:lms/core/utils/app_images.dart';
 
 import 'package:lms/core/widgets/custom_text.dart';
-
 
 import 'package:lms/features/supervisor/model/news_model.dart';
 import 'package:lms/features/supervisor/presentation/widgets/carousel_slider_ad.dart';
 
 class NewsCard extends StatelessWidget {
-
   final NewsData newsData;
 
-
-  const NewsCard(
-      {required this.newsData, super.key});
+  const NewsCard({required this.newsData, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,19 +59,20 @@ class NewsCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                
-              ],
-            ),
-            10.verticalSpace,
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              child: FittedBox(
-                child: CustomText(
-                  text: newsData.createdAt!,
-                  color: AppColor.greyColor,
-                  fontSize: 15.sp,
+                Row(
+                  children: [
+                    SvgPicture.asset(AppImages.dateImage),
+                    5.horizontalSpace,
+                    FittedBox(
+                      child: CustomText(
+                        text: newsData.createdAt!,
+                        color: AppColor.greyColor,
+                        fontSize: 15.sp,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
+              ],
             ),
             10.verticalSpace,
             Padding(

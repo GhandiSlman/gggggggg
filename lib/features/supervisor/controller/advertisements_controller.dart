@@ -6,11 +6,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:lms/core/data/data_state.dart';
 import 'package:lms/core/utils/app_color.dart';
+import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_toast.dart';
 import 'package:lms/features/supervisor/data/advertisements_repo.dart';
 import 'package:lms/features/supervisor/model/add_advertisements_model.dart';
 import 'package:lms/features/supervisor/model/advertisements_model.dart';
-import 'package:lms/features/supervisor/model/news_model.dart';
 import 'package:lms/features/supervisor/model/update_ad_model.dart';
 
 class AdvertisementsController extends GetxController
@@ -20,14 +20,14 @@ class AdvertisementsController extends GetxController
 
   RxList<AdvertisementsData> advertisementsList = <AdvertisementsData>[].obs;
   RxList<AdvertisementsData> myAdvertisementsList = <AdvertisementsData>[].obs;
-  RxList<NewsData> newsList = <NewsData>[].obs;
+  
   late final TextEditingController descControllerAr;
   late final TextEditingController descControllerEn;
   RxBool isLoadingAddUpdateAd = false.obs;
   RxBool isLoadingGetAd = false.obs;
   RxBool isLoadingGetMyAd = false.obs;
   RxBool isLoadingDelete = false.obs;
-  RxBool isLoadingGetNews = false.obs;
+  
   RxInt currentIndexCarousel = 0.obs;
 
   bool isUpdate = false;
@@ -61,7 +61,6 @@ class AdvertisementsController extends GetxController
       }
     });
     getAdvertisements();
-    getNews();
     super.onInit();
   }
 
@@ -91,33 +90,12 @@ class AdvertisementsController extends GetxController
     }
   }
 
-  Future<void> getNews() async {
-    isLoadingGetNews.value = true;
-    final DataState result =
-        await _advertisementsRepo.getNews(newsModel: NewsModel());
-    isLoadingGetNews.value = false;
-    newsList.clear();
-    if (result is DataSuccess<NewsModel>) {
-      for (var news in result.data!.news!) {
-        if (news.createdAt != null) {
-          final DateTime dateTime = DateTime.parse(news.createdAt!);
-          news.createdAt = DateFormat('yyyy-MM-dd').format(dateTime);
-        }
-        newsList.add(news);
-      }
-    } else if (result is DataFailed) {
-      CustomToast.showToast(
-        message: result.errorMessage!,
-        backgroundColor: AppColor.redColor,
-        fontSize: 15.sp,
-        gravity: ToastGravity.BOTTOM,
-        isLongDuration: false,
-        textColor: AppColor.whiteColor,
-      );
-    }
-  }
+  
 
   Future<void> getMyAdvertisements() async {
+     print('==============================================');
+    print(box.read('userType'));
+    print('==============================================');
     isLoadingGetMyAd.value = true;
     final DataState result = await _advertisementsRepo.getMyAdvertisements(
         advertisements: Advertisements());

@@ -45,8 +45,6 @@ class ActivityRepoImp implements ActivityRepo {
       baseUrl: baseUrl,
       fromJson: (Map<String, dynamic> json) => GetActivity.fromJson(json),
     );
-    print('-00-029333333333333333');
-    print(box.read('userType'));
     return response;
   }
 
@@ -58,8 +56,7 @@ class ActivityRepoImp implements ActivityRepo {
       baseUrl: baseUrl,
       fromJson: (Map<String, dynamic> json) => GetActivityIndex.fromJson(json),
     );
-    print('-00-029333333333333333');
-    print(box.read('userType'));
+  
     return response;
   }
 

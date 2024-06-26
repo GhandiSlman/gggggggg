@@ -266,12 +266,14 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void _handleTabChange() {
-  if (!controller.indexIsChanging) {
-    isLoadingGetPost.value = true; 
-    int selectedGradeId = int.parse(gradeToIdMap[myTabs[controller.index].text]!);
-    getPostsByGradeId(selectedGradeId);
+    if (!controller.indexIsChanging) {
+      isLoadingGetPost.value = true;
+      int selectedGradeId =
+          int.parse(gradeToIdMap[myTabs[controller.index].text]!);
+      getPostsByGradeId(selectedGradeId);
+    }
   }
-}
+
   Future<void> deletePost(int postId) async {
     isLoadingDeletePost.value = true;
     final result = await postRepo.deletePost(postId: postId);
@@ -299,36 +301,35 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-Future<void> getPostsByGradeId(int gradeId) async {
-  currentPage = 1;
-  hasMorePages = true;
-  posts.clear();
-  isLoadingGetPost.value = true; // Set loading to true when fetching posts
+  Future<void> getPostsByGradeId(int gradeId) async {
+    currentPage = 1;
+    hasMorePages = true;
+    posts.clear();
+    isLoadingGetPost.value = true;
 
-  final response = await postRepo.getPosts(
-      page: currentPage, postModel: PostModel(), gradeId: gradeId);
-  isLoadingGetPost.value = false; // Set loading to false after fetching posts
-
-  if (response is DataSuccess<PostModel>) {
-    if (response.data!.data!.data!.isEmpty) {
-      hasMorePages = false;
-    } else {
-      posts.addAll(response.data!.data!.data!);
+    final response = await postRepo.getPosts(
+        page: currentPage, postModel: PostModel(), gradeId: gradeId);
+    isLoadingGetPost.value = false;
+    if (response is DataSuccess<PostModel>) {
+      if (response.data!.data!.data!.isEmpty) {
+        hasMorePages = false;
+      } else {
+        posts.addAll(response.data!.data!.data!);
+      }
+      isMoreLoading.value = false;
+    } else if (response is DataFailed) {
+      isMoreLoading.value = false;
+      CustomToast.showToast(
+        message: response.errorMessage!,
+        backgroundColor: AppColor.redColor,
+        fontSize: 15.sp,
+        gravity: ToastGravity.BOTTOM,
+        isLongDuration: false,
+        textColor: AppColor.whiteColor,
+      );
     }
-    isMoreLoading.value = false;
-  } else if (response is DataFailed) {
-    errorMessage.value = response.errorMessage!;
-    isMoreLoading.value = false;
-    CustomToast.showToast(
-      message: errorMessage.value,
-      backgroundColor: AppColor.redColor,
-      fontSize: 15.sp,
-      gravity: ToastGravity.BOTTOM,
-      isLongDuration: false,
-      textColor: AppColor.whiteColor,
-    );
   }
-}
+
   void loadNextPage() {
     if (hasMorePages && !isMoreLoading.value) {
       isMoreLoading.value = true;

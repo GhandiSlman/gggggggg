@@ -5,19 +5,22 @@ import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_app_bar.dart';
+import 'package:lms/core/widgets/custom_text.dart';
 import 'package:lms/core/widgets/drop_down.dart';
 import 'package:lms/core/widgets/shimmer.dart';
 import 'package:lms/features/teacher/controller/honor_board_controller.dart';
 import 'package:lms/features/teacher/presentation/widgets/honor_board_card.dart';
+import 'package:lms/features/supervisor/controller/student_status_controller.dart';
 
 class HonorBoardScreen extends StatelessWidget {
   const HonorBoardScreen({super.key});
 
-  
-
   @override
   Widget build(BuildContext context) {
     HonorBoardController honorBoardController = Get.find();
+    StudentStatusController studentStatusController = Get.find();
+    String userType = box.read('userType') ?? '';
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColor.primaryColor,
@@ -26,7 +29,7 @@ class HonorBoardScreen extends StatelessWidget {
           color: AppColor.whiteColor,
         ),
         onPressed: () {
-          Get.toNamed(AppRouter.addHonorBoardScreen,arguments: {
+          Get.toNamed(AppRouter.addHonorBoardScreen, arguments: {
             'isUpdate': honorBoardController.isUpdateHonorBoard == true
           });
         },
@@ -40,9 +43,15 @@ class HonorBoardScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 14.4.w, vertical: 10.h),
             child: DropDownList(
               onSelectedItems: (List<String> selectedItems) {
-                honorBoardController.updateSelectedClass(selectedItems.first);
+                box.read('userType') == 'teacher'
+                    ? honorBoardController
+                        .updateSelectedClass(selectedItems.first)
+                    : studentStatusController
+                        .updateSelectedClass(selectedItems.first);
               },
-              dataList: honorBoardController.showClassList,
+              dataList: box.read('userType') == 'teacher'
+                  ? honorBoardController.showClassList
+                  : studentStatusController.classList,
               textEditingController: honorBoardController.classController,
               hint: 'Choose class'.tr,
               isCitySelected: true,
@@ -67,27 +76,43 @@ class HonorBoardScreen extends StatelessWidget {
             ),
           );
         } else {
-          return Obx(() => ListView.builder(
+          return Obx(() {
+            List<String> subjects = studentStatusController.getSubjectList();
+            return ListView.builder(
               itemCount: honorBoardController.filteredHonorBoardList.length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: EdgeInsets.all(10.h),
-                  child: TeacherHonorBoardCard(
-                    getHonorBoard:
-                        honorBoardController.filteredHonorBoardList[index],
-                    subjectName: box.read('langCode') == 'ar'
-                        ? honorBoardController.filteredHonorBoardList[index]
-                            .data![index].subjects![index].name!.ar!
-                        : honorBoardController.filteredHonorBoardList[index]
-                            .data![index].subjects![index].name!.en!,
-                    subjectId: honorBoardController
-                        .filteredHonorBoardList[index]
-                        .data![index]
-                        .subjects![index]
-                        .id!,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // CustomText(
+                      //   text: subjects.isNotEmpty
+                      //       ? subjects[index % subjects.length]
+                      //       : 'No subjects',
+                      //   color: AppColor.primaryColor,
+                      //   fontSize: 18.sp,
+                      // ),
+                      TeacherHonorBoardCard(
+                        getHonorBoard:
+                            honorBoardController.filteredHonorBoardList[index],
+                        subjectName: box.read('langCode') == 'ar'
+                            ? honorBoardController.filteredHonorBoardList[index]
+                                .data![index].subjects![index].name!.ar!
+                            : honorBoardController.filteredHonorBoardList[index]
+                                .data![index].subjects![index].name!.en!,
+                        subjectId: honorBoardController
+                            .filteredHonorBoardList[index]
+                            .data![index]
+                            .subjects![index]
+                            .id!,
+                      ),
+                    ],
                   ),
                 );
-              }));
+              },
+            );
+          });
         }
       }),
     );

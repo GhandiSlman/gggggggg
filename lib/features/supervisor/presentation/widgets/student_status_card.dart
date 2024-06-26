@@ -1,15 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:lms/core/utils/app_color.dart';
-
+import 'package:lms/core/utils/app_images.dart';
 import 'package:lms/core/widgets/custom_text.dart';
 
 class StudentStatusCard extends StatelessWidget {
-  const StudentStatusCard({super.key});
+  final String name;
+  final String status;
+
+  const StudentStatusCard({
+    super.key,
+    required this.name,
+    required this.status,
+  });
 
   @override
   Widget build(BuildContext context) {
+    Color statusColor;
+    String statusText;
+    switch (status) {
+      case 'absent':
+        statusColor = AppColor.redColor;
+        statusText = 'absent';
+        break;
+      case 'present':
+        statusColor = AppColor.primaryColor;
+        statusText = 'present';
+        break;
+      case 'late':
+        statusColor = AppColor.greyColor3;
+        statusText = 'late';
+        break;
+      case 'excused':
+        statusColor = AppColor.amber2Color;
+        statusText = 'excused';
+        break;
+      default:
+        statusColor = AppColor.greyColor3;
+        statusText = status;
+    }
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
@@ -28,37 +58,32 @@ class StudentStatusCard extends StatelessWidget {
                   height: 103.h,
                   width: double.infinity,
                   child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20.r),
-                      child: Image.network(
-                        'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg',
-                        fit: BoxFit.cover,
-                      )),
+                    borderRadius: BorderRadius.circular(20.r),
+                    child:Image.asset(AppImages.childImage)
+                  ),
                 ),
-                SizedBox(
-                  height:10.h,
-                ),
+                10.verticalSpace,
                 CustomText(
-                  text: 'Ghandi',
+                  text: name,
                   color: AppColor.primaryColor,
                   fontSize: 18.sp,
                 ),
-                SizedBox(
-                  height: 10.h,
-                ),
+                10.verticalSpace,
               ],
             ),
           ),
           Container(
             height: 23.5.h,
             decoration: BoxDecoration(
-                color: AppColor.redColor,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(20.r),
-                  bottomRight: Radius.circular(20.r),
-                )),
+              color: statusColor,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(20.r),
+                bottomRight: Radius.circular(20.r),
+              ),
+            ),
             child: Center(
               child: CustomText(
-                text: 'Asbent',
+                text: statusText,
                 color: AppColor.whiteColor,
                 fontSize: 15.sp,
               ),

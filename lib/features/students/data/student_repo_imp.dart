@@ -12,9 +12,7 @@ class StudentRepoImp implements StudentRepo {
   @override
   Future<DataState> getClasses(StudentAttendance studentAttendance) async {
     final response = await _dataService.getData(
-      endPoint:
-      
-      box.read('userType') == 'teacher'? 'teacher/studentAttendance/create':'stages',
+      endPoint: 'teacher/studentAttendance/create',
       baseUrl: baseUrl,
       fromJson: (Map<String, dynamic> json) => StudentAttendance.fromJson(json),
     );
@@ -22,12 +20,24 @@ class StudentRepoImp implements StudentRepo {
   }
 
   @override
-  Future<DataState> studentStatusSend({required StudentStatus studentAttendance}) async {
-    final response = await _dataService.postData(
-        endPoint: 'teacher/studentAttendance/store',
-        data: studentAttendance.toJson(),
-        baseUrl: baseUrl,
-        fromJson: GetStudentStatus.fromJson);
-    return response;
+  Future<DataState> studentStatusSend(
+      {required StudentStatus studentAttendance}) async {
+    try {
+      final response = await _dataService.postData(
+          endPoint: 'teacher/studentAttendance/store',
+          data: studentAttendance.toJson(),
+          baseUrl: baseUrl,
+          fromJson: (Map<String, dynamic> json) =>
+              GetStudentStatus.fromJson(json));
+      return response;
+    } catch (e) {
+      final response = await _dataService.postData(
+          endPoint: 'teacher/studentAttendance/store',
+          data: studentAttendance.toJson(),
+          baseUrl: baseUrl,
+          fromJson: (Map<String, dynamic> json) =>
+              StudentStatus.fromJson(json));
+      return response;
+    }
   }
 }
