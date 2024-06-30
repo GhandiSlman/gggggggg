@@ -88,16 +88,13 @@ class StudentController extends GetxController
                 if (!subjectList[combinedClassName]!.containsKey(subjectName)) {
                   subjectList[combinedClassName]![subjectName] = [];
                 }
-                studentList[combinedClassName]![subjectName]!
-                    .addAll(section.students!);
+                // studentList[combinedClassName]![subjectName]!
+                //     .addAll(section.students!);
 
                 subjectList[combinedClassName]![subjectName]!
                     .add(sectionSubject.subject!);
 
                 sectionSubjectList[combinedClassName]!.add(sectionSubject);
-                print('======================================');
-                print(sectionSubjectList);
-                print('======================================');
               }
             }
           }

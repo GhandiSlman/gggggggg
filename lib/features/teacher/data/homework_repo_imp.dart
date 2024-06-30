@@ -15,7 +15,7 @@ class HomeWorkRepoImp implements HomeWorkRepo {
   Future<DataState> getSubjects(
       {required CreateDetailsHomeWork createDetailsHomeWork}) async {
     final response = await _dataService.getData(
-      endPoint: 'teacher/homework/create',
+      endPoint: box.read('userType') =='teacher' ? 'teacher/homework/create' : 'stages',
       baseUrl: baseUrl,
       fromJson: (Map<String, dynamic> json) =>
           CreateDetailsHomeWork.fromJson(json),
@@ -29,12 +29,11 @@ class HomeWorkRepoImp implements HomeWorkRepo {
         endPoint: 'teacher/homework/store',
         data: sectionSubjects,
         baseUrl: baseUrl,
-
         fromJson: SectionSubjects.fromJson);
     return response;
   }
 
-   @override
+  @override
   Future<DataState> updateHomeWork({required Homework homework}) async {
     final response = await _dataService.postData(
         endPoint: 'teacher/homework/update',
@@ -50,15 +49,16 @@ class HomeWorkRepoImp implements HomeWorkRepo {
       required int sectionId,
       required int subjectId}) async {
     final response = await _dataService.getData(
-      endPoint: 'teacher/homework/index/$sectionId/$subjectId',
+      endPoint: box.read('userType') == 'teacher'
+          ? 'teacher/homework/index/$sectionId/$subjectId'
+          : 'student/homework/index/$subjectId',
       baseUrl: baseUrl,
-
       fromJson: (Map<String, dynamic> json) => GetHomeWorkModel.fromJson(json),
     );
     return response;
   }
 
-@override
+  @override
   Future<DataState> deleteHomeWork({required int homeWorkId}) async {
     final response = await _dataService.getData(
       endPoint: 'teacher/homework/delete/$homeWorkId',

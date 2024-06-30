@@ -6,7 +6,6 @@ import 'package:lms/features/teacher/model/get_homework_model.dart';
 abstract class HomeWorkRepo {
   Future<DataState> getSubjects(
       {required CreateDetailsHomeWork createDetailsHomeWork});
-  //  Future<DataState> getSectionSubject({required CreateDetailsHomeWork createDetailsHomeWork});
   Future<DataState> addHomeWork({required Homework sectionSubjects});
 
   Future<DataState> getHomeWork(

@@ -21,7 +21,7 @@ class HomeGridView extends StatelessWidget {
             ? homeController.superVisorTitle
             : userType == 'guardian'
                 ? homeController.parentTitle
-                : [];
+                : homeController.studentTitle;
 
     final List<SvgPicture> images = userType == 'teacher'
         ? homeController.teacherImages
@@ -29,7 +29,7 @@ class HomeGridView extends StatelessWidget {
             ? homeController.superVisorImages
             : userType == 'guardian'
                 ? homeController.parentImages
-                : [];
+                : homeController.studentImages;
 
     final List onPressedActions = userType =='teacher'
         ? homeController.teacherOnPressed
@@ -37,7 +37,7 @@ class HomeGridView extends StatelessWidget {
             ? homeController.superVisorOnPressed
             : userType == 'guardian'
                 ? homeController.parentPressed
-                : [];
+                : homeController.studentOnPressed;
 
     final int itemCount = titles.length;
 

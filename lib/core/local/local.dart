@@ -5,10 +5,10 @@ class MyLocal implements Translations {
   Map<String, Map<String, String>> get keys => {
         'ar': {
           //auth
-          'Email': 'الايميل',
-          'Enter your email': 'ادخل الايميل',
+          'Email': 'البريد الالكتروني',
+          'Enter Email': 'ادخل البريد الالكتروني',
           'Password': 'كلمة السر',
-          'Enter your password': 'ادخل كلمة السر',
+          'Enter Password': 'ادخل كلمة السر',
           'Login': 'تسجيل الدخول',
 
           //comments
@@ -71,7 +71,7 @@ class MyLocal implements Translations {
           'Submission date': 'تاريخ التسليم',
           'Enter submission date': 'ادخل تاريخ التسليم',
           'Activity': 'النشاطات',
-          //'Week plane': 'الخطة الاسبوعية',
+          'Week Plan': 'الخطة الاسبوعية',
           'Delete': 'حذف',
           'Edit': 'تعديل',
           'Camera': 'الكاميرا',
@@ -116,6 +116,19 @@ class MyLocal implements Translations {
            'Choose section' : 'اختر الشعبة',
            'Please select a section' : 'الرجاء اختيار شعبة',
            'Update lesson' : 'تعديل الدرس',
+           'Add Rate' : 'اضافة تقييم',
+           'Rate details' : 'تفاصيل التقييم',
+          'Enter rate details' : 'ادخل تفاصيل التقييم',
+          'Add points' : 'اضاقة نقاط',
+          'Enter points number' : 'ادخل عدد النقاط',
+          'Assigned Rating' : 'التقييمات المسندة',
+          'Assign rate to student' : 'اسناد التقييم للطالب',
+          'Student name' : 'اسم الطالب',
+          'Subject name' : 'اسم المادة',
+          'No ratings assigned' : 'لا يوجد تقييمات مسندة',
+          'No ratings' : 'لا يوجد تقييمات',
+          'Update Rate' : 'تعديل التقييم',
+          // 'Continuous Rating' : '',
           //Super Visor
           'Subject': 'المادة',
           'SuperVisors': 'المشرفين',
@@ -137,6 +150,7 @@ class MyLocal implements Translations {
           'My sons': 'ابنائي',
           'Parents': 'الاهل',
           'Parent honor board' : 'لوحة شرف اولياء الامور',
+          'My children' : 'أبنائي',
         },
         'en': {
           //auth
@@ -243,14 +257,25 @@ class MyLocal implements Translations {
           'Update Post' : 'Update Post',
           'Class table' : 'Class Table', 
           'Daily Coverage' : 'Daily Coverage',
-          //'week Plane' : 'ًWeek Plane',
+          'week Plan' : 'ًWeek Plane',
           'Continuous Rating' : 'Continuous Rating',
           'Honor board for' : 'Honor board for',
           'Add student' : 'Add student',
           'Choose section' : 'Choose section',
           'Please select a section': 'Please select a section',
           'Update lesson' : 'Update lesson',
-          
+          'Add Rate' : 'Add Rate',
+          'Rate details' : 'Rate details',
+          'Enter rate details' : 'Enter rate details',
+          'Add points' : 'Add points',
+          'Enter points number' : 'Enter points number',
+          'Assigned Rating' : 'Assigned Rating',
+          'Assign rate to student' : 'Assign rate to student',
+          'Student name' : 'Student name',
+          'Subject name' : 'Subject name',
+          'No ratings assigned' : 'No ratings assigned',
+          'No ratings' : 'No ratings',
+          'Update Rate' : 'Update Rate',
           //Super Visor
           'Subject': 'Subject',
           'SuperVisors': 'SuperVisors',
@@ -272,7 +297,10 @@ class MyLocal implements Translations {
           'My sons': 'My sons',
           'Parents': 'Parent',
           'Parent honor board' : 'Parent honor board',
+          'My children' : 'My children',
 
+     
+           
         },
       };
 }

@@ -10,8 +10,8 @@ import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_toast.dart';
 import 'package:lms/features/students/model/student_attendance.dart';
 import 'package:lms/features/supervisor/controller/student_status_controller.dart';
-import 'package:lms/features/teacher/data/honor_board_repo.dart';
-import 'package:lms/features/teacher/model/honor_board.dart';
+import 'package:lms/features/honor_board/data/honor_board_repo.dart';
+import 'package:lms/features/honor_board/model/honor_board.dart';
 import 'package:lms/features/teacher/model/student_honor_board.dart';
 
 class HonorBoardController extends GetxController {
@@ -50,8 +50,10 @@ class HonorBoardController extends GetxController {
   var showStudentList = <SelectedListItem>[].obs;
   Map<String, List<Students>> studentList = <String, List<Students>>{};
   RxList<String> selectedStudents = <String>[].obs;
+  RxString selectedStudentIdRate = ''.obs;
   RxList<TextEditingController> studentDropDownControllers =
       <TextEditingController>[].obs;
+  var studentToIdMap = <String, String>{}.obs;
 
   //honor board
   RxList<HonorBoardStudent> honorBoardStudentList = <HonorBoardStudent>[].obs;
@@ -102,6 +104,17 @@ class HonorBoardController extends GetxController {
     selectedSubjectId.value = subjectId;
   }
 
+  void updateSelectedStudentRateId(String studentId) {
+    selectedStudentIdRate.value = studentId;
+  }
+
+  void updateSelectedStudentRate(String studentName) {
+    selectedStudents.value = [studentName];
+    if (studentToIdMap.containsKey(studentName)) {
+      updateSelectedSubjectId(studentToIdMap[studentName]!);
+    }
+  }
+
   Future<void> getClassSubjectStudent() async {
     isLoading.value = true;
 
@@ -127,7 +140,9 @@ class HonorBoardController extends GetxController {
 
           classList[className] = [];
           for (var section in grade.sections!) {
-            classList[className]!.addAll(section.students!);
+            // box.read('userType') == 'teacher'
+            //     ? classList[className]!.addAll(section.students!)
+            //     : null;
             for (var sectionSubject in section.sectionSubjects!) {
               String subjectName = box.read('langCode') == 'ar'
                   ? sectionSubject.subject!.name!.ar!
@@ -135,12 +150,14 @@ class HonorBoardController extends GetxController {
               showSubjectList.add(SelectedListItem(name: subjectName));
               subjectToIdMap[subjectName] =
                   sectionSubject.subject!.id!.toString();
-              for (var student in section.students!) {
-                if (!studentList.containsKey(className)) {
-                  studentList[className] = [];
-                }
-                studentList[className]!.add(student);
-              }
+              // if (box.read('userType') == 'teacher') {
+              //   for (var student in section.students!) {
+              //     if (!studentList.containsKey(className)) {
+              //       studentList[className] = [];
+              //     }
+              //     studentList[className]!.add(student);
+              //   }
+              // }
             }
           }
         }
@@ -211,9 +228,9 @@ class HonorBoardController extends GetxController {
   }
 
   Future<void> getHonorBoardByClass() async {
-    if (selectedClass.isEmpty) {
-      return;
-    }
+    // if (selectedClass.isEmpty) {
+    //   return;
+    // }
 
     isGetHonor.value = true;
     final result = await honorBoardRepo.getHonorBoard(
@@ -222,7 +239,9 @@ class HonorBoardController extends GetxController {
     if (result is DataSuccess) {
       honorBoardList.clear();
       honorBoardList.add(result.data);
-      filterHonorBoardsByClass(selectedClass.first);
+      box.read('userType') == 'teacher'
+          ? filterHonorBoardsByClass(selectedClass.first)
+          : null;
     } else {
       CustomToast.showToast(
         message: 'Failed to load honor boards',
@@ -288,10 +307,12 @@ class HonorBoardController extends GetxController {
     classController = TextEditingController();
     subjectController = TextEditingController();
     classControllerAdd = TextEditingController();
+
     box.read('userType') == 'teacher'
-    ?
-    getClassSubjectStudent()
-    : studentStatusController.geSectionSubject();
+        ? getClassSubjectStudent()
+        : getHonorBoardByClass();
+    // getStudentHonorBoard()
+
     super.onInit();
   }
 }

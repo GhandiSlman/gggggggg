@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,7 +10,12 @@ import 'package:lms/core/utils/app_images.dart';
 import 'package:lms/core/widgets/custom_text.dart';
 
 class SonCard extends StatelessWidget {
-  const SonCard({super.key});
+  String sonName;
+  String gradeName;
+  SonCard({super.key,
+  required this.sonName,
+  required this.gradeName,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +40,17 @@ class SonCard extends StatelessWidget {
                   width: 60.w,
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.r),
-                      child: Image.network(
-                        'https://letsenhance.io/static/73136da51c245e80edc6ccfe44888a99/1015f/MainBefore.jpg',
+                      child: Image.asset(
+                         AppImages.childImage,
                         fit: BoxFit.cover,
                       )),
                 ),
                 title: CustomText(
-                  text: 'Ghandi',
+                  text: sonName,
                   fontSize: 20.sp,
                   color: AppColor.primaryColor,
                 ),
-                subtitle: const CustomText(text: 'First class'),
+                subtitle:  CustomText(text: gradeName),
                 trailing: SvgPicture.asset(AppImages.cupImage),
               ))),
     );

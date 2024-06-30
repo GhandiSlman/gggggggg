@@ -4,13 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lms/core/utils/app_color.dart';
+import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/utils/app_images.dart';
 import 'package:lms/core/widgets/custom_text.dart';
+import 'package:lms/features/students/model/class_schedual.dart';
 import 'package:lms/features/teacher/model/get_class_schedule.dart';
 
 class ClassScheduleCard extends StatelessWidget {
-  Schedule schedule;
-  ClassScheduleCard({required this.schedule});
+  Schedule? schedule;
+  ScheduleData? scheduleData;
+  String? sectionName;
+  String? subjectName;
+  String? time;
+  ClassScheduleCard({
+    this.schedule,
+    this.scheduleData,
+    this.sectionName,
+    this.subjectName,
+    this.time,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,17 +40,19 @@ class ClassScheduleCard extends StatelessWidget {
               title: Row(
                 children: [
                   CustomText(
-                    text: schedule.section!.name!,
+                    text: sectionName ?? '',
                     fontSize: 20.sp,
                     color: AppColor.primaryColor,
                   ),
+                  box.read('userType') == 'teacher'
+                      ? CustomText(
+                          text: '-',
+                          fontSize: 20.sp,
+                          color: AppColor.primaryColor,
+                        )
+                      : const SizedBox(),
                   CustomText(
-                    text: '-',
-                    fontSize: 20.sp,
-                    color: AppColor.primaryColor,
-                  ),
-                  CustomText(
-                    text: schedule.subject!.name!,
+                    text: subjectName ?? '',
                     fontSize: 20.sp,
                     color: AppColor.primaryColor,
                   ),
@@ -50,7 +64,7 @@ class ClassScheduleCard extends StatelessWidget {
                   SizedBox(
                     width: 5.w,
                   ),
-                  CustomText(text: schedule.time!)
+                  CustomText(text: time ?? '')
                 ],
               ),
             )));

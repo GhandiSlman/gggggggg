@@ -27,7 +27,7 @@ class HomeWorkController extends GetxController
   RxBool isLoadingSubject = false.obs;
   RxBool isLoadingAddUpdateHomeWork = false.obs;
   RxBool isLoadingGetHomeWork = false.obs;
- // RxBool isLoadingDelete = false.obs;
+  // RxBool isLoadingDelete = false.obs;
   RxList<String> selectedClass = <String>[].obs;
   RxList<String> selectedSubject = <String>[].obs;
   RxInt selectedSectionId = 0.obs;
@@ -172,8 +172,7 @@ class HomeWorkController extends GetxController
   }
 
   Future<void> deleteHomeWork(int homeWorkId) async {
-    final result =
-        await homeWorkRepo.deleteHomeWork(homeWorkId: homeWorkId);
+    final result = await homeWorkRepo.deleteHomeWork(homeWorkId: homeWorkId);
     if (result is DataSuccess) {
       homeWorkList.removeWhere((homeWork) => homeWork.id == homeWorkId);
       CustomToast.showToast(
@@ -239,7 +238,7 @@ class HomeWorkController extends GetxController
     isLoadingGetHomeWork.value = true;
     final DataState result = await homeWorkRepo.getHomeWork(
       getHomeWorkModel: GetHomeWorkModel(),
-      sectionId: 6,
+      sectionId: selectedSectionId.value,
       subjectId: selectedSubjectId.value,
     );
     isLoadingGetHomeWork.value = false;
@@ -283,8 +282,7 @@ class HomeWorkController extends GetxController
         length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
         vsync: this);
     classController.addListener(updateOnClassChange);
-    getSubjects();
-    // getHomeWork();
+    box.read('userType') == 'teacher' ? getSubjects() : getHomeWork();
   }
 
   @override

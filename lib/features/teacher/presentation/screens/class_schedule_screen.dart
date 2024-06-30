@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lms/core/utils/app_color.dart';
+import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_app_bar.dart';
 import 'package:lms/core/widgets/custom_text.dart';
 import 'package:lms/core/widgets/shimmer.dart';
@@ -30,41 +31,83 @@ class ClassScheduleScreen extends StatelessWidget {
                     ? ShimmerWidget(height: 20.h)
                     : ListView(
                         scrollDirection: Axis.horizontal,
-                        children: classScheduleController.scheduleByDay.keys
-                            .map((day) {
-                          return GestureDetector(
-                            onTap: () => classScheduleController
-                                .filterScheduleByDay(day),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10.w),
-                              child: Container(
-                                width: 80.w,
-                                decoration: BoxDecoration(
-                                    color: classScheduleController
-                                                .selectedDay.value ==
-                                            day
-                                        ? AppColor.primaryColor
-                                        : AppColor.whiteColor,
-                                    borderRadius: BorderRadius.circular(30.r),
-                                    border: Border.all(
+                        children: box.read('userType') == 'teacher'
+                            ? classScheduleController.scheduleByDay.keys
+                                .map((day) {
+                                return GestureDetector(
+                                  onTap: () => classScheduleController
+                                      .filterScheduleByDay(day),
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.w),
+                                    child: Container(
+                                      width: 80.w,
+                                      decoration: BoxDecoration(
+                                          color: classScheduleController
+                                                      .selectedDay.value ==
+                                                  day
+                                              ? AppColor.primaryColor
+                                              : AppColor.whiteColor,
+                                          borderRadius:
+                                              BorderRadius.circular(30.r),
+                                          border: Border.all(
+                                              color: classScheduleController
+                                                          .selectedDay.value ==
+                                                      day
+                                                  ? AppColor.whiteColor
+                                                  : AppColor.primaryColor)),
+                                      child: Center(
+                                          child: CustomText(
+                                        text: day,
                                         color: classScheduleController
                                                     .selectedDay.value ==
                                                 day
                                             ? AppColor.whiteColor
-                                            : AppColor.primaryColor)),
-                                child: Center(
-                                    child: CustomText(
-                                  text: day,
-                                  color:
-                                      classScheduleController.selectedDay.value ==
-                                              day
-                                          ? AppColor.whiteColor
-                                          : AppColor.primaryColor,
-                                )),
-                              ),
-                            ),
-                          );
-                        }).toList(),
+                                            : AppColor.primaryColor,
+                                      )),
+                                    ),
+                                  ),
+                                );
+                              }).toList()
+                            : classScheduleController.scheduleByDayStudent.keys
+                                .map((day) {
+                                return GestureDetector(
+                                  onTap: () => classScheduleController
+                                      .filterScheduleByDayStudent(day),
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 10.w),
+                                    child: Container(
+                                      width: 80.w,
+                                      decoration: BoxDecoration(
+                                          color: classScheduleController
+                                                      .selectedDayStudent
+                                                      .value ==
+                                                  day
+                                              ? AppColor.primaryColor
+                                              : AppColor.whiteColor,
+                                          borderRadius:
+                                              BorderRadius.circular(30.r),
+                                          border: Border.all(
+                                              color: classScheduleController
+                                                          .selectedDayStudent
+                                                          .value ==
+                                                      day
+                                                  ? AppColor.whiteColor
+                                                  : AppColor.primaryColor)),
+                                      child: Center(
+                                          child: CustomText(
+                                        text: day,
+                                        color: classScheduleController
+                                                    .selectedDayStudent.value ==
+                                                day
+                                            ? AppColor.whiteColor
+                                            : AppColor.primaryColor,
+                                      )),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
                       );
               }),
             ),
@@ -74,14 +117,33 @@ class ClassScheduleScreen extends StatelessWidget {
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: ListView.builder(
-                  itemCount: classScheduleController.filteredSchedule.length,
+                  itemCount: box.read('userType') == 'teacher'
+                      ? classScheduleController.filteredSchedule.length
+                      : classScheduleController.filteredScheduleStudent.length,
                   itemBuilder: (context, index) {
-                    final schedule =
-                        classScheduleController.filteredSchedule[index];
                     return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10.h),
-                      child: ClassScheduleCard(schedule: schedule),
-                    );
+                        padding: EdgeInsets.symmetric(vertical: 10.h),
+                        child: box.read('userType') == 'teacher'
+                            ? ClassScheduleCard(
+                                sectionName: classScheduleController
+                                    .filteredSchedule[index].subject!.name,
+                                schedule: classScheduleController
+                                    .filteredSchedule[index],
+                                time: classScheduleController
+                                    .filteredSchedule[index].time,
+                                subjectName: classScheduleController
+                                    .filteredSchedule[index].section!.name,
+                              )
+                            : ClassScheduleCard(
+                                sectionName: classScheduleController
+                                    .filteredScheduleStudent[index]
+                                    .subject
+                                    .name,
+                                scheduleData: classScheduleController
+                                    .filteredScheduleStudent[index],
+                                time: classScheduleController
+                                    .filteredScheduleStudent[index].time,
+                              ));
                   },
                 ),
               );

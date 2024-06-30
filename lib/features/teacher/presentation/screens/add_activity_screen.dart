@@ -40,9 +40,7 @@ class AddActivityScreen extends StatelessWidget {
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
-                SizedBox(
-                  height: 10.h,
-                ),
+                10.verticalSpace,
                 DropDownList(
                   onSelectedItems: (List<String> selectedItems) {
                     if (selectedItems.isNotEmpty) {

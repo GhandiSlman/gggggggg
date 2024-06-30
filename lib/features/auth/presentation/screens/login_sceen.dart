@@ -49,14 +49,14 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     20.verticalSpace,
                     CustomText(
-                      text: 'Login',
+                      text: 'Login'.tr,
                       color: AppColor.primaryColor,
                       fontSize: 20.sp,
                     ),
                     20.verticalSpace,
                     CustomTextField(
                        controller: loginController.email,
-                      hint: 'Enter Email',
+                      hint: 'Enter Email'.tr,
                       filled: true,
                       filledColor: AppColor.whiteColor,
                       suffix: SvgPicture.asset(AppImages.userImage),
@@ -64,7 +64,7 @@ class LoginScreen extends StatelessWidget {
                     10.verticalSpace,
                     CustomTextField(
                       controller: loginController.password,
-                      hint: 'Enter Password',
+                      hint: 'Enter Password'.tr,
                       filled: true,
                       filledColor: AppColor.whiteColor,
                       suffix: SvgPicture.asset(AppImages.passwordImage),
@@ -76,7 +76,7 @@ class LoginScreen extends StatelessWidget {
                               ? const LoadingWidget()
                               :
                           CustomButton(
-                        text: 'Login',
+                        text: 'Login'.tr,
                         onTap: () {
                           loginController.login();
                         },

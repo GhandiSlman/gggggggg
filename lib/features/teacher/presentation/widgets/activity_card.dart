@@ -13,23 +13,21 @@ import 'package:lms/core/widgets/custom_text.dart';
 import 'package:lms/core/widgets/loading_widget.dart';
 import 'package:lms/features/teacher/controller/activity_controller.dart';
 import 'package:lms/features/teacher/model/activity.dart';
-import 'package:lms/features/teacher/model/test_activity.dart';
+
 
 class ActivityCard extends StatelessWidget {
   Activity? activity;
-  ActivityIndex? activityIndex;
   String date;
   String desc;
   String title;
-  String sectionName;
+  String? sectionName;
   ActivityCard({
     super.key,
     this.activity,
     required this.title,
-    this.activityIndex,
     required this.date,
     required this.desc,
-    required this.sectionName,
+    this.sectionName,
   });
 
   @override
@@ -59,48 +57,22 @@ class ActivityCard extends StatelessWidget {
                         color: AppColor.primaryColor,
                         fontSize: 20.h,
                       ),
-                      box.read('userType') == 'teacher'
-                          ? Row(
-                              children: [
-                                SvgPicture.asset(AppImages.dateImage),
-                                2.horizontalSpace,
-                                FittedBox(
-                                  child: CustomText(
-                                    text: date,
-                                    //fontSize: 20.h,
-                                  ),
-                                ),
-                                8.horizontalSpace,
-                                Expanded(
-                                  child: AutoSizeText(
-                                    sectionName,
-                                    style: TextStyle(
-                                      color: AppColor.primaryColor,
-                                      //   fontSize: 18.sp,
-                                    ),
-                                    maxLines: 1,
-                                    minFontSize: 5.sp,
-                                    maxFontSize: 10.sp,
-                                    overflow: TextOverflow.visible,
-                                  ),
-                                ),
-                              ],
-                            )
-                          : AutoSizeText(
-                              sectionName,
-                              style: TextStyle(
-                                color: AppColor.greyColor3,
-                                //   fontSize: 18.sp,
-                              ),
-                              maxLines: 1,
-                              minFontSize: 5.sp,
-                              maxFontSize: 10.sp,
-                              overflow: TextOverflow.visible,
+                      Row(
+                        children: [
+                          SvgPicture.asset(AppImages.dateImage),
+                          2.horizontalSpace,
+                          FittedBox(
+                            child: CustomText(
+                              text: date,
                             ),
+                          ),
+                          8.horizontalSpace,
+                        ],
+                      )
                     ],
                   ),
                 ),
-                if (box.read('useType') == 'teacher')
+                if (box.read('userType') == 'teacher')
                   IconButton(
                     onPressed: () {
                       showDialog(
@@ -152,18 +124,6 @@ class ActivityCard extends StatelessWidget {
                     },
                     icon: const Icon(Icons.more_horiz),
                   )
-                else
-                  Row(
-                    children: [
-                      SvgPicture.asset(AppImages.dateImage),
-                      2.horizontalSpace,
-                      CustomText(
-                        text: date,
-                        //fontSize: 20.h,
-                        color: AppColor.greyColor3,
-                      ),
-                    ],
-                  ),
               ],
             ),
           ),

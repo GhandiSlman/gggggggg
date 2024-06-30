@@ -6,6 +6,7 @@ import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_images.dart';
 
+
 class HomeController extends GetxController {
   //Teacher//
   final List<String> techerTitle = [
@@ -37,7 +38,7 @@ class HomeController extends GetxController {
     () => Get.toNamed(AppRouter.techerClassRoomScreen),
     () => Get.toNamed(AppRouter.postScreen),
     () => Get.toNamed(AppRouter.chatScreen),
-    () => Get.toNamed(AppRouter.parentHonorBoardScreen),
+    () => Get.toNamed(AppRouter.continousRatingScreen),
     () => Get.toNamed(AppRouter.teacherWeekPlane),
   ];
 
@@ -74,14 +75,14 @@ class HomeController extends GetxController {
 
   //parent
 
-   final List<String> parentTitle = [
+  final List<String> parentTitle = [
     'My children'.tr,
     'Honor board'.tr,
     'Daily Coverage'.tr,
     'Chats'.tr,
   ];
 
-   final List parentPressed = [
+  final List parentPressed = [
     () => Get.toNamed(AppRouter.sonsScreen),
     () => Get.toNamed(AppRouter.parentHonorBoardScreen),
     () => Get.toNamed(AppRouter.postScreen),
@@ -94,5 +95,44 @@ class HomeController extends GetxController {
     SvgPicture.asset(AppImages.dailyCoverImage),
     SvgPicture.asset(AppImages.mmessageImage),
   ];
-  
+
+  //Student//
+
+  final List<String> studentTitle = [
+    'Honor board'.tr,
+    'Class table'.tr,
+    'Activity'.tr,
+    'Home Work'.tr,
+    'Daily Coverage'.tr,
+    'Chats'.tr,
+    'Continuous Rating'.tr,
+    'Week Plan'.tr,
+  ];
+
+  final List<SvgPicture> studentImages = [
+    SvgPicture.asset(AppImages.honorPanelImage),
+    SvgPicture.asset(AppImages.classTableImage),
+    SvgPicture.asset(AppImages.activityImage),
+    SvgPicture.asset(AppImages.date3Image),
+    SvgPicture.asset(AppImages.dailyCoverImage),
+    SvgPicture.asset(AppImages.mmessageImage),
+    SvgPicture.asset(AppImages.rateImage),
+    SvgPicture.asset(AppImages.weekPlaneImage),
+  ];
+
+  final List studentOnPressed = [
+    () {
+      Get.toNamed(AppRouter.parentHonorBoardScreen);
+   
+    },
+    () => Get.toNamed(AppRouter.classScheduleScreen),
+    () => Get.toNamed(AppRouter.activityScreen),
+    () => Get.toNamed(AppRouter.techerClassRoomScreen),
+    () => Get.toNamed(AppRouter.postScreen),
+    () => Get.toNamed(AppRouter.chatScreen),
+    () => Get.toNamed(AppRouter.continousRatingScreen),
+    () => Get.toNamed(
+          AppRouter.teacherWeekPlane,
+        ),
+  ];
 }

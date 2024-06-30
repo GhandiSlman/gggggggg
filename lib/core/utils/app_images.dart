@@ -43,5 +43,8 @@ class AppImages {
   static String newsImage = 'assets/news.svg';
   static String childImage = 'assets/child.png';
   static String myChildrenImage = 'assets/myChild.svg';
+  static String coRate = 'assets/coRate.svg';
+  static String personRate = 'assets/personRate.svg';
+  static String subjectIcon = 'assets/subjectIcon.svg';
   
 }

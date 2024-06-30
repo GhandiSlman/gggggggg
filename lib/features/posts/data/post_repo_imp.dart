@@ -24,27 +24,25 @@ class PostRepoImp implements PostRepo {
     return response;
   }
 
-  final endPoint = box.read('userType') == 'supervisor'
-      ? 'supervisor/dailyUpdatePost/index/1?page=1'
-      : 'teacher/dailyUpdatePost/index/1?page=1';
   @override
   Future<DataState> getPosts({
-    
     required PostModel postModel,
     required int page,
     required int gradeId,
   }) async {
-   
-    print(endPoint);
     final response = await _dataService.getData<PostModel>(
-      endPoint:
-       box.read('userType') == 'supervisor'
-          ? 
-          'supervisor/dailyUpdatePost/index/$gradeId?page=$page'
-          : 'teacher/dailyUpdatePost/index/$gradeId?page=$page',
+      endPoint: box.read('userType') == 'supervisor'
+          ? 'supervisor/dailyUpdatePost/index/$gradeId?page=$page'
+          : box.read('userType') == 'guardian'
+              ? 'parent/dailyUpdatePost/index/$gradeId?page=$page'
+              : box.read('userType') == 'teacher'
+                  ? 'teacher/dailyUpdatePost/index/$gradeId?page=$page'
+                  : box.read('userType') == 'student'
+                      ? 'student/dailyUpdatePost/index?page=$page'
+                      : '',
       baseUrl: baseUrl,
       queryParameters: {'page': '$page'},
-      fromJson: (Map<String , dynamic>json) => PostModel.fromJson(json),
+      fromJson: (Map<String, dynamic> json) => PostModel.fromJson(json),
     );
     return response;
   }
@@ -77,7 +75,11 @@ class PostRepoImp implements PostRepo {
     final response = await _dataService.getData<LikeModel>(
       endPoint: box.read('userType') == 'teacher'
           ? 'teacher/dailyUpdatePost/like/$postId'
-          : 'supervisor/dailyUpdatePost/like/$postId',
+          : box.read('userType') == 'supervisor'
+              ? 'supervisor/dailyUpdatePost/like/$postId'
+              : box.read('userType') == 'guardian'
+                  ? 'parent/dailyUpdatePost/like/$postId'
+                  : 'student/dailyUpdatePost/like/$postId',
       baseUrl: baseUrl,
       fromJson: (json) => LikeModel.fromJson(json),
     );

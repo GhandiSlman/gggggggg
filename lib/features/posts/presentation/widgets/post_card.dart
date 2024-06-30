@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
@@ -28,7 +29,7 @@ class PostCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-         10.verticalSpace,
+          10.verticalSpace,
           Row(
             children: [
               CircleAvatar(
@@ -51,60 +52,64 @@ class PostCard extends StatelessWidget {
                         ),
                       ),
                       50.horizontalSpace,
-                    box.read('userType')=='teacher'?  IconButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Obx(() => postController
-                                        .isLoadingDeletePost.value
-                                    ? const LoadingWidget()
-                                    : SimpleDialog(
-                                        children: [
-                                          ListTile(
-                                            title:
-                                                CustomText(text: 'Update'.tr),
-                                            leading: SvgPicture.asset(
-                                                AppImages.updateImage),
-                                            onTap: () {
-                                              Get.toNamed(
-                                                  AppRouter.addPostScreen,
-                                                  arguments: {
-                                                    'postId': post.id,
-                                                    'isUpdate': postController
-                                                            .isUpdatePost ==
-                                                        false,
-                                                    'desCon': postController
-                                                            .descController
-                                                            .text =
-                                                        post.description!,
-                                                  });
-                                            },
-                                          ),
-                                          ListTile(
-                                            title:
-                                                CustomText(text: 'Delete'.tr),
-                                            leading: SvgPicture.asset(
-                                                AppImages.delete2Image),
-                                            onTap: () {
-                                              postController
-                                                  .deletePost(post.id!)
-                                                  .then((value) => Get.back());
-                                            },
-                                          ),
-                                        ],
-                                      ));
+                      box.read('userType') == 'teacher'
+                          ? IconButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Obx(() => postController
+                                            .isLoadingDeletePost.value
+                                        ? const LoadingWidget()
+                                        : SimpleDialog(
+                                            children: [
+                                              ListTile(
+                                                title: CustomText(
+                                                    text: 'Update'.tr),
+                                                leading: SvgPicture.asset(
+                                                    AppImages.updateImage),
+                                                onTap: () {
+                                                  Get.toNamed(
+                                                      AppRouter.addPostScreen,
+                                                      arguments: {
+                                                        'postId': post.id,
+                                                        'isUpdate':
+                                                            postController
+                                                                    .isUpdatePost ==
+                                                                false,
+                                                        'desCon': postController
+                                                                .descController
+                                                                .text =
+                                                            post.description!,
+                                                      });
+                                                },
+                                              ),
+                                              ListTile(
+                                                title: CustomText(
+                                                    text: 'Delete'.tr),
+                                                leading: SvgPicture.asset(
+                                                    AppImages.delete2Image),
+                                                onTap: () {
+                                                  postController
+                                                      .deletePost(post.id!)
+                                                      .then((value) =>
+                                                          Get.back());
+                                                },
+                                              ),
+                                            ],
+                                          ));
+                                  },
+                                );
                               },
-                            );
-                          },
-                          icon: const Icon(Icons.more_horiz)): const SizedBox()
+                              icon: const Icon(Icons.more_horiz))
+                          : const SizedBox()
                     ],
                   ),
                   SizedBox(
                     width: 70.w,
                     child: FittedBox(
                       child: CustomText(
-                        text: '${'before'.tr} ${post.createdAt}',
+                        text: '${'before'.tr} ${postController.formatDate(post.createdAt!)}',
                         color: AppColor.greyColor,
                         fontSize: 15.sp,
                       ),
@@ -114,13 +119,13 @@ class PostCard extends StatelessWidget {
               )
             ],
           ),
-         10.verticalSpace,
+          10.verticalSpace,
           CustomText(
             text: post.description ?? '',
             color: AppColor.greyColor,
             fontSize: 15.sp,
           ),
-         10.verticalSpace,
+          10.verticalSpace,
           SizedBox(
             width: double.infinity,
             height: 230.h,
@@ -135,8 +140,6 @@ class PostCard extends StatelessWidget {
               Expanded(
                 child: Row(
                   children: [
-                 
-
                     IconButton(
                         onPressed: () {
                           postController.like(post);
@@ -145,7 +148,6 @@ class PostCard extends StatelessWidget {
                             ? Icon(Icons.favorite, color: AppColor.redColor)
                             : Icon(Icons.favorite_border,
                                 color: AppColor.redColor)),
-            
                     FittedBox(
                       child: CustomText(
                         text: '${post.likesCount} ${'Likes'.tr}',
@@ -181,10 +183,11 @@ class PostCard extends StatelessWidget {
               Expanded(
                 child: InkWell(
                   onTap: () {
-
                     Get.toNamed(AppRouter.commentScreen,
-                        arguments: {'postId': post.id,
-                        'isCommentWeekPlane' : postController.isCommentWeelPlane == false
+                        arguments: {
+                          'postId': post.id,
+                          'isCommentWeekPlane':
+                              postController.isCommentWeelPlane == false
                         });
                   },
                   child: Row(
@@ -192,7 +195,8 @@ class PostCard extends StatelessWidget {
                       Expanded(
                         child: FittedBox(
                           child: CustomText(
-                            text: '${post.commentsCount} ${'comments'.tr}',
+                            text:
+                                '${post.commentsCount} ${'comments'.tr}',
                           ),
                         ),
                       ),

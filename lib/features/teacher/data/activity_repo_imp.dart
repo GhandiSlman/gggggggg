@@ -4,7 +4,6 @@ import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/features/students/model/student_attendance.dart';
 import 'package:lms/features/teacher/data/activity_repo.dart';
 import 'package:lms/features/teacher/model/activity.dart';
-import 'package:lms/features/teacher/model/test_activity.dart';
 import 'package:lms/features/teacher/model/update_activity.dart';
 
 class ActivityRepoImp implements ActivityRepo {
@@ -41,7 +40,11 @@ class ActivityRepoImp implements ActivityRepo {
     final response = await _dataService.getData(
       endPoint: box.read('userType') == 'teacher'
           ? 'teacher/activity/index/$sectionId'
-          : 'supervisor/activity/index',
+          : box.read('userType') == 'supervisor'
+              ? 'supervisor/activity/index'
+              : box.read('userType') == 'student'
+                  ? 'student/activity/index'
+                  : '',
       baseUrl: baseUrl,
       fromJson: (Map<String, dynamic> json) => GetActivity.fromJson(json),
     );
@@ -49,14 +52,17 @@ class ActivityRepoImp implements ActivityRepo {
   }
 
    @override
-  Future<DataState> getActivitySuper(
-      {required GetActivityIndex getActivity,}) async {
+  Future<DataState> getActivitySuper({
+    required GetActivity getActivity,
+  }) async {
     final response = await _dataService.getData(
-      endPoint:  'supervisor/activity/index',
+      endPoint: box.read('userType') == 'supervisor'
+          ? 'supervisor/activity/index'
+          : 'student/activity/index',
       baseUrl: baseUrl,
-      fromJson: (Map<String, dynamic> json) => GetActivityIndex.fromJson(json),
+      fromJson: (Map<String, dynamic> json) => GetActivity.fromJson(json),
     );
-  
+
     return response;
   }
 

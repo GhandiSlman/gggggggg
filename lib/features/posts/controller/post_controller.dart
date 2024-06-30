@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:lms/core/data/data_state.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
@@ -272,6 +273,11 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
           int.parse(gradeToIdMap[myTabs[controller.index].text]!);
       getPostsByGradeId(selectedGradeId);
     }
+  }
+  
+  String formatDate(String dateString) {
+    DateTime dateTime = DateTime.parse(dateString);
+    return DateFormat.yMMMMd().format(dateTime); // Customize the format as needed
   }
 
   Future<void> deletePost(int postId) async {

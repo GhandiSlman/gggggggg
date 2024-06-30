@@ -78,32 +78,32 @@ class ActivityScreen extends StatelessWidget {
                         )
                       : ListView.builder(
                           itemCount:
-                             box.read('userType') == 'teacher'?   activityController.activityList.length : activityController.activityListIndex.length,
+                             box.read('userType') == 'teacher'?   activityController.activityList.length : activityController.activityList.length,
                           itemBuilder: (context, index) => Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 20.w, vertical: 10.h),
                               child: box.read('userType') == 'supervisor'
                                   ? ActivityCard(
-                                      sectionName: box.read('langCode') == 'ar'
-                                          ? activityController
-                                              .activityListIndex[index]
-                                              .section!
-                                              .name!
-                                              .ar!
-                                          : activityController
-                                              .activityListIndex[index]
-                                              .section!
-                                              .name!
-                                              .en!,
+                                      // sectionName: box.read('langCode') == 'ar'
+                                      //     ? activityController
+                                      //         .activityList[index]
+                                              
+                                      //         .name!
+                                      //         .ar!
+                                      //     : activityController
+                                      //         .activityList[index]
+                                      //         .section!
+                                      //         .name!
+                                      //         .en!,
                                       date: activityController
-                                          .activityListIndex[index].date!,
+                                          .activityList[index].date!,
                                       desc: activityController
-                                          .activityListIndex[index]
+                                          .activityList[index]
                                           .description!,
                                       title: activityController
-                                          .activityListIndex[index].title!,
-                                      activityIndex: activityController
-                                          .activityListIndex[index],
+                                          .activityList[index].title!,
+                                      // activityIndex: activityController
+                                      //     .activityList[index],
                                     )
                                   : ActivityCard(
                                       sectionName: '',

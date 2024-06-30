@@ -28,7 +28,7 @@ class CustomDrawer extends StatelessWidget {
                 width: double.infinity,
                 color: box.read('userType') == 'teacher'?
                    AppColor.redColor : box.read('userType') == 'supervisor'?AppColor.orangeColor : box.read('userType') == 'guardian'?
-                  AppColor.greenHeader : null,
+                  AppColor.greenHeader : AppColor.amberColor,
                 height: 140.h,
                 child: Row(
                   children: [

@@ -61,9 +61,10 @@ class PostsScreen extends StatelessWidget {
         ),
         body: Obx(() {
           return postController.isLoadingGetClasses.value
-              ? const ShimmerPostCard() // Show shimmer when loading classes
+              ? const ShimmerPostCard()
               : postController.myTabs.isNotEmpty
                   ? TabBarView(
+                      physics: const NeverScrollableScrollPhysics(),
                       controller: postController.controller,
                       children: postController.myTabs.map((Tab tab) {
                         return Obx(() {

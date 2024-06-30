@@ -12,9 +12,13 @@ import 'package:lms/features/auth/data/remote_repo/auth_repo_imp.dart';
 import 'package:lms/features/comments/data/comment_repo.dart';
 import 'package:lms/features/comments/data/comment_repo_imp.dart';
 import 'package:lms/features/comments/controller/comment_controller.dart';
+import 'package:lms/features/parent/controller/parent_controller.dart';
+import 'package:lms/features/parent/data/parent_repo.dart';
+import 'package:lms/features/parent/data/parent_repo_imp.dart';
 import 'package:lms/features/posts/controller/post_controller.dart';
 import 'package:lms/features/posts/data/post_repo_imp.dart';
 import 'package:lms/features/posts/data/post_repo.dart';
+
 import 'package:lms/features/students/controller/student_controller.dart';
 import 'package:lms/features/students/data/student_repo.dart';
 import 'package:lms/features/students/data/student_repo_imp.dart';
@@ -29,18 +33,21 @@ import 'package:lms/features/supervisor/data/student_status_repo.dart';
 import 'package:lms/features/supervisor/data/student_status_repo_imp.dart';
 import 'package:lms/features/teacher/controller/activity_controller.dart';
 import 'package:lms/features/teacher/controller/class_schedule_controller.dart';
-import 'package:lms/features/teacher/controller/honor_board_controller.dart';
+import 'package:lms/features/honor_board/controller/honor_board_controller.dart';
+import 'package:lms/features/teacher/controller/continuous_rating_controller.dart';
 import 'package:lms/features/teacher/controller/week_plane_controller.dart';
 import 'package:lms/features/teacher/data/activity_repo.dart';
 import 'package:lms/features/teacher/data/activity_repo_imp.dart';
 import 'package:lms/features/teacher/data/class_schedule_repo.dart';
 import 'package:lms/features/teacher/data/class_schedule_repo_imp.dart';
+import 'package:lms/features/teacher/data/continuous_rating_repo.dart';
+import 'package:lms/features/teacher/data/continuous_rating_repo_imp.dart';
 import 'package:lms/features/teacher/data/homework_repo.dart';
 import 'package:lms/features/teacher/data/homework_repo_imp.dart';
 import 'package:lms/features/teacher/controller/homework_controller.dart';
 import 'package:lms/features/teacher/controller/teacher_controller.dart';
-import 'package:lms/features/teacher/data/honor_board_repo.dart';
-import 'package:lms/features/teacher/data/honor_board_repo_imp.dart';
+import 'package:lms/features/honor_board/data/honor_board_repo.dart';
+import 'package:lms/features/honor_board/data/honor_board_repo_imp.dart';
 import 'package:lms/features/teacher/data/week_plane_repo.dart';
 import 'package:lms/features/teacher/data/week_plane_repo_imp.dart';
 
@@ -129,24 +136,40 @@ class DependencyInjection {
         fenix: true);
 
     // Ad Repo lazy Initialization;
-    Get.lazyPut<AdvertisementsRepo>(() => AdvertisementsRepoImp(Get.find()), fenix: true);
+    Get.lazyPut<AdvertisementsRepo>(() => AdvertisementsRepoImp(Get.find()),
+        fenix: true);
 
     // Ad Controller lazy
-    Get.lazyPut<AdvertisementsController>(() => AdvertisementsController(Get.find()),
+    Get.lazyPut<AdvertisementsController>(
+        () => AdvertisementsController(Get.find()),
         fenix: true);
 
     // studend status repo init
-    Get.lazyPut<StudentStatusRepo>(() => StudentStatusRepoImp(Get.find()), fenix: true);
-   // studend status controler init
-    Get.lazyPut<StudentStatusController>(() => StudentStatusController(Get.find()),
+    Get.lazyPut<StudentStatusRepo>(() => StudentStatusRepoImp(Get.find()),
+        fenix: true);
+    // studend status controler init
+    Get.lazyPut<StudentStatusController>(
+        () => StudentStatusController(Get.find()),
         fenix: true);
 
-         // Ad Repo lazy Initialization;
+    // Ad Repo lazy Initialization;
     Get.lazyPut<NewsRepo>(() => NewsRepImp(Get.find()), fenix: true);
 
     // Ad Controller lazy
-    Get.lazyPut<NewsController>(() => NewsController(Get.find()),
-        fenix: true);
+    Get.lazyPut<NewsController>(() => NewsController(Get.find()), fenix: true);
 
+    //parentRepo lazy
+
+    Get.lazyPut<ParentRepo>(() => ParentRepoImp(Get.find()), fenix: true);
+
+    //parent Controller
+    Get.lazyPut<ParentController>(() => ParentController(Get.find()),fenix: true);
+
+    //rating repo lazy
+    Get.lazyPut<ContinuousRatingRepo>(() => ContinuousRatingRepoImp(Get.find()), fenix: true);
+
+
+    //rating controller
+    Get.lazyPut<ContinuousRatingController>(() => ContinuousRatingController(Get.find() , Get.find()),fenix: true);
   }
 }

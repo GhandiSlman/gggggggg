@@ -9,6 +9,7 @@ import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_toast.dart';
 import 'package:lms/features/students/model/student_attendance.dart';
 import 'package:lms/features/teacher/data/week_plane_repo.dart';
+import 'package:lms/features/teacher/model/student_info.dart';
 import 'package:lms/features/teacher/model/week_plane_model.dart';
 
 class WeekPlaneController extends GetxController
@@ -34,7 +35,9 @@ class WeekPlaneController extends GetxController
   RxBool isLoadingSection = false.obs;
   RxBool isLoadingAdd = false.obs;
   RxBool isLoadingWeekPlane = false.obs;
- // RxBool isLoadingDelete = false.obs;
+
+  RxList<SubjectsInfo> studentInfo = <SubjectsInfo>[].obs;
+  // RxBool isLoadingDelete = false.obs;
   bool isUpdate = false;
   late final TextEditingController sectionController;
   late final TextEditingController subjectController;
@@ -90,6 +93,25 @@ class WeekPlaneController extends GetxController
     }
   }
 
+  Future<void> getStudentInf() async {
+    final result =
+        await weekPlaneRepo.getStudentInfo(studentInfo: StudentInfo());
+
+    if (result is DataSuccess<StudentInfo>) {
+      studentInfo.clear();
+      studentInfo.addAll(result.data!.subjects!);
+    } else if (result is DataFailed) {
+      CustomToast.showToast(
+        message: result.errorMessage!,
+        backgroundColor: AppColor.redColor,
+        fontSize: 15.sp,
+        gravity: ToastGravity.BOTTOM,
+        textColor: AppColor.whiteColor,
+        toastDuration: 1,
+      );
+    }
+  }
+
   Future<void> getSections() async {
     isLoadingSection.value = true;
 
@@ -104,7 +126,7 @@ class WeekPlaneController extends GetxController
       sectionList.clear();
       sectionNameToIdMap.clear();
       selectedSection.clear();
-
+      selectedSectionSubjects.clear();
       for (var res in attendance.result!) {
         for (var grade in res.grades!) {
           for (var section in grade.sections!) {
@@ -179,14 +201,24 @@ class WeekPlaneController extends GetxController
 
   void updateTabs() {
     myTabs.clear();
-    for (var subject in selectedSectionSubjects) {
-      String subjectName =
-          box.read('langCode') == 'ar' ? subject.name!.ar! : subject.name!.en!;
-      myTabs.add(Tab(text: subjectName));
+    if (box.read('userType') == 'teacher') {
+      for (var subject in selectedSectionSubjects) {
+        String subjectName = box.read('langCode') == 'ar'
+            ? subject.name!.ar!
+            : subject.name!.en!;
+        myTabs.add(Tab(text: subjectName));
+        tabController = TabController(
+            length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
+            vsync: this);
+      }
+    } else if (box.read('userType') == 'student') {
+      for (var subject in studentInfo) {
+        myTabs.add(Tab(text: subject.name!));
+        tabController = TabController(
+            length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
+            vsync: this);
+      }
     }
-    tabController = TabController(
-        length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
-        vsync: this);
   }
 
   Future<void> getWeekPlane(int sectionId, int subjectId) async {
@@ -199,6 +231,7 @@ class WeekPlaneController extends GetxController
         sectionId: sectionId,
         subjectId: subjectId,
         pageId: currentPage);
+    weekPlane.clear();
     isLoadingWeekPlane.value = false;
     if (result is DataSuccess<WeekPlaneModel>) {
       weekPlane.clear();
@@ -217,7 +250,6 @@ class WeekPlaneController extends GetxController
   }
 
   Future<void> updateWeekPlane(int weekPlaneId) async {
-
     isLoadingAdd.value = true;
     final updateWeekPlaneModel = WeekPlan(
       id: weekPlaneId,
@@ -227,10 +259,10 @@ class WeekPlaneController extends GetxController
       lessonDescription: lessonDescController.text,
       lessonDate: lessonDateController.text,
     );
-   
+
     final result = await weekPlaneRepo.updateWeekPlane(
         updateWeekPlaneModel: updateWeekPlaneModel);
- isLoadingAdd.value = false;
+    isLoadingAdd.value = false;
     if (result is DataSuccess) {
       lessonTitleController.clear();
       lessonDescController.clear();
@@ -325,17 +357,35 @@ class WeekPlaneController extends GetxController
     getWeekPlane(sectionId, subjectId);
   }
 
+  void updateSelectedSubjectIdStudent(int subjectId) {
+    selectedSubjectId.value = subjectId;
+    //int sectionId = studentInfo.firstWhere((subject) => subject.id == subjectId).id!;
+    getWeekPlane(0, subjectId);
+  }
+
   @override
   void onInit() {
     tabController = TabController(
         length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
         vsync: this);
-    getSections();
+    box.read('userType') == 'student'
+        ? getStudentInf().then((value) {
+            //  getWeekPlane(studentInfo[0].id!, 0);
+            updateTabs();
+          })
+        : getSections();
+    //getSections();
+    // List<Sections> temp = sectionList[sectionList.keys.first]!;
+    // print('=================');
+    // print(studentInfo[0].id!);
+    // print('=================');
+
     sectionController = TextEditingController();
     subjectController = TextEditingController();
     lessonTitleController = TextEditingController();
     lessonDescController = TextEditingController();
     lessonDateController = TextEditingController();
+
     super.onInit();
   }
 }

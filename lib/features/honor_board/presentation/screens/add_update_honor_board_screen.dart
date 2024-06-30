@@ -9,7 +9,7 @@ import 'package:lms/core/widgets/custom_text_field.dart';
 import 'package:lms/core/widgets/drop_down.dart';
 import 'package:lms/core/widgets/loading_widget.dart';
 import 'package:lms/core/widgets/shimmer.dart';
-import 'package:lms/features/teacher/controller/honor_board_controller.dart';
+import 'package:lms/features/honor_board/controller/honor_board_controller.dart';
 
 class AddHonorBoardScreen extends StatelessWidget {
   const AddHonorBoardScreen({super.key});

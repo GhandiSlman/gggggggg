@@ -10,7 +10,6 @@ import 'package:lms/core/widgets/custom_toast.dart';
 import 'package:lms/features/students/model/student_attendance.dart';
 import 'package:lms/features/teacher/data/activity_repo.dart';
 import 'package:lms/features/teacher/model/activity.dart';
-import 'package:lms/features/teacher/model/test_activity.dart';
 import 'package:lms/features/teacher/model/update_activity.dart';
 
 class ActivityController extends GetxController {
@@ -32,7 +31,7 @@ class ActivityController extends GetxController {
   var showSectionList = <SelectedListItem>[].obs;
   Map<String, List<Sections>> sectionList = <String, List<Sections>>{};
   RxList<Activity> activityList = <Activity>[].obs;
-  RxList<ActivityIndex> activityListIndex = <ActivityIndex>[].obs;
+  //RxList<ActivityIndex> activityListIndex = <ActivityIndex>[].obs;
   Map<String, String> sectionNameToIdMap = {};
 
   RxList<String> selectedSection = <String>[].obs;
@@ -41,7 +40,7 @@ class ActivityController extends GetxController {
 
   void updateSelectedSectionId(String sectionId) {
     selectedSectionId.value = sectionId;
-    getActivity(sectionId); 
+    getActivity(sectionId);
   }
 
   void updateSelectedSection(String className) {
@@ -224,12 +223,12 @@ class ActivityController extends GetxController {
   Future<void> getActivitySuper() async {
     isGetActivity.value = true;
     final result =
-        await activityRepo.getActivitySuper(getActivity: GetActivityIndex());
+        await activityRepo.getActivitySuper(getActivity: GetActivity());
     isGetActivity.value = false;
-    if (result is DataSuccess<GetActivityIndex>) {
-      activityListIndex.clear();
+    if (result is DataSuccess<GetActivity>) {
+      activityList.clear();
       if (result.data?.activity != null) {
-        activityListIndex.addAll(result.data!.activity!);
+        activityList.addAll(result.data!.activity!);
       }
     } else if (result is DataFailed) {
       CustomToast.showToast(
@@ -240,9 +239,7 @@ class ActivityController extends GetxController {
         isLongDuration: false,
         textColor: AppColor.whiteColor,
       );
-    } else {
-    
-    }
+    } else {}
   }
 
   @override
@@ -252,7 +249,7 @@ class ActivityController extends GetxController {
     dateController = TextEditingController();
     sectionController = TextEditingController();
     box.read('userType') == 'teacher' ? getSections() : getActivitySuper();
-    //getActivitySuper();
+
     super.onInit();
   }
 }

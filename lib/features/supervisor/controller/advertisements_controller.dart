@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:lms/core/data/data_state.dart';
 import 'package:lms/core/utils/app_color.dart';
-import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_toast.dart';
 import 'package:lms/features/supervisor/data/advertisements_repo.dart';
 import 'package:lms/features/supervisor/model/add_advertisements_model.dart';
@@ -93,9 +92,6 @@ class AdvertisementsController extends GetxController
   
 
   Future<void> getMyAdvertisements() async {
-     print('==============================================');
-    print(box.read('userType'));
-    print('==============================================');
     isLoadingGetMyAd.value = true;
     final DataState result = await _advertisementsRepo.getMyAdvertisements(
         advertisements: Advertisements());

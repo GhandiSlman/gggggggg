@@ -24,7 +24,7 @@ class DataService {
     Map<String, String>? queryParameters,
     T Function(Map<String, dynamic>)? fromJson,
   }) async {
-   // try {
+   try {
       if (await checkInternet()) {
         return DataFailed(
           "No internet connection",
@@ -38,13 +38,13 @@ class DataService {
       debugPrint('get param: $queryParameters');
       debugPrint('response: ${response.body}');
       return handleDataState(response: response, fromJson: fromJson!);
-    // } catch (e) {
-    //   debugPrint('Error: $e');
-    //   return DataFailed(
-    //     "unknown error",
-    //     statusCode: HttpStatus.internalServerError,
-    //   );
-    // }
+    } catch (e) {
+      debugPrint('Error: $e');
+      return DataFailed(
+        "unknown error",
+        statusCode: HttpStatus.internalServerError,
+      );
+    }
   }
 
   Future<DataState<T>> postDataWithPhoto<T>({

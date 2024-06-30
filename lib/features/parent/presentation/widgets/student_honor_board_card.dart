@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_images.dart';
 import 'package:lms/core/widgets/custom_text.dart';
-import 'package:lms/features/teacher/controller/honor_board_controller.dart';
+import 'package:lms/features/honor_board/controller/honor_board_controller.dart';
 import 'package:lms/features/teacher/model/student_honor_board.dart';
 
 class StudentHonorBoardCard extends StatelessWidget {

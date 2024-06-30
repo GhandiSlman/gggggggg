@@ -1,102 +1,44 @@
-class GetActivityIndex {
+class MyChildren {
   bool? status;
-  List<ActivityIndex>? activity;
+  MyChildrenData? data;
 
-  GetActivityIndex({this.status, this.activity});
+  MyChildren({this.status, this.data});
 
-  
-  GetActivityIndex.fromJson(Map<String, dynamic> json) {
+  MyChildren.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    if (json['activity'] != null) {
-      activity = <ActivityIndex>[];
-      json['activity'].forEach((v) {
-        activity!.add(ActivityIndex.fromJson(v));
-      });
-    }
+    data = json['data'] != null ? MyChildrenData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
-    if (activity != null) {
-      data['activity'] = activity!.map((v) => v.toJson()).toList();
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
     }
     return data;
   }
 }
 
-class ActivityIndex {
-  int? id;
-  int? teacherId;
-  int? sectionId;
-  String? title;
-  String? description;
-  String? date;
-  String? createdAt;
-  String? updatedAt;
-  Teacher? teacher;
-  Section? section;
-
-  ActivityIndex(
-      {this.id,
-      this.teacherId,
-      this.sectionId,
-      this.title,
-      this.description,
-      this.date,
-      this.createdAt,
-      this.updatedAt,
-      this.teacher,
-      this.section});
-
-  ActivityIndex.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    teacherId = json['teacher_id'];
-    sectionId = json['section_id'];
-    title = json['title'];
-    description = json['description'];
-    date = json['date'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    teacher =
-        json['teacher'] != null ? Teacher.fromJson(json['teacher']) : null;
-    section =
-        json['section'] != null ? Section.fromJson(json['section']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['teacher_id'] = teacherId;
-    data['section_id'] = sectionId;
-    data['title'] = title;
-    data['description'] = description;
-    data['date'] = date;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    if (teacher != null) {
-      data['teacher'] = teacher!.toJson();
-    }
-    if (section != null) {
-      data['section'] = section!.toJson();
-    }
-    return data;
-  }
-}
-
-class Teacher {
+class MyChildrenData {
   int? id;
   String? name;
   String? email;
   String? role;
+  List<Children>? children;
 
-  Teacher({this.id, this.name, this.email, this.role});
+  MyChildrenData({this.id, this.name, this.email, this.role, this.children});
 
-  Teacher.fromJson(Map<String, dynamic> json) {
+  MyChildrenData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];
     role = json['role'];
+    if (json['children'] != null) {
+      children = <Children>[];
+      json['children'].forEach((v) {
+        children!.add(Children.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -105,6 +47,69 @@ class Teacher {
     data['name'] = name;
     data['email'] = email;
     data['role'] = role;
+    if (children != null) {
+      data['children'] = children!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Children {
+  int? id;
+  String? name;
+  String? email;
+  String? role;
+  Pivot? pivot;
+  List<Section>? section;
+
+  Children(
+      {this.id, this.name, this.email, this.role, this.pivot, this.section});
+
+  Children.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    email = json['email'];
+    role = json['role'];
+    pivot = json['pivot'] != null ? Pivot.fromJson(json['pivot']) : null;
+    if (json['section'] != null) {
+      section = <Section>[];
+      json['section'].forEach((v) {
+        section!.add(Section.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['email'] = email;
+    data['role'] = role;
+    if (pivot != null) {
+      data['pivot'] = pivot!.toJson();
+    }
+    if (section != null) {
+      data['section'] = section!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Pivot {
+  int? guardianId;
+  int? studentId;
+
+  Pivot({this.guardianId, this.studentId});
+
+  Pivot.fromJson(Map<String, dynamic> json) {
+    guardianId = json['guardian_id'];
+    studentId = json['student_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['guardian_id'] = guardianId;
+    data['student_id'] = studentId;
     return data;
   }
 }
@@ -115,6 +120,7 @@ class Section {
   Name? name;
   String? createdAt;
   String? updatedAt;
+  Pivot? pivot;
   Grade? grade;
 
   Section(
@@ -123,6 +129,7 @@ class Section {
       this.name,
       this.createdAt,
       this.updatedAt,
+      this.pivot,
       this.grade});
 
   Section.fromJson(Map<String, dynamic> json) {
@@ -131,6 +138,7 @@ class Section {
     name = json['name'] != null ? Name.fromJson(json['name']) : null;
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    pivot = json['pivot'] != null ? Pivot.fromJson(json['pivot']) : null;
     grade = json['grade'] != null ? Grade.fromJson(json['grade']) : null;
   }
 
@@ -143,6 +151,9 @@ class Section {
     }
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    if (pivot != null) {
+      data['pivot'] = pivot!.toJson();
+    }
     if (grade != null) {
       data['grade'] = grade!.toJson();
     }
@@ -168,7 +179,6 @@ class Name {
     return data;
   }
 }
-
 class Grade {
   int? id;
   int? stageId;

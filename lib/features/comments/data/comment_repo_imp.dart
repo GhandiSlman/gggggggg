@@ -13,9 +13,13 @@ class CommentRepoImp implements CommentRepo {
   Future<DataState> addComment(
       {required AddCommentData addCommentModel, required int postId}) async {
     final response = await _dataService.postData(
-      endPoint: box.read('userType') == 'teacher'
-          ? 'teacher/dailyUpdatePost/addComment'
-          : 'supervisor/dailyUpdatePost/addComment',
+      endPoint:box.read('userType') == 'teacher'
+          ? 'teacher/dailyUpdatePost/addComment/$postId'
+          : box.read('userType') == 'supervisor'
+              ? 'supervisor/dailyUpdatePost/addComment/$postId'
+              : box.read('userType') == 'guardian'
+                  ? 'parent/dailyUpdatePost/addComment'
+                  : 'student/dailyUpdatePost/addComment',
       data: addCommentModel.toJson(),
       baseUrl: baseUrl,
       fromJson: (Map<String, dynamic> json) => AddCommentData.fromJson(json),
@@ -29,8 +33,12 @@ class CommentRepoImp implements CommentRepo {
     final response = await _dataService.getData<GetCommentModel>(
       endPoint: box.read('userType') == 'teacher'
           ? 'teacher/dailyUpdatePost/getComments/$postId'
-          : 'supervisor/dailyUpdatePost/getComments/$postId',
-      baseUrl: baseUrl,
+          : box.read('userType') == 'supervisor'
+              ? 'supervisor/dailyUpdatePost/getComments/$postId'
+              : box.read('userType') == 'guardian'
+                  ? 'parent/dailyUpdatePost/getComments/$postId'
+                  : 'student/dailyUpdatePost/getComments/$postId',
+      baseUrl: baseUrl, 
       fromJson: (json) => GetCommentModel.fromJson(json),
     );
     return response;

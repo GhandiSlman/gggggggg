@@ -5,7 +5,7 @@ import 'package:lms/features/posts/presentation/screens/add_update_post_screen.d
 import 'package:lms/features/supervisor/presentation/screens/add_update_adv_screen.dart';
 import 'package:lms/features/supervisor/presentation/screens/advertisements_screen.dart';
 import 'package:lms/features/supervisor/presentation/screens/news_screen.dart';
-import 'package:lms/features/teacher/presentation/screens/honor_board_screen.dart';
+import 'package:lms/features/honor_board/presentation/screens/honor_board_screen.dart';
 import 'package:lms/features/parent/presentation/screens/son_achievement_screen.dart';
 import 'package:lms/features/parent/presentation/screens/sons_screen.dart.dart';
 import 'package:lms/features/parent/presentation/screens/student_honor_board_screen.dart';
@@ -17,13 +17,17 @@ import 'package:lms/features/posts/presentation/screens/posts_screen.dart';
 import 'package:lms/features/supervisor/presentation/screens/super_visor_presence_screen.dart';
 import 'package:lms/features/teacher/presentation/screens/activiry_screen.dart';
 import 'package:lms/features/teacher/presentation/screens/add_activity_screen.dart';
+import 'package:lms/features/teacher/presentation/screens/add_assign_rate.dart';
 import 'package:lms/features/teacher/presentation/screens/add_homework_screen.dart';
-import 'package:lms/features/teacher/presentation/screens/add_update_honor_board_screen.dart';
+import 'package:lms/features/honor_board/presentation/screens/add_update_honor_board_screen.dart';
+import 'package:lms/features/teacher/presentation/screens/add_rate_screen.dart';
 import 'package:lms/features/teacher/presentation/screens/add_to_week_plane_screen.dart';
+import 'package:lms/features/teacher/presentation/screens/assigned_rates_screen.dart';
 import 'package:lms/features/teacher/presentation/screens/chat_details.dart';
 import 'package:lms/features/teacher/presentation/screens/chat_screen.dart';
 import 'package:lms/features/teacher/presentation/screens/choose_date_screen.dart';
 import 'package:lms/features/teacher/presentation/screens/class_schedule_screen.dart';
+import 'package:lms/features/teacher/presentation/screens/continous_rating_screen.dart';
 import 'package:lms/features/teacher/presentation/screens/teacher_week_plane_screen.dart';
 import 'package:lms/features/teacher/presentation/screens/techer_class_room_screen.dart';
 
@@ -56,6 +60,10 @@ class AppRouter {
   static const String addUpdateAdvScreen = '/addUpdateAdvScreen';
   static const String advertisementsScreen = '/advertisementsScreen';
   static const String newsScreen = '/newsScreen';
+  static const String continousRatingScreen = '/continousRatingScreen';
+  static const String addRate = '/addRate';
+  static const String assignRatescreen = '/assignRatescreen';
+  static const String addAssignRatescreen = '/addAssignRatescreen';
 
   static final List<GetPage> pages = [
     GetPage(name: loginScreen, page: () => const LoginScreen()),
@@ -88,9 +96,14 @@ class AppRouter {
         name: sonAchievementScreen, page: () => const SonAchievementScreen()),
     GetPage(name: addHonorBoardScreen, page: () => const AddHonorBoardScreen()),
     GetPage(name: studentScreen, page: () => const StudentScreen()),
-        GetPage(name: classScheduleScreen, page: () => const ClassScheduleScreen()),
-        GetPage(name: addUpdateAdvScreen, page: () => const AddUpdateAdvScreen()),
-        GetPage(name: advertisementsScreen, page: () =>  const AdvertisementsScreen()),
-        GetPage(name: newsScreen, page: () =>  const NewsScreen()),
+    GetPage(name: classScheduleScreen, page: () => const ClassScheduleScreen()),
+    GetPage(name: addUpdateAdvScreen, page: () => const AddUpdateAdvScreen()),
+    GetPage(
+        name: advertisementsScreen, page: () => const AdvertisementsScreen()),
+    GetPage(name: newsScreen, page: () => const NewsScreen()),
+     GetPage(name: continousRatingScreen, page: () => const ContinousRatingScreen()),
+     GetPage(name: addRate, page: () => const AddRate()),
+     GetPage(name: assignRatescreen, page: () => const AssignedRatesScreen()),
+     GetPage(name: addAssignRatescreen, page: () => const AddAsignRateScreen()),
   ];
 }
