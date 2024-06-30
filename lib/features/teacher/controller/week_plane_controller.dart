@@ -36,7 +36,7 @@ class WeekPlaneController extends GetxController
   RxBool isLoadingAdd = false.obs;
   RxBool isLoadingWeekPlane = false.obs;
 
-  RxList<SubjectsInfo> studentInfo = <SubjectsInfo>[].obs;
+  RxList<SubjectInfo> studentInfo = <SubjectInfo>[].obs;
   // RxBool isLoadingDelete = false.obs;
   bool isUpdate = false;
   late final TextEditingController sectionController;
@@ -96,9 +96,12 @@ class WeekPlaneController extends GetxController
   Future<void> getStudentInf() async {
     final result =
         await weekPlaneRepo.getStudentInfo(studentInfo: StudentInfo());
-
+    studentInfo.clear();
+    print('sccxxxxxxxxxxxxxxxxxxxxx');
+    
+    print(result.data);
+    print('wdddddddddddddddddddddd');
     if (result is DataSuccess<StudentInfo>) {
-      studentInfo.clear();
       studentInfo.addAll(result.data!.subjects!);
     } else if (result is DataFailed) {
       CustomToast.showToast(
@@ -213,7 +216,10 @@ class WeekPlaneController extends GetxController
       }
     } else if (box.read('userType') == 'student') {
       for (var subject in studentInfo) {
-        myTabs.add(Tab(text: subject.name!));
+        myTabs.add(Tab(
+            text: box.read('langCode') == 'ar'
+                ? subject.name!.ar
+                : subject.name!.en));
         tabController = TabController(
             length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
             vsync: this);
@@ -371,7 +377,7 @@ class WeekPlaneController extends GetxController
     box.read('userType') == 'student'
         ? getStudentInf().then((value) {
             //  getWeekPlane(studentInfo[0].id!, 0);
-            updateTabs();
+            updateTabs(); 
           })
         : getSections();
     //getSections();

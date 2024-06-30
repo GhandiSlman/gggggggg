@@ -38,7 +38,7 @@ class HonorBoardRepoImp implements HonorBoardRepo {
   Future<DataState> getHonorBoard(
       {required GetHonorBoardModel getHonorBoardModel}) async {
     final response = await _dataService.getData(
-      endPoint: box.read('userType') == 'teacher'? 'teacher/honorBoard/create' : box.read('userType') =='guardiant'? 'parent/honorBoard/create' : box.read('userType')=='student'? 'student/honorBoard/create' : '',
+      endPoint: box.read('userType') == 'teacher'? 'teacher/honorBoard/create' : box.read('userType') =='guardian'? 'parent/honorBoard/create' : box.read('userType')=='student'? 'student/honorBoard/create' : '',
       baseUrl: baseUrl,
       fromJson: (Map<String, dynamic> json) =>
           GetHonorBoardModel.fromJson(json),
@@ -63,7 +63,7 @@ class HonorBoardRepoImp implements HonorBoardRepo {
     final response = await _dataService.getData(
       endPoint: box.read('userType') == 'teacher'
           ?  'teacher/honorBoard/index/$subjectId'
-          : box.read('userType') == 'guardiant'? 'parent/honorBoard/index/$subjectId'  :'student/honorBoard/index/$subjectId',
+          : box.read('userType') == 'guardian'? 'parent/honorBoard/index/$subjectId'  :'student/honorBoard/index/$subjectId',
       baseUrl: baseUrl,
       fromJson: (json) => GetStudentHonorBoardModel.fromJson(json),
     );

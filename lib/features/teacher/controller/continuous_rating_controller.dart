@@ -15,7 +15,20 @@ import 'package:lms/features/teacher/model/add_continuous_rate.dart';
 import 'package:lms/features/teacher/model/add_continuous_rate_student.dart';
 import 'package:lms/features/teacher/model/coninuous_rating_student.dart';
 import 'package:lms/features/teacher/model/continuous_rating.dart';
-import 'package:lms/features/teacher/model/create_details_homework.dart';
+import 'package:lms/features/teacher/model/update_continuous_rate.dart';
+import 'package:drop_down_list/model/selected_list_item.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:lms/core/data/data_state.dart';
+import 'package:lms/core/utils/app_color.dart';
+import 'package:lms/core/widgets/custom_toast.dart';
+import 'package:lms/features/honor_board/controller/honor_board_controller.dart';
+import 'package:lms/features/students/model/student_attendance.dart';
+import 'package:lms/features/teacher/data/continuous_rating_repo.dart';
+import 'package:lms/features/teacher/model/add_continuous_rate.dart';
+import 'package:lms/features/teacher/model/add_continuous_rate_student.dart';
+import 'package:lms/features/teacher/model/coninuous_rating_student.dart';
+import 'package:lms/features/teacher/model/continuous_rating.dart';
 import 'package:lms/features/teacher/model/update_continuous_rate.dart';
 
 class ContinuousRatingController extends GetxController {
@@ -32,55 +45,113 @@ class ContinuousRatingController extends GetxController {
   RxBool isLoadingAddCon = false.obs;
   RxBool isLoadnigGetRateStudent = false.obs;
   RxBool isLoadnigAddRateStudent = false.obs;
-  RxBool isLoadingSubject = false.obs;
+  RxBool isLoadingStudentSubject = false.obs;
   bool isUpdate = false;
   RxList<ContinuousRatingData> ratingList = <ContinuousRatingData>[].obs;
   RxList<GetContinuousRateStudentData> ratingStudentList =
       <GetContinuousRateStudentData>[].obs;
 
-  var showStudentList = <SelectedListItem>[].obs;
+  // Class
+  var showClassList = <SelectedListItem>[].obs;
+  Map<String, List<Students>> classList = <String, List<Students>>{};
+  RxList<String> selectedClass = <String>[].obs;
 
+  // Subject
   var showSubjectList = <SelectedListItem>[].obs;
+  Map<String, List<Subject>> subjectList = <String, List<Subject>>{};
+  RxList<String> selectedSubject = <String>[].obs;
+  RxString selectedSubjectId = ''.obs;
 
-  // RxList<Subject> subjectList = <Subject>[].obs;
+  var subjectToIdMap = <String, String>{}.obs;
 
-  Future<void> getSubjects() async {
-    isLoadingSubject.value = true;
-    final DataState result = await continuousRatingRepo.getSubjects(
+  // Students
+  RxString selectedStudentId = ''.obs;
+  var studentToIdMap = <String, String>{}.obs;
+  var showStudentList = <SelectedListItem>[].obs;
+  Map<String, List<Students>> studentList = <String, List<Students>>{};
+  RxList<String> selectedStudents = <String>[].obs;
+
+  Future<void> getClassSubjectStudent() async {
+    isLoadingStudentSubject.value = true;
+    final result = await continuousRatingRepo.getSubjects(
         studentAttendance: StudentAttendance());
-    isLoadingSubject.value = false;
-    if (result is DataSuccess<StudentAttendance>) {
-      var createSubject = result.data!;
-      showStudentList.clear();
-      //subjectList.clear();
 
-      for (var res in createSubject.result!) {
+    // Clear lists before populating
+    classList.clear();
+    showClassList.clear();
+    subjectList.clear();
+    showSubjectList.clear();
+    studentList.clear();
+    showStudentList.clear();
+    isLoadingStudentSubject.value = false;
+
+    if (result is DataSuccess<StudentAttendance>) {
+      classList.clear();
+      showClassList.clear();
+      subjectList.clear();
+      showSubjectList.clear();
+      studentList.clear();
+      showStudentList.clear();
+      var attendance = result.data!;
+
+      for (var res in attendance.result!) {
         for (var grade in res.grades!) {
+          String className =
+              box.read('langCode') == 'ar' ? grade.name!.ar! : grade.name!.en!;
+          showClassList.add(SelectedListItem(name: className));
+
+          classList[className] = [];
           for (var section in grade.sections!) {
             for (var sectionSubject in section.sectionSubjects!) {
-              for (var student in section.students!) {
-                String studentName = student.name!;
-
-                showStudentList.add(SelectedListItem(name: studentName));
-              }
-
+              // Add subjects to subject list
               String subjectName = box.read('langCode') == 'ar'
                   ? sectionSubject.subject!.name!.ar!
                   : sectionSubject.subject!.name!.en!;
+              if (!subjectList.containsKey(className)) {
+                subjectList[className] = [];
+              }
+              subjectList[className]!.add(sectionSubject.subject!);
               showSubjectList.add(SelectedListItem(name: subjectName));
+              subjectToIdMap[subjectName] =
+                  sectionSubject.subject!.id!.toString();
+
+              // Add students to student list
+              for (var student in section.students!) {
+                String studentName = student.name!;
+                showStudentList.add(SelectedListItem(name: studentName));
+                studentToIdMap[studentName] = student.id.toString();
+                if (!studentList.containsKey(className)) {
+                  studentList[className] = [];
+                }
+                studentList[className]!.add(student);
+              }
             }
           }
         }
       }
-    } else if (DataState is DataFailed) {
+    } else if (result is DataFailed) {
       CustomToast.showToast(
-        message: result.errorMessage!,
+        message: 'Failed to load data',
         backgroundColor: AppColor.redColor,
         fontSize: 15.sp,
         gravity: ToastGravity.BOTTOM,
-        isLongDuration: false,
         textColor: AppColor.whiteColor,
+        toastDuration: 1,
       );
+    }
+  }
+
+  void updateSelectedStudent(String studentName) {
+    selectedStudents.value = [studentName];
+    if (studentToIdMap.containsKey(studentName)) {
+      selectedStudentId.value = studentToIdMap[studentName]!;
+    }
+  }
+
+  void updateSelectedSubject(String subjectName) {
+    selectedSubject.value = [subjectName];
+    if (subjectToIdMap.containsKey(subjectName)) {
+      selectedSubjectId.value = subjectToIdMap[subjectName]!;
     }
   }
 
@@ -162,12 +233,10 @@ class ContinuousRatingController extends GetxController {
     isLoadnigAddRateStudent.value = true;
     final addContinuousRatingStudent = AddContinuousRateStudent(
       reinforcementXpId: reinforcementXpId,
-      studentId: '1',
-      subjectId: honorBoardController.selectedSubjectId.value,
+      studentId: selectedStudentId.value,
+      subjectId: selectedSubjectId.value,
     );
-    print('mkkkkkkkkkkkkk');
-    print(honorBoardController.selectedSubjectId.value);
-    print('mkkkkkkkkkkkkk');
+
     final DataState result =
         await continuousRatingRepo.addContinuousRateStudent(
             addContinuousRateStudent: addContinuousRatingStudent);
@@ -279,8 +348,7 @@ class ContinuousRatingController extends GetxController {
 
   @override
   void onInit() {
-    //honorBoardController.getClassSubjectStudent();
-    getSubjects();
+    box.read('userType') == 'teacher' ? getClassSubjectStudent() : null;
     getContinuousRating();
     rateController = TextEditingController();
     pointController = TextEditingController();

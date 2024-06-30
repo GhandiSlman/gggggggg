@@ -7,7 +7,6 @@ import 'package:lms/features/teacher/model/add_continuous_rate.dart';
 import 'package:lms/features/teacher/model/add_continuous_rate_student.dart';
 import 'package:lms/features/teacher/model/coninuous_rating_student.dart';
 import 'package:lms/features/teacher/model/continuous_rating.dart';
-import 'package:lms/features/teacher/model/create_details_homework.dart';
 import 'package:lms/features/teacher/model/update_continuous_rate.dart';
 
 class ContinuousRatingRepoImp implements ContinuousRatingRepo {
@@ -96,10 +95,10 @@ class ContinuousRatingRepoImp implements ContinuousRatingRepo {
   Future<DataState> getSubjects(
       {required StudentAttendance studentAttendance}) async {
     final response = await _dataService.getData(
-      endPoint: box.read('userType') =='teacher' ? 'teacher/homework/create' : 'stages',
+      endPoint: box.read('userType') =='teacher' ? 'teacher/studentAttendance/create' : 'stages',
       baseUrl: baseUrl,
       fromJson: (Map<String, dynamic> json) =>
-          CreateDetailsHomeWork.fromJson(json),
+          StudentAttendance.fromJson(json),
     );
     return response;
   }

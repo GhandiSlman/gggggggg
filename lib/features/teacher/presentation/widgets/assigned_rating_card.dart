@@ -15,12 +15,14 @@ import 'package:lms/features/teacher/presentation/widgets/slidable_action.dart';
 class AssignedRatingCard extends StatelessWidget {
   String studentName;
   String subjectName;
+  int rate;
   String id;
   GetContinuousRateStudentData? getContinuousRateStudent;
   AssignedRatingCard({
     super.key,
     required this.studentName,
     required this.subjectName,
+    required this.rate,
     required this.id,
     this.getContinuousRateStudent,
   });
@@ -36,7 +38,8 @@ class AssignedRatingCard extends StatelessWidget {
               SlidableActionTecherWidget(
                 onTap: () {
                   //  weekPlaneController.deleteWeekPlane(weekPlaneDetails.id!);o
-                  continuousRatingController.deleteRateStudent(getContinuousRateStudent!.id!);
+                  continuousRatingController
+                      .deleteRateStudent(getContinuousRateStudent!.id!);
                 },
                 color: AppColor.redColor,
                 label: 'Delete'.tr,
@@ -103,7 +106,7 @@ class AssignedRatingCard extends StatelessWidget {
                     children: [
                       Icon(Icons.star, color: AppColor.greyColor2),
                       SizedBox(width: 5.w),
-                      const CustomText(text: '500'),
+                      CustomText(text: rate.toString()),
                     ],
                   ),
                 ),

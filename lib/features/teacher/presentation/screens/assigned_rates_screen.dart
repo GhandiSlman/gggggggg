@@ -58,6 +58,8 @@ class AssignedRatesScreen extends StatelessWidget {
                         return Padding(
                           padding: EdgeInsets.all(10.h),
                           child: AssignedRatingCard(
+                            rate: continuousRatingController
+                                .ratingStudentList[index].reinforcementXp!.xp!,
                             getContinuousRateStudent: continuousRatingController
                                 .ratingStudentList[index],
                             id: id.toString(),

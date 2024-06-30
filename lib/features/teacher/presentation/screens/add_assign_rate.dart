@@ -7,6 +7,7 @@ import 'package:lms/core/widgets/custom_button.dart';
 import 'package:lms/core/widgets/custom_text.dart';
 import 'package:lms/core/widgets/drop_down.dart';
 import 'package:lms/core/widgets/loading_widget.dart';
+import 'package:lms/core/widgets/shimmer.dart';
 import 'package:lms/features/teacher/controller/continuous_rating_controller.dart';
 
 class AddAsignRateScreen extends StatelessWidget {
@@ -34,24 +35,26 @@ class AddAsignRateScreen extends StatelessWidget {
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
-                DropDownList(
-                  onSelectedItems: (List<String> selectedItems) {
-                    continuousRatingController.honorBoardController
-                        .updateSelectedSubject(selectedItems.last);
-                    String? subjectId = continuousRatingController
-                        .honorBoardController
-                        .subjectToIdMap[selectedItems.last];
-                    if (subjectId != null) {
-                      continuousRatingController.honorBoardController
-                          .updateSelectedSubjectId(subjectId);
-                    }
-                  },
-                  dataList: continuousRatingController.showStudentList,
-                  textEditingController: continuousRatingController
-                      .honorBoardController.classController,
-                  hint: 'Choose student'.tr,
-                  isCitySelected: true,
-                ),
+                Obx(() => continuousRatingController
+                        .isLoadingStudentSubject.value
+                    ? ShimmerWidget(height: 50.h)
+                    : DropDownList(
+                        onSelectedItems: (List<String> selectedItems) {
+                          continuousRatingController
+                              .updateSelectedStudent(selectedItems.last);
+                          String? studentId = continuousRatingController
+                              .studentToIdMap[selectedItems.last];
+                               if (studentId != null) {
+                            continuousRatingController.selectedStudentId.value =
+                                studentId;
+                          }
+                        },
+                        dataList: continuousRatingController.showStudentList,
+                        textEditingController:
+                            TextEditingController(), // Using a new controller instance to avoid conflicts
+                        hint: 'Choose student'.tr,
+                        isCitySelected: true,
+                      )),
                 10.verticalSpace,
                 CustomText(
                   text: 'Subject name'.tr,
@@ -59,35 +62,40 @@ class AddAsignRateScreen extends StatelessWidget {
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
-                DropDownList(
-                  onSelectedItems: (List<String> selectedItems) {
-                    continuousRatingController.honorBoardController
-                        .updateSelectedStudentRate(selectedItems.last);
-                    String? subjectId = continuousRatingController
-                        .honorBoardController
-                        .subjectToIdMap[selectedItems.last];
-                    if (subjectId != null) {
-                      continuousRatingController.honorBoardController
-                          .updateSelectedStudentRateId(subjectId);
-                    }
-                  },
-                  dataList: continuousRatingController.showSubjectList,
-                  textEditingController: continuousRatingController
-                      .honorBoardController.subjectController,
-                  hint: 'Choose subject'.tr,
-                  isCitySelected: true,
-                ),
+                Obx(() => continuousRatingController
+                        .isLoadingStudentSubject.value
+                    ? ShimmerWidget(height: 50.h)
+                    : DropDownList(
+                        onSelectedItems: (List<String> selectedItems) {
+                          continuousRatingController
+                              .updateSelectedSubject(selectedItems.last);
+                          String? subjectId = continuousRatingController
+                              .subjectToIdMap[selectedItems.last];
+                          if (subjectId != null) {
+                            continuousRatingController.selectedSubjectId.value =
+                                subjectId;
+                          }
+                        },
+                        dataList: continuousRatingController.showSubjectList,
+                        textEditingController:
+                            TextEditingController(), // Using a new controller instance to avoid conflicts
+                        hint: 'Choose subject'.tr,
+                        isCitySelected: true,
+                      )),
                 100.verticalSpace,
-                Obx(() => continuousRatingController.isLoadnigAddRateStudent.value
-                    ? const LoadingWidget()
-                    : CustomButton(
-                        color: AppColor.primaryColor,
-                        textColor: AppColor.whiteColor,
-                        width: double.infinity,
-                        text: 'Add Rate'.tr,
-                        onTap: () {
-                          continuousRatingController.addRateStudent(id);
-                        }))
+                Obx(
+                  () => continuousRatingController.isLoadnigAddRateStudent.value
+                      ? const LoadingWidget()
+                      : CustomButton(
+                          color: AppColor.primaryColor,
+                          textColor: AppColor.whiteColor,
+                          width: double.infinity,
+                          text: 'Add Rate'.tr,
+                          onTap: () {
+                            continuousRatingController.addRateStudent(id);
+                          },
+                        ),
+                )
               ],
             )
           ],
