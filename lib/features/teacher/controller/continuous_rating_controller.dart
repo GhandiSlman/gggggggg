@@ -16,20 +16,7 @@ import 'package:lms/features/teacher/model/add_continuous_rate_student.dart';
 import 'package:lms/features/teacher/model/coninuous_rating_student.dart';
 import 'package:lms/features/teacher/model/continuous_rating.dart';
 import 'package:lms/features/teacher/model/update_continuous_rate.dart';
-import 'package:drop_down_list/model/selected_list_item.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:lms/core/data/data_state.dart';
-import 'package:lms/core/utils/app_color.dart';
-import 'package:lms/core/widgets/custom_toast.dart';
-import 'package:lms/features/honor_board/controller/honor_board_controller.dart';
-import 'package:lms/features/students/model/student_attendance.dart';
-import 'package:lms/features/teacher/data/continuous_rating_repo.dart';
-import 'package:lms/features/teacher/model/add_continuous_rate.dart';
-import 'package:lms/features/teacher/model/add_continuous_rate_student.dart';
-import 'package:lms/features/teacher/model/coninuous_rating_student.dart';
-import 'package:lms/features/teacher/model/continuous_rating.dart';
-import 'package:lms/features/teacher/model/update_continuous_rate.dart';
+
 
 class ContinuousRatingController extends GetxController {
   ContinuousRatingRepo continuousRatingRepo;

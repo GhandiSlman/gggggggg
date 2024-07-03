@@ -19,10 +19,8 @@ class PostsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final PostController postController = Get.find();
     return Scaffold(
-        floatingActionButton:
-         box.read('userType') == 'teacher'
-            ? 
-            FloatingActionButton(
+        floatingActionButton: box.read('userType') == 'teacher'
+            ? FloatingActionButton(
                 onPressed: () {
                   Get.toNamed(AppRouter.addPostScreen, arguments: {
                     'isUpdate': postController.isUpdatePost == true

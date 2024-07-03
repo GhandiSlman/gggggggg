@@ -19,12 +19,9 @@ class ContinousRatingScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColor.primaryColor,
         onPressed: () {
-          Get.toNamed(
-            AppRouter.addRate,
-            arguments: {
-              'isUpdate' : continuousRatingController.isUpdate == false,
-            }
-          );
+          Get.toNamed(AppRouter.addRate, arguments: {
+            'isUpdate': continuousRatingController.isUpdate == false,
+          });
         },
         child: Icon(
           Icons.add,
@@ -45,44 +42,45 @@ class ContinousRatingScreen extends StatelessWidget {
                         child: ShimmerWidget(height: 75.h),
                       );
                     })
-                    :continuousRatingController.ratingList.isEmpty?Center(
-                      child:CustomText(
-                        text:'No ratings'.tr,
-                         fontSize: 20.sp,
-                         color: AppColor.primaryColor,
-                      ),
-                    )
-                : ListView.builder(
-                    itemCount: continuousRatingController.ratingList.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.all(10.h),
-                        child: InkWell(
-                          onTap: () {
-                            Get.toNamed(
-                              AppRouter.assignRatescreen,
-                              arguments: {
-                                'id' : continuousRatingController.ratingList[index].id.toString(),
-                              }
-                            );
-                            continuousRatingController
-                                .getContinuousRatingStudent(
-                                    continuousRatingController
-                                        .ratingList[index].id!,
-                                        
-                                        );
-                          },
-                          child: ContinuousRatingCard(
-                            continuousRatingData: continuousRatingController.ratingList[index],
-                            name: continuousRatingController
-                                .ratingList[index].name!,
-                            rate: continuousRatingController
-                                .ratingList[index].xp
-                                .toString(),
-                          ),
+                : continuousRatingController.ratingList.isEmpty
+                    ? Center(
+                        child: CustomText(
+                          text: 'No ratings'.tr,
+                          fontSize: 20.sp,
+                          color: AppColor.primaryColor,
                         ),
-                      );
-                    }),
+                      )
+                    : ListView.builder(
+                        itemCount: continuousRatingController.ratingList.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.all(10.h),
+                            child: InkWell(
+                              onTap: () {
+                                Get.toNamed(AppRouter.assignRatescreen,
+                                    arguments: {
+                                      'id': continuousRatingController
+                                          .ratingList[index].id
+                                          .toString(),
+                                    });
+                                continuousRatingController
+                                    .getContinuousRatingStudent(
+                                  continuousRatingController
+                                      .ratingList[index].id!,
+                                );
+                              },
+                              child: ContinuousRatingCard(
+                                continuousRatingData: continuousRatingController
+                                    .ratingList[index],
+                                name: continuousRatingController
+                                    .ratingList[index].name!,
+                                rate: continuousRatingController
+                                    .ratingList[index].xp
+                                    .toString(),
+                              ),
+                            ),
+                          );
+                        }),
           )),
     );
   }

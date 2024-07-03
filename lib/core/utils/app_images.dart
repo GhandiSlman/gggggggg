@@ -46,5 +46,8 @@ class AppImages {
   static String coRate = 'assets/coRate.svg';
   static String personRate = 'assets/personRate.svg';
   static String subjectIcon = 'assets/subjectIcon.svg';
-  
+  static String personLogin = 'assets/lock-password-svgrepo-com 1.svg';
+  static String loackLogin = 'assets/user-svgrepo-com 1.svg';
+  static String activeLang = 'assets/activeLang.svg';
+  static String unActiveLang = 'assets/unActiveLang.svg';
 }

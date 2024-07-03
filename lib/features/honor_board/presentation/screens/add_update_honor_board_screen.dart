@@ -145,7 +145,9 @@ class AddHonorBoardScreen extends StatelessWidget {
                       : CustomButton(
                           text: isUpdate ? 'Update'.tr : 'Add'.tr,
                           onTap: () {
-                            honorBoardController.addHonorBoard();
+                            honorBoardController
+                                .addHonorBoard()
+                                .then((value) => Get.back());
                           },
                           color: AppColor.primaryColor,
                           textColor: AppColor.whiteColor,

@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       builder: (_, child) => GetMaterialApp(
         getPages: AppRouter.pages,
         debugShowCheckedModeBanner: false,
-        locale: localeController.initialLang,
+        locale: localeController.initialLang.value,
         translations: MyLocal(),
         initialRoute: box.read('token') == null
             ? AppRouter.loginScreen

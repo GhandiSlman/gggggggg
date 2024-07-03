@@ -64,11 +64,25 @@ class AddRate extends StatelessWidget {
                           color: AppColor.primaryColor,
                           textColor: AppColor.whiteColor,
                           width: double.infinity,
-                          text:  isUpdated == true? 'Add Rate'.tr : 'Update Rate'.tr,
+                          text: isUpdated == true
+                              ? 'Add Rate'.tr
+                              : 'Update Rate'.tr,
                           onTap: () {
                             isUpdated == true
-                                ? continuousRatingController.addRate()
-                                : continuousRatingController.updateRate(id);
+                                ? continuousRatingController
+                                    .addRate()
+                                    .then((value) {
+                                    Get.back();
+                                    continuousRatingController
+                                        .getContinuousRating();
+                                  })
+                                : continuousRatingController
+                                    .updateRate(id)
+                                    .then((value) {
+                                    Get.back();
+                                    continuousRatingController
+                                        .getContinuousRating();
+                                  });
                           }),
                 )
               ],

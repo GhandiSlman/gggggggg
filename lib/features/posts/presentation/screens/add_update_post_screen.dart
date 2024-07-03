@@ -26,7 +26,8 @@ class AddPostScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColor.scaffoldColor,
-      appBar: CustomAppBar(title: isUpdate ? 'Update Post'.tr : 'Add Post'.tr),
+      appBar: CustomAppBar(
+          title: isUpdate == true ? 'Update Post'.tr : 'Add Post'.tr),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
         child: ListView(
@@ -133,11 +134,14 @@ class AddPostScreen extends StatelessWidget {
                   () => postController.isLoadingAddPost.value
                       ? const LoadingWidget()
                       : CustomButton(
-                          text: isUpdate ? 'Update Post'.tr : 'Post'.tr,
+                          text: isUpdate == true ? 'Update Post'.tr : 'Post'.tr,
                           onTap: () {
-                            postController.isUpdatePost
+                            isUpdate == true
                                 ? postController.updatePost(postId)
-                                : postController.addPost();
+                                : postController.addPost().then((value) {
+                                    postController.getClasses();
+                                    Get.back();
+                                  });
                           },
                           color: AppColor.primaryColor,
                           textColor: AppColor.whiteColor,

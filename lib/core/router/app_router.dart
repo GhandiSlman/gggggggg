@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:lms/core/screens/setting_screen.dart';
 import 'package:lms/features/auth/presentation/screens/login_sceen.dart';
 import 'package:lms/features/parent/presentation/screens/parent_chat_screen.dart';
 import 'package:lms/features/posts/presentation/screens/add_update_post_screen.dart';
@@ -64,6 +65,7 @@ class AppRouter {
   static const String addRate = '/addRate';
   static const String assignRatescreen = '/assignRatescreen';
   static const String addAssignRatescreen = '/addAssignRatescreen';
+  static const String settingsScreen = '/settingsScreen';
 
   static final List<GetPage> pages = [
     GetPage(name: loginScreen, page: () => const LoginScreen()),
@@ -105,5 +107,6 @@ class AppRouter {
      GetPage(name: addRate, page: () => const AddRate()),
      GetPage(name: assignRatescreen, page: () => const AssignedRatesScreen()),
      GetPage(name: addAssignRatescreen, page: () => const AddAsignRateScreen()),
+     GetPage(name: settingsScreen, page: () => const SettingSreen()),
   ];
 }

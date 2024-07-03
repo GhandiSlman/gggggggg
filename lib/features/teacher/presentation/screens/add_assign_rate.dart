@@ -44,7 +44,7 @@ class AddAsignRateScreen extends StatelessWidget {
                               .updateSelectedStudent(selectedItems.last);
                           String? studentId = continuousRatingController
                               .studentToIdMap[selectedItems.last];
-                               if (studentId != null) {
+                          if (studentId != null) {
                             continuousRatingController.selectedStudentId.value =
                                 studentId;
                           }
@@ -92,7 +92,11 @@ class AddAsignRateScreen extends StatelessWidget {
                           width: double.infinity,
                           text: 'Add Rate'.tr,
                           onTap: () {
-                            continuousRatingController.addRateStudent(id);
+                            continuousRatingController
+                                .addRateStudent(id)
+                                .then((value) {
+                              Get.back();
+                            });
                           },
                         ),
                 )

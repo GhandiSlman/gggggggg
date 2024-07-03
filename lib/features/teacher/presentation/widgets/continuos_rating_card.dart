@@ -44,7 +44,7 @@ class ContinuousRatingCard extends StatelessWidget {
                 onTap: () {
                   Get.toNamed(AppRouter.addRate, arguments: {
                     'id': continuousRatingData!.id,
-                    'isUpdate': continuousRatingController.isUpdate == false,
+                    'isUpdate': continuousRatingController.isUpdate == true,
                     'nameCon': continuousRatingController.rateController.text =
                         continuousRatingData!.name!,
                     'pointCon': continuousRatingController.pointController

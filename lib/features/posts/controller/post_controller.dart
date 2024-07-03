@@ -245,7 +245,6 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
         int initialGradeId = int.parse(gradeToIdMap[myTabs[0].text]!);
         getPostsByGradeId(initialGradeId);
       }
-      // update();
     } else {
       CustomToast.showToast(
         message: errorMessage.value,
@@ -277,7 +276,7 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
   
   String formatDate(String dateString) {
     DateTime dateTime = DateTime.parse(dateString);
-    return DateFormat.yMMMMd().format(dateTime); // Customize the format as needed
+    return DateFormat.yMMMMd().format(dateTime); 
   }
 
   Future<void> deletePost(int postId) async {

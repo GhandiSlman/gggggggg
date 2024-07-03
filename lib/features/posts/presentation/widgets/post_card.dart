@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
@@ -73,10 +72,9 @@ class PostCard extends StatelessWidget {
                                                       AppRouter.addPostScreen,
                                                       arguments: {
                                                         'postId': post.id,
-                                                        'isUpdate':
-                                                            postController
-                                                                    .isUpdatePost ==
-                                                                false,
+                                                        'isUpdate': postController
+                                                                .isUpdatePost ==
+                                                            false,
                                                         'desCon': postController
                                                                 .descController
                                                                 .text =
@@ -109,7 +107,8 @@ class PostCard extends StatelessWidget {
                     width: 70.w,
                     child: FittedBox(
                       child: CustomText(
-                        text: '${'before'.tr} ${postController.formatDate(post.createdAt!)}',
+                        text:
+                            '${'before'.tr} ${postController.formatDate(post.createdAt!)}',
                         color: AppColor.greyColor,
                         fontSize: 15.sp,
                       ),
@@ -133,10 +132,9 @@ class PostCard extends StatelessWidget {
               concatenatedImages: post.images ?? '',
             ),
           ),
-          10.verticalSpace,
+          //.verticalSpace,
           Row(
             children: [
-              // 5.horizontalSpace,
               Expanded(
                 child: Row(
                   children: [
@@ -159,7 +157,7 @@ class PostCard extends StatelessWidget {
               post.images!.split(',').length > 1
                   ? Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(left: 20.w),
+                        padding: EdgeInsets.only(right: 35.w),
                         child: Obx(
                           () {
                             final controller = Get.find<PostController>();
@@ -183,20 +181,18 @@ class PostCard extends StatelessWidget {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    Get.toNamed(AppRouter.commentScreen,
-                        arguments: {
-                          'postId': post.id,
-                          'isCommentWeekPlane':
-                              postController.isCommentWeelPlane == false
-                        });
+                    Get.toNamed(AppRouter.commentScreen, arguments: {
+                      'postId': post.id,
+                      'isCommentWeekPlane':
+                          postController.isCommentWeelPlane == false
+                    });
                   },
                   child: Row(
                     children: [
                       Expanded(
                         child: FittedBox(
                           child: CustomText(
-                            text:
-                                '${post.commentsCount} ${'comments'.tr}',
+                            text: '${post.commentsCount} ${'comments'.tr}',
                           ),
                         ),
                       ),

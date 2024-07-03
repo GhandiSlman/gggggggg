@@ -16,6 +16,9 @@ class MyLocal implements Translations {
           'Write a comment ..': '.. اكتب تعليقاً',
           'comments' : 'من التعليقات',
           
+          'Language' :'اللغة',
+          'Arabic' : 'العربية',
+          'English' : 'الانجليزية',
           
           //home
           'Home Work': 'الواجبات',
@@ -164,6 +167,10 @@ class MyLocal implements Translations {
           'Comments': 'Comments',
           'Write a comment ..': 'Write a comment ..',
           'comments' : 'comments',
+
+          'Language' :'Language',
+          'Arabic' : 'Arabic',
+          'English' : 'English',
 
           //home
           'Home Work': 'Home Work',

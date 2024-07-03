@@ -133,7 +133,11 @@ class AddActivityScreen extends StatelessWidget {
                           text: isUpdated == false ? 'Add'.tr : 'Update'.tr,
                           onTap: () {
                             isUpdated == false
-                                ? activityController.addActivity()
+                                ? activityController
+                                    .addActivity()
+                                    .then((value) {
+                                    Get.back();
+                                  })
                                 : activityController
                                     .updateActivity(activityId.toString());
                           },

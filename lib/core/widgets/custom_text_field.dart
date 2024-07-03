@@ -15,6 +15,7 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
   final TextInputType? keyboardType;
   final Function(String)? onChanged;
+  final String? Function(String?)? validator;
 
   const CustomTextField({
     super.key,
@@ -30,6 +31,7 @@ class CustomTextField extends StatelessWidget {
     this.controller,
     this.onSuffixTap,
     this.onTap,
+    this.validator,
   });
 
   @override
@@ -42,6 +44,7 @@ class CustomTextField extends StatelessWidget {
       maxLines: maxLine,
       minLines: minLine,
       readOnly: readOnly,
+      validator: validator,
       decoration: InputDecoration(
         suffixIcon: suffix,
         suffixIconColor: AppColor.amber2Color,

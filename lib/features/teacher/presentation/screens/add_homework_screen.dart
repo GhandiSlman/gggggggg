@@ -129,7 +129,11 @@ class AddHomeWorkScreen extends StatelessWidget {
                           text: isUpdated == false ? 'Add'.tr : 'Update'.tr,
                           onTap: () {
                             isUpdated == false
-                                ? homeWorkController.addHomeWork()
+                                ? homeWorkController
+                                    .addHomeWork()
+                                    .then((value) {
+                                    Get.back();
+                                  })
                                 : homeWorkController.updateHomeWork(homeWorkId);
                           },
                           color: AppColor.primaryColor,

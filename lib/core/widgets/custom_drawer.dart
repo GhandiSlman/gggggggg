@@ -26,9 +26,13 @@ class CustomDrawer extends StatelessWidget {
             children: [
               Container(
                 width: double.infinity,
-                color: box.read('userType') == 'teacher'?
-                   AppColor.redColor : box.read('userType') == 'supervisor'?AppColor.orangeColor : box.read('userType') == 'guardian'?
-                  AppColor.greenHeader : AppColor.amberColor,
+                color: box.read('userType') == 'teacher'
+                    ? AppColor.redColor
+                    : box.read('userType') == 'supervisor'
+                        ? AppColor.orangeColor
+                        : box.read('userType') == 'guardian'
+                            ? AppColor.greenHeader
+                            : AppColor.amberColor,
                 height: 140.h,
                 child: Row(
                   children: [
@@ -71,49 +75,53 @@ class CustomDrawer extends StatelessWidget {
               ),
             ],
           ),
-          box.read('userType') == 'supervisor' ? ListTile(
-            title: Row(
-              children: [
-                SvgPicture.asset(AppImages.teacherBlueImage),
-                SizedBox(
-                  width: 5.w,
-                ),
-                CustomText(
-                  text: 'Teachers'.tr,
-                  color: AppColor.primaryColor,
-                )
-              ],
-            ),
-            trailing: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: AppColor.primaryColor,
-              size: 20.sp,
-            ),
-           ) : const SizedBox(),
-         box.read('userType') =='teacher' ?InkWell(
-            onTap: () {
-              Get.toNamed(AppRouter.parentHonorBoardScreen);
-            },
-            child: ListTile(
-              title: Row(
-                children: [
-                  SvgPicture.asset(AppImages.honorSmallImage),
-                  SizedBox(
-                    width: 5.w,
+          box.read('userType') == 'supervisor'
+              ? ListTile(
+                  title: Row(
+                    children: [
+                      SvgPicture.asset(AppImages.teacherBlueImage),
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                      CustomText(
+                        text: 'Teachers'.tr,
+                        color: AppColor.primaryColor,
+                      )
+                    ],
                   ),
-                  CustomText(
-                    text: 'Honor board'.tr,
+                  trailing: Icon(
+                    Icons.arrow_forward_ios_rounded,
                     color: AppColor.primaryColor,
-                  )
-                ],
-              ),
-              trailing: Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: AppColor.primaryColor,
-                size: 20.sp,
-              ),
-            ),
-          ) : const SizedBox(),
+                    size: 20.sp,
+                  ),
+                )
+              : const SizedBox(),
+          box.read('userType') == 'teacher'
+              ? InkWell(
+                  onTap: () {
+                    Get.toNamed(AppRouter.parentHonorBoardScreen);
+                  },
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        SvgPicture.asset(AppImages.honorSmallImage),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        CustomText(
+                          text: 'Honor board'.tr,
+                          color: AppColor.primaryColor,
+                        )
+                      ],
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: AppColor.primaryColor,
+                      size: 20.sp,
+                    ),
+                  ),
+                )
+              : const SizedBox(),
           ListTile(
             title: Row(
               children: [
@@ -171,39 +179,19 @@ class CustomDrawer extends StatelessWidget {
               size: 20.sp,
             ),
           ),
-          ListTile(
-            title: Row(
-              children: [
-                SvgPicture.asset(AppImages.settingsImage),
-                SizedBox(
-                  width: 5.w,
-                ),
-                CustomText(
-                  text: 'Settings'.tr,
-                  color: AppColor.primaryColor,
-                )
-              ],
-            ),
-            trailing: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: AppColor.primaryColor,
-              size: 20.sp,
-            ),
-          ),
           InkWell(
             onTap: () {
-              localeController.changeLocal('ar');
+              Get.toNamed(AppRouter.settingsScreen);
             },
             child: ListTile(
               title: Row(
                 children: [
-                  //SvgPicture.asset(AppImages),
-                  const Icon(Icons.language_outlined),
+                  SvgPicture.asset(AppImages.settingsImage),
                   SizedBox(
                     width: 5.w,
                   ),
                   CustomText(
-                    text: 'Arabic'.tr,
+                    text: 'Settings'.tr,
                     color: AppColor.primaryColor,
                   )
                 ],
@@ -215,31 +203,56 @@ class CustomDrawer extends StatelessWidget {
               ),
             ),
           ),
-          InkWell(
-            onTap: () {
-              localeController.changeLocal('en');
-            },
-            child: ListTile(
-              title: Row(
-                children: [
-                  //SvgPicture.asset(AppImages),
-                  const Icon(Icons.language_outlined),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  CustomText(
-                    text: 'English'.tr,
-                    color: AppColor.primaryColor,
-                  )
-                ],
-              ),
-              trailing: Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: AppColor.primaryColor,
-                size: 20.sp,
-              ),
-            ),
-          ),
+          // InkWell(
+          //   onTap: () {
+          //     localeController.changeLocal('ar');
+          //   },
+          //   child: ListTile(
+          //     title: Row(
+          //       children: [
+          //         //SvgPicture.asset(AppImages),
+          //         const Icon(Icons.language_outlined),
+          //         SizedBox(
+          //           width: 5.w,
+          //         ),
+          //         CustomText(
+          //           text: 'Arabic'.tr,
+          //           color: AppColor.primaryColor,
+          //         )
+          //       ],
+          //     ),
+          //     trailing: Icon(
+          //       Icons.arrow_forward_ios_rounded,
+          //       color: AppColor.primaryColor,
+          //       size: 20.sp,
+          //     ),
+          //   ),
+          // ),
+          // InkWell(
+          //   onTap: () {
+          //     localeController.changeLocal('en');
+          //   },
+          //   child: ListTile(
+          //     title: Row(
+          //       children: [
+          //         //SvgPicture.asset(AppImages),
+          //         const Icon(Icons.language_outlined),
+          //         SizedBox(
+          //           width: 5.w,
+          //         ),
+          //         CustomText(
+          //           text: 'English'.tr,
+          //           color: AppColor.primaryColor,
+          //         )
+          //       ],
+          //     ),
+          //     trailing: Icon(
+          //       Icons.arrow_forward_ios_rounded,
+          //       color: AppColor.primaryColor,
+          //       size: 20.sp,
+          //     ),
+          //   ),
+          // ),
           InkWell(
             onTap: () {
               authController.logOut();

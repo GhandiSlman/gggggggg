@@ -132,7 +132,9 @@ class AddToWeekPlaneScreen extends StatelessWidget {
                         text: isUpdated == false ? ' Add'.tr : 'Update'.tr,
                         onTap: () {
                           isUpdated == false
-                              ? weekPlaneController.addWeekPlane()
+                              ? weekPlaneController
+                                  .addWeekPlane()
+                                  .then((value) => Get.back())
                               : weekPlaneController
                                   .updateWeekPlane(weekPlaneId);
                         },
