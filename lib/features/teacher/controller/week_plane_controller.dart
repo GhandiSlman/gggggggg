@@ -124,6 +124,7 @@ class WeekPlaneController extends GetxController
     isLoadingSection.value = false;
 
     if (result is DataSuccess<StudentAttendance>) {
+      print(result.data);
       var attendance = result.data!;
       showSectionList.clear();
       sectionList.clear();
@@ -178,19 +179,29 @@ class WeekPlaneController extends GetxController
     }
   }
 
+  var subjectIds = [];
+
   void updateSubjectsForSection(int sectionId) {
+    subjectIds.clear();
+    weekPlane.clear();
+    myTabs.clear();
+    selectedSectionSubjects.clear();
     var selectedSection = sectionList.entries
         .firstWhere((element) =>
             element.value.any((section) => section.id == sectionId))
         .value
         .firstWhere((section) => section.id == sectionId);
 
-    selectedSectionSubjects.value = selectedSection.sectionSubjects!
-        .map((subjectSection) => Subject(
-              id: subjectSection.subjectId,
-              name: subjectSection.subject!.name,
-            ))
-        .toList();
+    selectedSection.sectionSubjects!.forEach((value) {
+      if (!subjectIds.contains(value.subject!.id)) {
+        selectedSectionSubjects.add(Subject(
+          id: value.subject!.id,
+          name: value.subject!.name,
+        ));
+        print(subjectIds);
+        subjectIds.add(value.subject!.id);
+      }
+    });
 
     showSubjectList.clear();
     subjectNameToIdMap.clear();
