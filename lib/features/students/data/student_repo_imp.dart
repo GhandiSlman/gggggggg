@@ -12,7 +12,7 @@ class StudentRepoImp implements StudentRepo {
   @override
   Future<DataState> getClasses(StudentAttendance studentAttendance) async {
     final response = await _dataService.getData(
-      endPoint:  box.read('teacher') == 'teacher' ?'teacher/studentAttendance/create'  :'stages',
+      endPoint:  box.read('userType') == 'teacher' ?'teacher/studentAttendance/create'  :'stages',
       baseUrl: baseUrl,
       fromJson: (Map<String, dynamic> json) => StudentAttendance.fromJson(json),
     );

@@ -13,6 +13,8 @@ class CommentController extends GetxController {
   final CommentRepo commentRepo;
   CommentController(this.commentRepo);
   RxList<Comments> commentsList = <Comments>[].obs;
+  
+  final formKey = GlobalKey<FormState>();
   RxList<CommentsWeekPlane> commentWeekPlaneList = <CommentsWeekPlane>[].obs;
 
   RxBool isTyping = false.obs;

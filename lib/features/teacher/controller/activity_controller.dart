@@ -51,6 +51,7 @@ class ActivityController extends GetxController {
   }
 
   Future<void> getSections() async {
+    print("hellllllllll");
     isLoadingSection.value = true;
 
     final result =
@@ -67,18 +68,21 @@ class ActivityController extends GetxController {
 
       for (var res in attendance.result!) {
         for (var grade in res.grades!) {
+          String gradeName =
+              box.read('langCode') == 'ar' ? grade.name!.ar! : grade.name!.en!;
           for (var section in grade.sections!) {
             String sectionName = box.read('langCode') == 'ar'
                 ? section.name!.ar!
                 : section.name!.en!;
-            showSectionList.add(SelectedListItem(name: sectionName));
-            sectionNameToIdMap[sectionName] =
-                section.id.toString(); // Store section ID
+            showSectionList
+                .add(SelectedListItem(name: "$gradeName $sectionName"));
+            sectionNameToIdMap["$gradeName $sectionName"] =
+                section.id.toString();
 
-            if (!sectionList.containsKey(sectionName)) {
-              sectionList[sectionName] = [];
+            if (!sectionList.containsKey("$gradeName $sectionName")) {
+              sectionList["$gradeName $sectionName"] = [];
             }
-            sectionList[sectionName]!.add(section);
+            sectionList["$gradeName $sectionName"]!.add(section);
           }
         }
       }
@@ -105,12 +109,12 @@ class ActivityController extends GetxController {
 
     final result = await activityRepo.addActivity(
         createActivityModel: createActivityModel);
+    isAdded.value = false;
 
-    if (result is DataSuccess) {
+    if (result is DataSuccess<CreateActivityModel>) {
       titleController.clear();
       descriptionController.clear();
       dateController.clear();
-      isAdded.value = false;
       CustomToast.showToast(
         message: 'Activity added successfully'.tr,
         backgroundColor: AppColor.greenColor,
@@ -119,8 +123,9 @@ class ActivityController extends GetxController {
         isLongDuration: false,
         textColor: AppColor.whiteColor,
       );
+      print("zzzzzzzzzzzzzzzzzzzzzzzzzz");
+      // to test
     } else if (result is DataFailed) {
-      isAdded.value = false;
       CustomToast.showToast(
         message: 'Failed to add activity'.tr,
         backgroundColor: AppColor.redColor,
@@ -132,7 +137,7 @@ class ActivityController extends GetxController {
     }
   }
 
-  Future<void> updateActivity(String activityId) async {
+  Future<void> updateActivity(int activityId) async {
     isAdded.value = true;
     final createActivityModel = UpdateActivityModel(
       sectionId: selectedSectionId.value,
@@ -144,12 +149,13 @@ class ActivityController extends GetxController {
 
     final result = await activityRepo.updateActivity(
         createActivityModel: createActivityModel);
+    isAdded.value = false;
 
-    if (result is DataSuccess) {
+    if (result is DataSuccess<UpdateActivityModel>) {
       titleController.clear();
       descriptionController.clear();
       dateController.clear();
-      isAdded.value = false;
+
       CustomToast.showToast(
         message: 'Activity updated successfully'.tr,
         backgroundColor: AppColor.greenColor,
@@ -159,7 +165,6 @@ class ActivityController extends GetxController {
         textColor: AppColor.whiteColor,
       );
     } else if (result is DataFailed) {
-      isAdded.value = false;
       CustomToast.showToast(
         message: 'Failed to update activity'.tr,
         backgroundColor: AppColor.redColor,

@@ -98,7 +98,7 @@ class WeekPlaneController extends GetxController
         await weekPlaneRepo.getStudentInfo(studentInfo: StudentInfo());
     studentInfo.clear();
     print('sccxxxxxxxxxxxxxxxxxxxxx');
-    
+
     print(result.data);
     print('wdddddddddddddddddddddd');
     if (result is DataSuccess<StudentInfo>) {
@@ -132,17 +132,20 @@ class WeekPlaneController extends GetxController
       selectedSectionSubjects.clear();
       for (var res in attendance.result!) {
         for (var grade in res.grades!) {
+          String gradeName =
+              box.read('langCode') == 'ar' ? grade.name!.ar! : grade.name!.en!;
           for (var section in grade.sections!) {
             String sectionName = box.read('langCode') == 'ar'
                 ? section.name!.ar!
                 : section.name!.en!;
-            showSectionList.add(SelectedListItem(name: sectionName));
-            sectionNameToIdMap[sectionName] = section.id!;
+            showSectionList
+                .add(SelectedListItem(name: "$gradeName $sectionName"));
+            sectionNameToIdMap["$gradeName $sectionName"] = section.id!;
 
-            if (!sectionList.containsKey(sectionName)) {
-              sectionList[sectionName] = [];
+            if (!sectionList.containsKey("$gradeName $sectionName")) {
+              sectionList["$gradeName $sectionName"] = [];
             }
-            sectionList[sectionName]!.add(section);
+            sectionList["$gradeName $sectionName"]!.add(section);
           }
         }
       }
@@ -209,6 +212,7 @@ class WeekPlaneController extends GetxController
         String subjectName = box.read('langCode') == 'ar'
             ? subject.name!.ar!
             : subject.name!.en!;
+
         myTabs.add(Tab(text: subjectName));
         tabController = TabController(
             length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
@@ -377,7 +381,7 @@ class WeekPlaneController extends GetxController
     box.read('userType') == 'student'
         ? getStudentInf().then((value) {
             //  getWeekPlane(studentInfo[0].id!, 0);
-            updateTabs(); 
+            updateTabs();
           })
         : getSections();
     //getSections();

@@ -47,7 +47,7 @@ class HomeWorkController extends GetxController
 
   RxList<Tab> noDataTabs = <Tab>[
     Tab(
-      text: 'No subjects'.tr,
+      text: 'No subjects'.tr
     ),
   ].obs;
   RxList<Tab> myTabs = <Tab>[].obs;

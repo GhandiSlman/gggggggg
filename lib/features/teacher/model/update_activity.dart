@@ -1,5 +1,5 @@
 class UpdateActivityModel {
-  String? activityId;
+  int? activityId;
   String? sectionId;
   String? title;
   String? description;

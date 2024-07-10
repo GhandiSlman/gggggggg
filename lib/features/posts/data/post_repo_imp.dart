@@ -38,7 +38,7 @@ class PostRepoImp implements PostRepo {
               : box.read('userType') == 'teacher'
                   ? 'teacher/dailyUpdatePost/index/$gradeId?page=$page'
                   : box.read('userType') == 'student'
-                      ? 'student/dailyUpdatePost/index?page=$page'
+                      ? 'student/dailyUpdatePost/index'
                       : '',
       baseUrl: baseUrl,
       queryParameters: {'page': '$page'},
@@ -50,7 +50,7 @@ class PostRepoImp implements PostRepo {
   @override
   Future<DataState> deletePost({required int postId}) async {
     final response = await _dataService.getData(
-      endPoint: 'teacher/dailyUpdatePost/delete/1',
+      endPoint: 'teacher/dailyUpdatePost/delete/$postId',
       baseUrl: baseUrl,
       fromJson: (json) => PostModel.fromJson(json),
     );

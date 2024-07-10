@@ -2,9 +2,11 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:lms/core/data/internet_checker.dart';
+import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_consts.dart';
 import 'data_state.dart';
 import 'package:path/path.dart';
@@ -24,7 +26,7 @@ class DataService {
     Map<String, String>? queryParameters,
     T Function(Map<String, dynamic>)? fromJson,
   }) async {
-   try {
+    try {
       if (await checkInternet()) {
         return DataFailed(
           "No internet connection",
@@ -40,6 +42,7 @@ class DataService {
       return handleDataState(response: response, fromJson: fromJson!);
     } catch (e) {
       debugPrint('Error: $e');
+
       return DataFailed(
         "unknown error",
         statusCode: HttpStatus.internalServerError,
@@ -149,6 +152,10 @@ class DataService {
       return DataSuccess(object);
     } else {
       final Map<String, dynamic> jsonData = json.decode(response.body);
+      if (response.statusCode == 401) {
+        Get.offAllNamed(AppRouter.loginScreen);
+        box.erase();
+      }
       return DataFailed(
         jsonData['error'] ?? 'unknown error',
         statusCode: response.statusCode,
@@ -160,9 +167,9 @@ class DataService {
     var headerMap = {
       HttpHeaders.contentTypeHeader: 'application/json',
       HttpHeaders.acceptHeader: 'application/json',
-      'lang':"en"
+      'lang': "en"
     };
-    String? token = box.read('token'); 
+    String? token = box.read('token');
     if (token != null && token.isNotEmpty) {
       headerMap[HttpHeaders.authorizationHeader] = 'Bearer $token';
     }

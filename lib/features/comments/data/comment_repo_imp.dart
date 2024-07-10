@@ -14,9 +14,9 @@ class CommentRepoImp implements CommentRepo {
       {required AddCommentData addCommentModel, required int postId}) async {
     final response = await _dataService.postData(
       endPoint:box.read('userType') == 'teacher'
-          ? 'teacher/dailyUpdatePost/addComment/$postId'
+          ? 'teacher/dailyUpdatePost/addComment'
           : box.read('userType') == 'supervisor'
-              ? 'supervisor/dailyUpdatePost/addComment/$postId'
+              ? 'supervisor/dailyUpdatePost/addComment'
               : box.read('userType') == 'guardian'
                   ? 'parent/dailyUpdatePost/addComment'
                   : 'student/dailyUpdatePost/addComment',

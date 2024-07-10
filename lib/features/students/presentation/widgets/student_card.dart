@@ -24,82 +24,104 @@ class StudentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final StudentController studentController = Get.find();
 
-    return Slidable(
-      startActionPane: ActionPane(
-        extentRatio: 0.54,
-        motion: const ScrollMotion(),
-        children: [
-          SlidableActionWidget(
-              color: AppColor.greyColor3,
-              label: 'Late'.tr,
-              onTap: () {
-                studentController.handleAttendance(
-                    'late', studentId, subjectId);
-              }),
-          SlidableActionWidget(
-            color: AppColor.amber2Color,
-            label: 'Excused'.tr,
-            onTap: () => studentController.handleAttendance(
-                'excused', studentId, subjectId),
-          ),
-          SlidableActionWidget(
-            color: AppColor.redColor,
-            label: 'Absent'.tr,
-            onTap: () => studentController.handleAttendance(
-                'absent', studentId, subjectId),
-          ),
-        ],
-      ),
-      endActionPane: ActionPane(
-        extentRatio: 0.25,
-        motion: const ScrollMotion(),
-        children: [
-          SlidableActionWidget(
-            color: AppColor.primaryColor,
-            label: 'Present'.tr,
-            onTap: () => studentController.handleAttendance(
-                'present', studentId, subjectId),
-          ),
-        ],
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          color: AppColor.whiteColor,
-          borderRadius: BorderRadius.circular(10.r),
+    return Obx(() {
+      String? status = studentController.studentAttendanceStatus[studentId];
+      Color cardColor;
+
+      switch (status) {
+        case 'absent':
+          cardColor = AppColor.redColor.withOpacity(0.5);
+          break;
+        case 'late':
+          cardColor = AppColor.greyColor3.withOpacity(0.5);
+          break;
+        case 'excused':
+          cardColor = AppColor.amber2Color.withOpacity(0.5);
+          break;
+        case 'present':
+          cardColor = AppColor.green2Color.withOpacity(0.5);
+          break;
+        default:
+          cardColor = AppColor.whiteColor;
+      }
+
+      return Slidable(
+        startActionPane: ActionPane(
+          extentRatio: 0.54,
+          motion: const ScrollMotion(),
+          children: [
+            SlidableActionWidget(
+                color: AppColor.greyColor3,
+                label: 'Late'.tr,
+                onTap: () {
+                  studentController.handleAttendance(
+                      'late', studentId, subjectId);
+                }),
+            SlidableActionWidget(
+              color: AppColor.amber2Color,
+              label: 'Excused'.tr,
+              onTap: () => studentController.handleAttendance(
+                  'excused', studentId, subjectId),
+            ),
+            SlidableActionWidget(
+              color: AppColor.redColor,
+              label: 'Absent'.tr,
+              onTap: () => studentController.handleAttendance(
+                  'absent', studentId, subjectId),
+            ),
+          ],
         ),
-        height: 75.h,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
-          child: Row(
-            children: [
-              Container(
-                height: 65.h,
-                width: 90.w,
-                decoration: BoxDecoration(
-                  color: AppColor.whiteColor,
-                  border: Border.all(color: AppColor.primaryColor),
-                  borderRadius: BorderRadius.circular(10.r),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10.r),
-                  child: Image.asset(AppImages.childrenImage, fit: BoxFit.fill),
-                ),
-              ),
-              SizedBox(width: 25.w),
-              SizedBox(
-                width: 80.w,
-                child: FittedBox(
-                  child: CustomText(
-                    text: name,
-                    fontSize: 20.sp,
-                    color: AppColor.primaryColor,
+        endActionPane: ActionPane(
+          extentRatio: 0.25,
+          motion: const ScrollMotion(),
+          children: [
+            SlidableActionWidget(
+              color: AppColor.primaryColor,
+              label: 'Present'.tr,
+              onTap: () => studentController.handleAttendance(
+                  'present', studentId, subjectId),
+            ),
+          ],
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: cardColor, // Change card color based on attendance status
+            borderRadius: BorderRadius.circular(10.r),
+          ),
+          height: 75.h,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+            child: Row(
+              children: [
+                Container(
+                  height: 65.h,
+                  width: 90.w,
+                  decoration: BoxDecoration(
+                    color: AppColor.whiteColor,
+                    border: Border.all(color: AppColor.primaryColor),
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10.r),
+                    child: Image.asset(AppImages.childrenImage, fit: BoxFit.fill),
                   ),
                 ),
-              ),
-            ],
+                SizedBox(width: 25.w),
+                SizedBox(
+                  width: 80.w,
+                  child: FittedBox(
+                    child: CustomText(
+                      text: name,
+                      fontSize: 20.sp,
+                      color: AppColor.primaryColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

@@ -1,6 +1,4 @@
 // ignore_for_file: must_be_immutable
-
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,7 +11,6 @@ import 'package:lms/core/widgets/custom_text.dart';
 import 'package:lms/core/widgets/loading_widget.dart';
 import 'package:lms/features/teacher/controller/activity_controller.dart';
 import 'package:lms/features/teacher/model/activity.dart';
-
 
 class ActivityCard extends StatelessWidget {
   Activity? activity;
@@ -51,11 +48,17 @@ class ActivityCard extends StatelessWidget {
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       CustomText(
                         text: title,
                         color: AppColor.primaryColor,
                         fontSize: 20.h,
+                      ),
+                      CustomText(
+                        text: desc,
+                        color: AppColor.greyColor,
+                        fontSize: 18.h,
                       ),
                       Row(
                         children: [
@@ -78,10 +81,14 @@ class ActivityCard extends StatelessWidget {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return Obx(
-                              () => activityController.isLoadingDelete.value
-                                  ? const LoadingWidget()
-                                  : SimpleDialog(
+                          return Obx(() => activityController
+                                  .isLoadingDelete.value
+                              ? const LoadingWidget()
+                              : Dialog(
+                                  child: SizedBox(
+                                  height: 120,
+                                  child: Center(
+                                    child: Column(
                                       children: [
                                         ListTile(
                                           title: CustomText(text: 'Update'.tr),
@@ -118,7 +125,9 @@ class ActivityCard extends StatelessWidget {
                                           },
                                         ),
                                       ],
-                                    ));
+                                    ),
+                                  ),
+                                )));
                         },
                       );
                     },
@@ -127,22 +136,22 @@ class ActivityCard extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(10.h),
-              child: AutoSizeText(
-                desc,
-                style: TextStyle(
-                  color: AppColor.primaryColor,
-                  //   fontSize: 18.sp,
-                ),
-                maxLines: 8,
-                minFontSize: 10.sp,
-                maxFontSize: 16.sp,
-                overflow: TextOverflow.visible,
-              ),
-            ),
-          ),
+          // Expanded(
+          //   child: Padding(
+          //     padding: EdgeInsets.all(10.h),
+          //     child: AutoSizeText(
+          //       desc,
+          //       style: TextStyle(
+          //         color: AppColor.primaryColor,
+          //         //   fontSize: 18.sp,
+          //       ),
+          //       maxLines: 8,
+          //       minFontSize: 10.sp,
+          //       maxFontSize: 16.sp,
+          //       overflow: TextOverflow.visible,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

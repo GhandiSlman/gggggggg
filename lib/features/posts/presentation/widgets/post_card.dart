@@ -88,6 +88,7 @@ class PostCard extends StatelessWidget {
                                                 leading: SvgPicture.asset(
                                                     AppImages.delete2Image),
                                                 onTap: () {
+                                                  print(post.id!);
                                                   postController
                                                       .deletePost(post.id!)
                                                       .then((value) =>

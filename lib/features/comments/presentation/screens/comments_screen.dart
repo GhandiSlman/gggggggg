@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:get/get.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_images.dart';
@@ -79,13 +80,15 @@ class CommentsScreen extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 return ShimmerWidget(height: 20.h);
                               },
-                              separatorBuilder: (BuildContext context, int index) {
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
                                 return SizedBox(height: 20.h);
                               },
                             );
                           } else if (isCommentWeekPlane
                               ? commentController.commentsList.isEmpty
-                              : commentController.commentWeekPlaneList.isEmpty) {
+                              : commentController
+                                  .commentWeekPlaneList.isEmpty) {
                             return Center(
                               child: CustomText(
                                 text: 'No Comments',
@@ -98,11 +101,13 @@ class CommentsScreen extends StatelessWidget {
                               controller: commentController.scrollController,
                               itemCount: isCommentWeekPlane == true
                                   ? commentController.commentsList.length
-                                  : commentController.commentWeekPlaneList.length,
+                                  : commentController
+                                      .commentWeekPlaneList.length,
                               itemBuilder: (context, index) {
                                 final comment = isCommentWeekPlane == true
                                     ? commentController.commentsList[index]
-                                    : commentController.commentWeekPlaneList[index];
+                                    : commentController
+                                        .commentWeekPlaneList[index];
 
                                 return Align(
                                   alignment: Alignment.centerLeft,
@@ -111,7 +116,8 @@ class CommentsScreen extends StatelessWidget {
                                   ),
                                 );
                               },
-                              separatorBuilder: (BuildContext context, int index) {
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
                                 return SizedBox(
                                   height: 50.h,
                                 );
@@ -121,37 +127,49 @@ class CommentsScreen extends StatelessWidget {
                         }),
                       ),
                       SizedBox(height: 20.h),
-                      Obx(() => CustomTextField(
-                            controller: isCommentWeekPlane == true
-                                ? commentController.comment
-                                : commentController.commentWeekPlane,
-                            maxLine: 2,
-                            minLine: 1,
-                            onChanged: (String val) {
-                              val.isEmpty
-                                  ? commentController.isTyping.value = false
-                                  : commentController.isTyping.value = true;
-                            },
-                            hint: 'Write a comment ..'.tr,
-                            filled: true,
-                            filledColor: AppColor.whiteColor,
-                            suffix: Padding(
-                                padding: EdgeInsets.all(10.h),
-                                child: commentController.isTyping.value
-                                    ? CommentImageButton(
-                                        onTap: () {
-                                          isCommentWeekPlane == true
-                                              ? commentController.addComment(postId)
-                                              : commentController
-                                                  .addCommentWeekPlane(weekPlaneId);
-                                        },
-                                        icon: Icon(
-                                          Icons.send,
-                                          color: AppColor.whiteColor,
-                                        ))
-                                    : CommentImageButton(
-                                        icon: SvgPicture.asset(AppImages.cameraImage),
-                                      )),
+                      Obx(() => Form(
+                            key: commentController.formKey,
+                            child: CustomTextField(
+                              validator:
+                                  ValidationBuilder().minLength(1).build(),
+                              controller: isCommentWeekPlane == true
+                                  ? commentController.comment
+                                  : commentController.commentWeekPlane,
+                              maxLine: 2,
+                              minLine: 1,
+                              onChanged: (String val) {
+                                val.isEmpty
+                                    ? commentController.isTyping.value = false
+                                    : commentController.isTyping.value = true;
+                              },
+                              hint: 'Write a comment ..'.tr,
+                              filled: true,
+                              filledColor: AppColor.whiteColor,
+                              suffix: Padding(
+                                  padding: EdgeInsets.all(10.h),
+                                  child: commentController.isTyping.value
+                                      ? CommentImageButton(
+                                          onTap: () {
+                                            if (commentController
+                                                .formKey.currentState!
+                                                .validate()) {
+                                              isCommentWeekPlane == true
+                                                  ? commentController
+                                                      .addComment(postId)
+                                                  : commentController
+                                                      .addCommentWeekPlane(
+                                                          weekPlaneId);
+                                            }
+                                          },
+                                          icon: Icon(
+                                            Icons.send,
+                                            color: AppColor.whiteColor,
+                                          ))
+                                      : CommentImageButton(
+                                          icon: SvgPicture.asset(
+                                              AppImages.cameraImage),
+                                        )),
+                            ),
                           )),
                     ],
                   );

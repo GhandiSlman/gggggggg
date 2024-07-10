@@ -21,7 +21,8 @@ class AddActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final arguments = Get.arguments;
-    final activityId = arguments['ativityId'];
+    final activityId = arguments['activityId'];
+    print(activityId);
     final isUpdated = arguments['isUpdate'];
     return Scaffold(
       backgroundColor: AppColor.scaffoldColor,
@@ -131,15 +132,27 @@ class AddActivityScreen extends StatelessWidget {
                       ? const LoadingWidget()
                       : CustomButton(
                           text: isUpdated == false ? 'Add'.tr : 'Update'.tr,
-                          onTap: () {
+                          onTap: () async {
                             isUpdated == false
                                 ? activityController
                                     .addActivity()
                                     .then((value) {
+                                    activityController.getSections();
+                                    activityController.getActivity(
+                                        activityController
+                                            .selectedSectionId.value);
                                     Get.back();
                                   })
                                 : activityController
-                                    .updateActivity(activityId.toString());
+                                    .updateActivity(activityId)
+                                    .then((value) {
+                                    activityController.getSections();
+                                    activityController.getActivity(
+                                        activityController
+                                            .selectedSectionId.value);
+                                    Get.back();
+                                    Get.back();
+                                  });
                           },
                           color: AppColor.primaryColor,
                           textColor: AppColor.whiteColor,

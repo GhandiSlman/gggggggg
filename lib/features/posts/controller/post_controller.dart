@@ -282,8 +282,9 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
   Future<void> deletePost(int postId) async {
     isLoadingDeletePost.value = true;
     final result = await postRepo.deletePost(postId: postId);
+     isLoadingDeletePost.value = false;
     if (result is DataSuccess<PostModel>) {
-      isLoadingDeletePost.value = false;
+     
       posts.removeWhere((post) => post.id == postId);
       CustomToast.showToast(
         message: 'Post deleted successfully'.tr,
@@ -293,7 +294,7 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
         isLongDuration: false,
         textColor: AppColor.whiteColor,
       );
-    } else if (result is DataFailed<PostModel>) {
+    } else if (result is DataFailed) {
       isLoadingDeletePost.value = false;
       CustomToast.showToast(
         message: 'Failed to delete post'.tr,

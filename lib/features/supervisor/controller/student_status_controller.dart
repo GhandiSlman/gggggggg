@@ -100,9 +100,8 @@ class StudentStatusController extends GetxController {
     if (sectionSubjectList.containsKey(className)) {
       for (var sectionSubject in sectionSubjectList[className]!) {
         selectedSectionId.value = sectionSubject.sectionId!;
-        //   selectedSubjectId.value = sectionSubject.subject!.id!;
+           selectedSubjectId.value = sectionSubject.subject!.id!;
       }
-      //geSectionSubject();
       getStudentStatus(selectedSectionId.value, selectedSubjectId.value);
     }
   }

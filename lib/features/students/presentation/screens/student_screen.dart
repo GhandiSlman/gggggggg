@@ -94,7 +94,7 @@ class StudentScreen extends StatelessWidget {
                                 fontSize: 20.sp,
                               ),
                             )
-                          : ListView.builder(
+                          : ListView.builder( 
                               itemCount: students.length,
                               itemBuilder: (context, index) {
                                 var student = students[index];
