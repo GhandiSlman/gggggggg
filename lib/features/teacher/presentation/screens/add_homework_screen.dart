@@ -1,3 +1,4 @@
+import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -42,10 +43,10 @@ class AddHomeWorkScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 10.h),
                 DropDownList(
-                  onSelectedItems: (List<String> selectedItems) {
+                  onSelectedItems: (List<SelectedListItem> selectedItems) {
                     if (selectedItems.isNotEmpty) {
-                      String selectedClass = selectedItems.last;
-                      homeWorkController.updateSelectedClass(selectedClass);
+                      String selectedClass = selectedItems.last.name;
+                      homeWorkController.updateSelectedClass(selectedItems.last);
 
                       int? sectionId =
                           homeWorkController.sectionToIdMap[selectedClass];

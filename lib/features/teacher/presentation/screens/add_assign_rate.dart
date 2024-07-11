@@ -1,3 +1,4 @@
+import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -39,11 +40,12 @@ class AddAsignRateScreen extends StatelessWidget {
                         .isLoadingStudentSubject.value
                     ? ShimmerWidget(height: 50.h)
                     : DropDownList(
-                        onSelectedItems: (List<String> selectedItems) {
+                        onSelectedItems:
+                            (List<SelectedListItem> selectedItems) {
                           continuousRatingController
-                              .updateSelectedStudent(selectedItems.last);
+                              .updateSelectedStudent(selectedItems.last.name);
                           String? studentId = continuousRatingController
-                              .studentToIdMap[selectedItems.last];
+                              .studentToIdMap[selectedItems.last.name];
                           if (studentId != null) {
                             continuousRatingController.selectedStudentId.value =
                                 studentId;
@@ -66,11 +68,11 @@ class AddAsignRateScreen extends StatelessWidget {
                         .isLoadingStudentSubject.value
                     ? ShimmerWidget(height: 50.h)
                     : DropDownList(
-                        onSelectedItems: (List<String> selectedItems) {
+                        onSelectedItems: (List<SelectedListItem> selectedItems) {
                           continuousRatingController
-                              .updateSelectedSubject(selectedItems.last);
+                              .updateSelectedSubject(selectedItems.last.name);
                           String? subjectId = continuousRatingController
-                              .subjectToIdMap[selectedItems.last];
+                              .subjectToIdMap[selectedItems.last.name];
                           if (subjectId != null) {
                             continuousRatingController.selectedSubjectId.value =
                                 subjectId;

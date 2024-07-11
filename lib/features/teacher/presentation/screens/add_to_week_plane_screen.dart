@@ -1,3 +1,4 @@
+import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -42,8 +43,8 @@ class AddToWeekPlaneScreen extends StatelessWidget {
                 ),
                 5.verticalSpace,
                 DropDownList(
-                    onSelectedItems: (List<String> selectedItems) {
-                      String selectedSection = selectedItems.last;
+                    onSelectedItems: (List<SelectedListItem> selectedItems) {
+                      String selectedSection = selectedItems.last.name;
                       weekPlaneController
                           .updateSelectedSection(selectedSection);
                     },
@@ -62,8 +63,8 @@ class AddToWeekPlaneScreen extends StatelessWidget {
                 5.verticalSpace,
 
                 DropDownList(
-                    onSelectedItems: (List<String> selectedItems) {
-                      String selectedSubject = selectedItems.last;
+                    onSelectedItems: (List<SelectedListItem> selectedItems) {
+                      String selectedSubject = selectedItems.last.name;
                       weekPlaneController
                           .updateSelectedSubject(selectedSubject);
                     },

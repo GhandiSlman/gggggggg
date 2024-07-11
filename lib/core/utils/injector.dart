@@ -80,11 +80,19 @@ class DependencyInjection {
     Get.lazyPut<StudentController>(() => StudentController(Get.find()),
         fenix: true);
 
+    //weekPlane  Repository lazy Initialization
+    Get.lazyPut<WeekPlaneRepo>(() => WeekPlaneRepoImp(Get.find()), fenix: true);
+
+    //weekPlane controller laze
+    Get.lazyPut<WeekPlaneController>(() => WeekPlaneController(Get.find()),
+        fenix: true);
+
     // HomeWork Repository Lazy Initialization
     Get.lazyPut<HomeWorkRepo>(() => HomeWorkRepoImp(Get.find()), fenix: true);
 
     //HomeWorkController Lazy Initialization
-    Get.lazyPut<HomeWorkController>(() => HomeWorkController(Get.find()),
+    Get.lazyPut<HomeWorkController>(
+        () => HomeWorkController(Get.find(), Get.find()),
         fenix: true);
 
     //TeacherController lazy Initialization
@@ -128,13 +136,6 @@ class DependencyInjection {
     Get.lazyPut<ActivityController>(() => ActivityController(Get.find()),
         fenix: true);
 
-    //weekPlane  Repository lazy Initialization
-    Get.lazyPut<WeekPlaneRepo>(() => WeekPlaneRepoImp(Get.find()), fenix: true);
-
-    //weekPlane controller laze
-    Get.lazyPut<WeekPlaneController>(() => WeekPlaneController(Get.find()),
-        fenix: true);
-
     // Ad Repo lazy Initialization;
     Get.lazyPut<AdvertisementsRepo>(() => AdvertisementsRepoImp(Get.find()),
         fenix: true);
@@ -163,13 +164,16 @@ class DependencyInjection {
     Get.lazyPut<ParentRepo>(() => ParentRepoImp(Get.find()), fenix: true);
 
     //parent Controller
-    Get.lazyPut<ParentController>(() => ParentController(Get.find()),fenix: true);
+    Get.lazyPut<ParentController>(() => ParentController(Get.find()),
+        fenix: true);
 
     //rating repo lazy
-    Get.lazyPut<ContinuousRatingRepo>(() => ContinuousRatingRepoImp(Get.find()), fenix: true);
-
+    Get.lazyPut<ContinuousRatingRepo>(() => ContinuousRatingRepoImp(Get.find()),
+        fenix: true);
 
     //rating controller
-    Get.lazyPut<ContinuousRatingController>(() => ContinuousRatingController(Get.find() , Get.find()),fenix: true);
+    Get.lazyPut<ContinuousRatingController>(
+        () => ContinuousRatingController(Get.find(), Get.find()),
+        fenix: true);
   }
 }

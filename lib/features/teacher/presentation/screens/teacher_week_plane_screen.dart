@@ -1,3 +1,4 @@
+import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -47,9 +48,10 @@ class TeacherWeekPlaneScreen extends StatelessWidget {
                         () => weekPlaneController.isLoadingSection.value
                             ? ShimmerWidget(height: 50.h)
                             : DropDownList(
-                                onSelectedItems: (List<String> selectedItems) {
+                                onSelectedItems:
+                                    (List<SelectedListItem> selectedItems) {
                                   weekPlaneController.updateSelectedSection(
-                                      selectedItems.last);
+                                      selectedItems.last.name);
                                 },
                                 dataList: weekPlaneController.showSectionList,
                                 textEditingController:

@@ -1,3 +1,4 @@
+import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -42,19 +43,22 @@ class TeacherClassRoomScreen extends StatelessWidget {
                               ? ShimmerWidget(
                                   height: 50.h,
                                 )
-                              : DropDownList(
-                                  onSelectedItems:
-                                      (List<String> selectedItems) {
-                                    if (selectedItems.isNotEmpty) {
-                                      homeWorkController.updateSelectedClass(
-                                          selectedItems.last);
-                                    }
-                                  },
-                                  dataList: homeWorkController.classList,
-                                  textEditingController:
-                                      homeWorkController.classController,
-                                  hint: 'Choose class'.tr,
-                                  isCitySelected: true),
+                              : Builder(builder: (context) {
+                                  return DropDownList(
+                                      onSelectedItems: (List<SelectedListItem>
+                                          selectedItems) {
+                                        if (selectedItems.isNotEmpty) {
+                                          homeWorkController
+                                              .updateSelectedClass(
+                                                  selectedItems.last);
+                                        }
+                                      },
+                                      dataList: homeWorkController.classList,
+                                      textEditingController:
+                                          homeWorkController.classController,
+                                      hint: 'Choose class'.tr,
+                                      isCitySelected: true);
+                                }),
                         )),
                     Obx(
                       () => TabBar(
@@ -82,10 +86,9 @@ class TeacherClassRoomScreen extends StatelessWidget {
                 ),
               )
             : TabBarView(
-              physics: const NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 controller: homeWorkController.tabController,
-                children: 
-               homeWorkController.myTabs.isEmpty
+                children: homeWorkController.myTabs.isEmpty
                     ? [
                         Center(
                             child: CustomText(
@@ -93,8 +96,7 @@ class TeacherClassRoomScreen extends StatelessWidget {
                                 color: AppColor.primaryColor,
                                 fontSize: 20.sp))
                       ]
-                    : 
-                    homeWorkController.myTabs.map((tab) {
+                    : homeWorkController.myTabs.map((tab) {
                         return homeWorkController.homeWorkList.isEmpty
                             ? Center(
                                 child: CustomText(

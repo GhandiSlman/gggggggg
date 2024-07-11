@@ -8,15 +8,19 @@ import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_toast.dart';
 import 'package:lms/features/teacher/data/homework_repo.dart';
+import 'package:lms/features/teacher/data/week_plane_repo.dart';
 import 'package:lms/features/teacher/model/create_details_homework.dart';
 import 'package:lms/features/teacher/model/add_home_work.dart';
 import 'package:lms/features/teacher/model/get_homework_model.dart';
+import 'package:lms/features/teacher/model/section_and_subjects.dart'
+    as new_subjects_model;
 
 class HomeWorkController extends GetxController
     with GetTickerProviderStateMixin {
   final HomeWorkRepo homeWorkRepo;
+  final WeekPlaneRepo weekPlaneRepo;
 
-  HomeWorkController(this.homeWorkRepo);
+  HomeWorkController(this.homeWorkRepo, this.weekPlaneRepo);
 
   late TabController tabController;
   late TextEditingController classController;
@@ -38,8 +42,8 @@ class HomeWorkController extends GetxController
   var classList = <SelectedListItem>[].obs;
   var selectedSectionSubjectList = <SelectedListItem>[].obs;
 
-  Map<String, Map<String, List<SubjectsHomeWork>>> subjectList =
-      <String, Map<String, List<SubjectsHomeWork>>>{};
+  Map<String, Map<String, List<new_subjects_model.Subject>>> subjectList =
+      <String, Map<String, List<new_subjects_model.Subject>>>{};
   Map<String, Map<String, List<SectionsHomeWork>>> sectionSubjectList =
       <String, Map<String, List<SectionsHomeWork>>>{};
 
@@ -55,8 +59,7 @@ class HomeWorkController extends GetxController
 
   Future<void> getSubjects() async {
     isLoadingSubject.value = true;
-    final DataState result = await homeWorkRepo.getSubjects(
-        createDetailsHomeWork: CreateDetailsHomeWork());
+    final DataState result = await weekPlaneRepo.getSectionsAndSubjects();
     isLoadingSubject.value = false;
     if (result is DataSuccess) {
       var createSubject = result.data!;
@@ -67,28 +70,38 @@ class HomeWorkController extends GetxController
       sectionToIdMap.clear();
       subjectToIdMap.clear();
 
-      for (var res in createSubject.data!) {
-        for (var grade in res.grades!) {
-          for (var section in grade.sections!) {
+      for (var res in createSubject.result) {
+        for (var grade in res.grades) {
+          for (var section in grade.sections) {
             String combinedName =
-                '${box.read('langCode') == 'ar' ? grade.name!.ar! : grade.name!.en!} ${box.read('langCode') == 'ar' ? section.name!.ar! : section.name!.en!}';
-            classList.add(SelectedListItem(name: combinedName));
+                '${box.read('langCode') == 'ar' ? grade.name.ar : grade.name.en!} ${box.read('langCode') == 'ar' ? section.name.ar : section.name.en!}';
+            classList.add(SelectedListItem(
+                name: combinedName, value: section.id.toString()));
+            print(section.id.toString() + "combinedName");
             subjectList[combinedName] = {};
-            for (var sectionSubject in grade.subjects!) {
+            sectionSubjectList[combinedName] = {};
+            for (var sectionSubject in section.subjects) {
               String combinedSectionSubjectName =
-                  '${box.read('langCode') == 'ar' ? section.name!.ar! : section.name!.en!} ${box.read('langCode') == 'ar' ? sectionSubject.name!.ar! : sectionSubject.name!.en!}';
-              selectedSectionSubjectList
-                  .add(SelectedListItem(name: combinedSectionSubjectName));
-              sectionToIdMap[combinedSectionSubjectName] = section.id!;
-              subjectToIdMap[combinedSectionSubjectName] = sectionSubject.id!;
+                  '${box.read('langCode') == 'ar' ? section.name.ar : section.name.en!} ${box.read('langCode') == 'ar' ? sectionSubject.name.ar : sectionSubject.name.en!}';
+              selectedSectionSubjectList.add(SelectedListItem(
+                  name: combinedSectionSubjectName,
+                  value: sectionSubject.id.toString()));
+              sectionToIdMap[combinedSectionSubjectName] = section.id;
+              subjectToIdMap[combinedSectionSubjectName] = sectionSubject.id;
 
               String subjectName = box.read('langCode') == 'ar'
-                  ? sectionSubject.name!.ar!
-                  : sectionSubject.name!.en!;
+                  ? sectionSubject.name.ar
+                  : sectionSubject.name.en!;
               if (!subjectList[combinedName]!.containsKey(subjectName)) {
                 subjectList[combinedName]![subjectName] = [];
               }
+
+              if (!sectionSubjectList[combinedName]!.containsKey(subjectName)) {
+                sectionSubjectList[combinedName]![subjectName] = [];
+              }
               subjectList[combinedName]![subjectName]!.add(sectionSubject);
+              sectionSubjectList[combinedName]![subjectName]!
+                  .add(SectionsHomeWork.fromJson(sectionSubject.toJson()));
             }
           }
         }
@@ -105,13 +118,15 @@ class HomeWorkController extends GetxController
     }
   }
 
-  void updateSelectedClass(String className) {
-    selectedClass.value = [className];
-    selectedSubject.value = [className];
+  void updateSelectedClass(SelectedListItem className) {
+    selectedSectionId.value = int.tryParse(className.value.toString()) ?? -1;
+    print(selectedSectionId.value.toString() + "sdasdd");
+    selectedClass.value = [className.name];
+    selectedSubject.value = [className.name];
     myTabs.clear();
     selectedClass.clear();
-    if (subjectList.containsKey(className)) {
-      subjectList[className]!.forEach((subjectName, students) {
+    if (subjectList.containsKey(className.name)) {
+      subjectList[className.name]!.forEach((subjectName, students) {
         myTabs.add(Tab(text: subjectName));
       });
     }
@@ -122,15 +137,14 @@ class HomeWorkController extends GetxController
   }
 
   void updateSelectedSectionId(int sectionId, int subjectId) {
-    selectedSectionId.value = sectionId;
     selectedSubjectId.value = subjectId;
   }
 
-  void updateOnClassChange() {
-    if (classController.text.isNotEmpty) {
-      updateSelectedClass(classController.text);
-    }
-  }
+  // void updateOnClassChange() {
+  //   if (classController.text.isNotEmpty) {
+  //     // updateSelectedClass(classController.text);
+  //   }
+  // }
 
   Future<void> addHomeWork() async {
     isLoadingAddUpdateHomeWork.value = true;
@@ -261,7 +275,7 @@ class HomeWorkController extends GetxController
       if (subjectList[className]?.containsKey(tabText) ?? false) {
         var sectionId = subjectList[className]![tabText]!.first;
         var subjectId = sectionSubjectList[className]![tabText]!.first;
-        updateSelectedSectionId(sectionId.id!, subjectId.id!);
+        updateSelectedSectionId(sectionId.id, subjectId.id!);
         getHomeWork();
       }
     }
@@ -278,7 +292,7 @@ class HomeWorkController extends GetxController
     tabController = TabController(
         length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
         vsync: this);
-    classController.addListener(updateOnClassChange);
+    // classController.addListener(updateOnClassChange);
     box.read('userType') == 'teacher' ? getSubjects() : getHomeWork();
   }
 

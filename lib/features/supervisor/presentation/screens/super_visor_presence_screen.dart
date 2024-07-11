@@ -1,3 +1,4 @@
+import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -31,10 +32,10 @@ class SuperVisorPresenceScreen extends StatelessWidget {
                               height: 50.h,
                             )
                           : DropDownList(
-                              onSelectedItems: (List<String> selectedItems) {
+                              onSelectedItems: (List<SelectedListItem> selectedItems) {
                                 if (selectedItems.isNotEmpty) {
                                   studentStatusController
-                                      .updateSelectedClass(selectedItems.last);
+                                      .updateSelectedClass(selectedItems.last.name);
                                 }
                               },
                               dataList: studentStatusController.classList,

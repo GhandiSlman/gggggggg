@@ -6,7 +6,6 @@ import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_images.dart';
 
-
 class HomeController extends GetxController {
   //Teacher//
   final List<String> techerTitle = [
@@ -123,7 +122,6 @@ class HomeController extends GetxController {
   final List studentOnPressed = [
     () {
       Get.toNamed(AppRouter.parentHonorBoardScreen);
-   
     },
     () => Get.toNamed(AppRouter.classScheduleScreen),
     () => Get.toNamed(AppRouter.activityScreen),
