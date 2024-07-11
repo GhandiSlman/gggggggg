@@ -260,8 +260,8 @@ class HomeWorkController extends GetxController
       String className = selectedSubject.first;
       if (subjectList[className]?.containsKey(tabText) ?? false) {
         var sectionId = subjectList[className]![tabText]!.first;
-        var subjectId = sectionSubjectList[className]![tabText]!.first;
-        updateSelectedSectionId(sectionId.id!, subjectId.id!);
+        //  var subjectId = sectionSubjectList[className]![tabText]!.first;
+        updateSelectedSectionId(sectionId.id!, sectionId.id!);
         getHomeWork();
       }
     }
