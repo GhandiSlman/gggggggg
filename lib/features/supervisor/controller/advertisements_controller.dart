@@ -69,7 +69,7 @@ class AdvertisementsController extends GetxController
         advertisements: Advertisements());
     isLoadingGetAd.value = false;
     advertisementsList.clear();
-    if (result is DataSuccess<Advertisements>) {
+    if (result is DataSuccess) {
       for (var ad in result.data!.advertisements!) {
         if (ad.createdAt != null) {
           final DateTime dateTime = DateTime.parse(ad.createdAt!);
@@ -97,7 +97,7 @@ class AdvertisementsController extends GetxController
         advertisements: Advertisements());
     isLoadingGetMyAd.value = false;
     myAdvertisementsList.clear();
-    if (result is DataSuccess<Advertisements>) {
+    if (result is DataSuccess) {
       for (var ad in result.data!.advertisements!) {
         if (ad.createdAt != null) {
           final DateTime dateTime = DateTime.parse(ad.createdAt!);
@@ -186,7 +186,7 @@ class AdvertisementsController extends GetxController
         await _advertisementsRepo.deleteAdvertisement(id: id);
     isLoadingDelete.value = false;
 
-    if (result is DataSuccess<Advertisements>) {
+    if (result is DataSuccess) {
       myAdvertisementsList.removeWhere((ad) => ad.id == id);
       CustomToast.showToast(
         message: 'Ad deleted successfully'.tr,

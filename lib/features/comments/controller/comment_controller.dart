@@ -46,7 +46,7 @@ class CommentController extends GetxController {
 
     isAddingComment.value = false;
 
-    if (result is DataSuccess<AddCommentData>) {
+    if (result is DataSuccess) {
     } else {
       commentsList.remove(newComment);
       CustomToast.showToast(
@@ -94,7 +94,7 @@ class CommentController extends GetxController {
 
     isAddingComment.value = false;
 
-    if (result is DataSuccess<AddCommentWeekPlane>) {
+    if (result is DataSuccess) {
     } else if (result is DataFailed) {
       commentWeekPlaneList.remove(newComment);
       CustomToast.showToast(
@@ -134,7 +134,7 @@ class CommentController extends GetxController {
     final DataState result = await commentRepo.getCommentWeekPlane(
         weekPlaneId: weekPlanId, getCommentWeekPlane: GetCommentWeekPlane());
     isLoadingComment.value = false;
-    if (result is DataSuccess<GetCommentWeekPlane>) {
+    if (result is DataSuccess) {
       commentWeekPlaneList.addAll(result.data!.result!.comments!);
     } else if (result is DataFailed<GetCommentWeekPlane>) {
       CustomToast.showToast(

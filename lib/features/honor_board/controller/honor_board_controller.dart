@@ -123,7 +123,7 @@ class HonorBoardController extends GetxController {
 
     isLoading.value = false;
     subjectList.clear();
-    if (result is DataSuccess<StudentAttendance>) {
+    if (result is DataSuccess) {
       var attendance = result.data!;
       classList.clear();
       showClassList.clear();
@@ -260,7 +260,7 @@ class HonorBoardController extends GetxController {
         getStudentHonorBoardModel: GetStudentHonorBoardModel(),
         subjectId: subjectId);
     isLoadingStudentH.value = false;
-    if (result is DataSuccess<GetStudentHonorBoardModel>) {
+    if (result is DataSuccess) {
       honorBoardStudentList.clear();
       honorBoardStudentList.addAll(result.data!.honorBoard!);
     } else if (result is DataFailed) {

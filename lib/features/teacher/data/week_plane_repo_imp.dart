@@ -80,7 +80,7 @@ class WeekPlaneRepoImp implements WeekPlaneRepo {
     final response = await _dataService.getData(
       endPoint: 'student/info',
       baseUrl: baseUrl,
-      fromJson: (Map<String, dynamic> json) => StudentInfo.fromJson(json),
+      fromJson: StudentInfo.fromJson,
     );
     return response;
   }

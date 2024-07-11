@@ -38,17 +38,15 @@ class HomeWorkController extends GetxController
   var classList = <SelectedListItem>[].obs;
   var selectedSectionSubjectList = <SelectedListItem>[].obs;
 
-  Map<String, Map<String, List<SectionSubjects>>> subjectList =
-      <String, Map<String, List<SectionSubjects>>>{};
-  Map<String, Map<String, List<SectionSubjects>>> sectionSubjectList =
-      <String, Map<String, List<SectionSubjects>>>{};
+  Map<String, Map<String, List<SubjectsHomeWork>>> subjectList =
+      <String, Map<String, List<SubjectsHomeWork>>>{};
+  Map<String, Map<String, List<SectionsHomeWork>>> sectionSubjectList =
+      <String, Map<String, List<SectionsHomeWork>>>{};
 
-  RxList<HomeWorkData> homeWorkList = <HomeWorkData>[].obs;
+  RxList<GetHomeWorkData> homeWorkList = <GetHomeWorkData>[].obs;
 
   RxList<Tab> noDataTabs = <Tab>[
-    Tab(
-      text: 'No subjects'.tr
-    ),
+    Tab(text: 'No subjects'.tr),
   ].obs;
   RxList<Tab> myTabs = <Tab>[].obs;
 
@@ -60,7 +58,7 @@ class HomeWorkController extends GetxController
     final DataState result = await homeWorkRepo.getSubjects(
         createDetailsHomeWork: CreateDetailsHomeWork());
     isLoadingSubject.value = false;
-    if (result is DataSuccess<CreateDetailsHomeWork>) {
+    if (result is DataSuccess) {
       var createSubject = result.data!;
       classList.clear();
       subjectList.clear();
@@ -76,18 +74,17 @@ class HomeWorkController extends GetxController
                 '${box.read('langCode') == 'ar' ? grade.name!.ar! : grade.name!.en!} ${box.read('langCode') == 'ar' ? section.name!.ar! : section.name!.en!}';
             classList.add(SelectedListItem(name: combinedName));
             subjectList[combinedName] = {};
-            for (var sectionSubject in section.sectionSubjects!) {
+            for (var sectionSubject in grade.subjects!) {
               String combinedSectionSubjectName =
-                  '${box.read('langCode') == 'ar' ? section.name!.ar! : section.name!.en!} ${box.read('langCode') == 'ar' ? sectionSubject.subject!.name!.ar! : sectionSubject.subject!.name!.en!}';
+                  '${box.read('langCode') == 'ar' ? section.name!.ar! : section.name!.en!} ${box.read('langCode') == 'ar' ? sectionSubject.name!.ar! : sectionSubject.name!.en!}';
               selectedSectionSubjectList
                   .add(SelectedListItem(name: combinedSectionSubjectName));
               sectionToIdMap[combinedSectionSubjectName] = section.id!;
-              subjectToIdMap[combinedSectionSubjectName] =
-                  sectionSubject.subject!.id!;
+              subjectToIdMap[combinedSectionSubjectName] = sectionSubject.id!;
 
               String subjectName = box.read('langCode') == 'ar'
-                  ? sectionSubject.subject!.name!.ar!
-                  : sectionSubject.subject!.name!.en!;
+                  ? sectionSubject.name!.ar!
+                  : sectionSubject.name!.en!;
               if (!subjectList[combinedName]!.containsKey(subjectName)) {
                 subjectList[combinedName]![subjectName] = [];
               }
@@ -242,7 +239,7 @@ class HomeWorkController extends GetxController
       subjectId: selectedSubjectId.value,
     );
     isLoadingGetHomeWork.value = false;
-    if (result is DataSuccess<GetHomeWorkModel>) {
+    if (result is DataSuccess) {
       homeWorkList.clear();
       homeWorkList.addAll(result.data!.data!);
     } else if (DataState is DataFailed) {
@@ -262,9 +259,9 @@ class HomeWorkController extends GetxController
       String tabText = myTabs[tabIndex].text!;
       String className = selectedSubject.first;
       if (subjectList[className]?.containsKey(tabText) ?? false) {
-        var sectionsSubjects = subjectList[className]![tabText]!.first;
-        updateSelectedSectionId(
-            sectionsSubjects.id!, sectionsSubjects.subject!.id!);
+        var sectionId = subjectList[className]![tabText]!.first;
+        var subjectId = sectionSubjectList[className]![tabText]!.first;
+        updateSelectedSectionId(sectionId.id!, subjectId.id!);
         getHomeWork();
       }
     }

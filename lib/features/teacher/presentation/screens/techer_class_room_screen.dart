@@ -84,7 +84,8 @@ class TeacherClassRoomScreen extends StatelessWidget {
             : TabBarView(
               physics: const NeverScrollableScrollPhysics(),
                 controller: homeWorkController.tabController,
-                children: homeWorkController.myTabs.isEmpty
+                children: 
+               homeWorkController.myTabs.isEmpty
                     ? [
                         Center(
                             child: CustomText(
@@ -92,7 +93,8 @@ class TeacherClassRoomScreen extends StatelessWidget {
                                 color: AppColor.primaryColor,
                                 fontSize: 20.sp))
                       ]
-                    : homeWorkController.myTabs.map((tab) {
+                    : 
+                    homeWorkController.myTabs.map((tab) {
                         return homeWorkController.homeWorkList.isEmpty
                             ? Center(
                                 child: CustomText(
@@ -111,7 +113,7 @@ class TeacherClassRoomScreen extends StatelessWidget {
                                       homeWorkData: homeWorkController
                                           .homeWorkList[index],
                                       name: subject.title!,
-                                      date: '${subject.endDate}',
+                                      date: '${subject.createdAt}',
                                       id: homeWorkController
                                           .homeWorkList[index].id!,
                                     ),

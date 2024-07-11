@@ -122,7 +122,7 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
     final DataState result =
         await postRepo.like(addCommentModel: LikeModel(), postId: post.id!);
 
-    if (result is! DataSuccess<LikeModel>) {
+    if (result is! DataSuccess) {
       post.isFavorite = isCurrentlyLiked;
       post.likesCount = (post.likesCount ?? 0) + (isCurrentlyLiked ? 1 : -1);
       posts.refresh();
@@ -147,7 +147,7 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
     final DataState result =
         await postRepo.updatePost(updatePostData: addPostModel, id: postId);
 
-    if (result is DataSuccess<UpdatePostData>) {
+    if (result is DataSuccess) {
       descController.clear();
       images.clear();
       isLoadingAddPost.value = false;
@@ -183,7 +183,7 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
       addPostModel: addPostModel,
     );
     isLoadingAddPost.value = false;
-    if (result is DataSuccess<Homework>) {
+    if (result is DataSuccess) {
       descController.clear();
       images.clear();
       CustomToast.showToast(
@@ -210,7 +210,7 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
     isLoadingGetClasses.value = true;
     final DataState result = await studentRepo.getClasses(StudentAttendance());
     isLoadingGetClasses.value = false;
-    if (result is DataSuccess<StudentAttendance>) {
+    if (result is DataSuccess) {
       var attendance = result.data!;
       classList.clear();
       studentList.clear();
@@ -283,7 +283,7 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
     isLoadingDeletePost.value = true;
     final result = await postRepo.deletePost(postId: postId);
      isLoadingDeletePost.value = false;
-    if (result is DataSuccess<PostModel>) {
+    if (result is DataSuccess) {
      
       posts.removeWhere((post) => post.id == postId);
       CustomToast.showToast(
@@ -316,7 +316,7 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
     final response = await postRepo.getPosts(
         page: currentPage, postModel: PostModel(), gradeId: gradeId);
     isLoadingGetPost.value = false;
-    if (response is DataSuccess<PostModel>) {
+    if (response is DataSuccess) {
       if (response.data!.data!.data!.isEmpty) {
         hasMorePages = false;
       } else {
@@ -349,7 +349,7 @@ class PostController extends GetxController with GetTickerProviderStateMixin {
     final response = await postRepo.getPosts(
         page: currentPage, postModel: PostModel(), gradeId: gradeId);
 
-    if (response is DataSuccess<PostModel>) {
+    if (response is DataSuccess) {
       if (response.data!.data!.data!.isEmpty) {
         hasMorePages = false;
       } else {

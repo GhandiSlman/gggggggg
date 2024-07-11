@@ -40,7 +40,7 @@ class AuthController extends GetxController {
 
     final DataState loginResult = await authRepo.logIn(loginModel: loginModel);
     isLoading.value = false;
-    if (loginResult is DataSuccess<GetLoginModel>) {
+    if (loginResult is DataSuccess) {
       await box.write('token', loginResult.data!.accessToken);
       await box.write('userType', loginResult.data!.user!.role);
 
@@ -59,7 +59,7 @@ class AuthController extends GetxController {
 
   Future<void> logOut() async {
     final DataState logoutResult = await authRepo.logOut();
-    if (logoutResult is DataSuccess<GetLoginModel>) {
+    if (logoutResult is DataSuccess) {
       await box.remove('token');
       Get.offAllNamed(AppRouter.loginScreen);
     } else if (logoutResult is DataFailed) {}

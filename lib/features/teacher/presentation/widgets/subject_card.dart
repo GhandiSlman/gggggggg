@@ -12,7 +12,7 @@ import 'package:lms/features/teacher/model/get_homework_model.dart';
 import 'package:lms/features/teacher/presentation/widgets/slidable_action.dart';
 
 class SubjectCard extends StatelessWidget {
-  final HomeWorkData homeWorkData;
+  final GetHomeWorkData homeWorkData;
   final String name;
   final String date;
   final int id;
@@ -32,7 +32,7 @@ class SubjectCard extends StatelessWidget {
           ActionPane(extentRatio: 0.5, motion: const ScrollMotion(), children: [
         SlidableActionTecherWidget(
           color: AppColor.redColor,
-          label: 'Delete',
+          label: 'Delete'.tr,
           imagePath: AppImages.deleteImage,
           onTap: () {
             homeWorkController.deleteHomeWork(id);
@@ -40,7 +40,7 @@ class SubjectCard extends StatelessWidget {
         ),
         SlidableActionTecherWidget(
           color: AppColor.primaryColor,
-          label: 'Edit',
+          label: 'Edit'.tr,
           imagePath: AppImages.editImage,
           onTap: () {
             Get.toNamed(

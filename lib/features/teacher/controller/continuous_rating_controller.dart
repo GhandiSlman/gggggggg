@@ -72,7 +72,7 @@ class ContinuousRatingController extends GetxController {
     showStudentList.clear();
     isLoadingStudentSubject.value = false;
 
-    if (result is DataSuccess<StudentAttendance>) {
+    if (result is DataSuccess) {
       classList.clear();
       showClassList.clear();
       subjectList.clear();
@@ -148,7 +148,7 @@ class ContinuousRatingController extends GetxController {
         continuousRating: ContinuousRating());
     isLoadingGetCon.value = false;
     ratingList.clear();
-    if (result is DataSuccess<ContinuousRating>) {
+    if (result is DataSuccess) {
       ratingList.addAll(result.data!.data!);
     } else if (result is DataFailed) {
       CustomToast.showToast(
@@ -171,7 +171,7 @@ class ContinuousRatingController extends GetxController {
     final DataState result = await continuousRatingRepo.addContinuousRate(
         addContinuousRating: addContinuousRating);
     isLoadingAddCon.value = false;
-    if (result is DataSuccess<AddContinuousRatingData>) {
+    if (result is DataSuccess) {
       rateController.clear();
       pointController.clear();
       CustomToast.showToast(
@@ -202,7 +202,7 @@ class ContinuousRatingController extends GetxController {
             rateId: rateId);
     ratingStudentList.clear();
     isLoadnigGetRateStudent.value = false;
-    if (result is DataSuccess<GetContinuousRateStudent>) {
+    if (result is DataSuccess) {
       ratingStudentList.addAll(result.data!.data!);
     } else if (result is DataFailed) {
       CustomToast.showToast(
@@ -228,7 +228,7 @@ class ContinuousRatingController extends GetxController {
         await continuousRatingRepo.addContinuousRateStudent(
             addContinuousRateStudent: addContinuousRatingStudent);
     isLoadnigAddRateStudent.value = false;
-    if (result is DataSuccess<GetAddContinuousRateStudent>) {
+    if (result is DataSuccess) {
       rateController.clear();
       pointController.clear();
       CustomToast.showToast(
@@ -261,7 +261,7 @@ class ContinuousRatingController extends GetxController {
         await continuousRatingRepo.updateContinuousRateStudent(
             updateContinuousRate: updateContinuousRate, id: id);
     isLoadingAddCon.value = false;
-    if (result is DataSuccess<UpdateContinuousRateData>) {
+    if (result is DataSuccess) {
       rateController.clear();
       pointController.clear();
       CustomToast.showToast(
@@ -286,7 +286,7 @@ class ContinuousRatingController extends GetxController {
 
   Future<void> deleteRate(int id) async {
     final result = await continuousRatingRepo.deleteContinuousRate(id: id);
-    if (result is DataSuccess<ContinuousRating>) {
+    if (result is DataSuccess) {
       ratingList.removeWhere((rate) => rate.id == id);
       CustomToast.showToast(
         message: 'Rate deleted successfully'.tr,
@@ -311,7 +311,7 @@ class ContinuousRatingController extends GetxController {
   Future<void> deleteRateStudent(int id) async {
     final result =
         await continuousRatingRepo.deleteContinuousRateStudent(id: id);
-    if (result is DataSuccess<GetContinuousRateStudent>) {
+    if (result is DataSuccess) {
       ratingStudentList.removeWhere((rate) => rate.id == id);
       CustomToast.showToast(
         message: 'Rate deleted successfully'.tr,

@@ -59,7 +59,7 @@ class ActivityController extends GetxController {
 
     isLoadingSection.value = false;
 
-    if (result is DataSuccess<StudentAttendance>) {
+    if (result is DataSuccess) {
       var attendance = result.data!;
       showSectionList.clear();
       sectionList.clear();
@@ -111,7 +111,7 @@ class ActivityController extends GetxController {
         createActivityModel: createActivityModel);
     isAdded.value = false;
 
-    if (result is DataSuccess<CreateActivityModel>) {
+    if (result is DataSuccess) {
       titleController.clear();
       descriptionController.clear();
       dateController.clear();
@@ -151,7 +151,7 @@ class ActivityController extends GetxController {
         createActivityModel: createActivityModel);
     isAdded.value = false;
 
-    if (result is DataSuccess<UpdateActivityModel>) {
+    if (result is DataSuccess) {
       titleController.clear();
       descriptionController.clear();
       dateController.clear();
@@ -180,7 +180,7 @@ class ActivityController extends GetxController {
     isLoadingDelete.value = true;
     final result = await activityRepo.deleteActivity(activityId: activityId);
     isLoadingDelete.value = false;
-    if (result is DataSuccess<GetActivity>) {
+    if (result is DataSuccess) {
       activityList.removeWhere((activity) => activity.id == activityId);
       CustomToast.showToast(
         message: 'Activity deleted successfully'.tr,
@@ -208,7 +208,7 @@ class ActivityController extends GetxController {
     final result = await activityRepo.getActivity(
         sectionId: sectionId, getActivity: GetActivity());
     isGetActivity.value = false;
-    if (result is DataSuccess<GetActivity>) {
+    if (result is DataSuccess) {
       activityList.clear();
       if (result.data?.activity != null) {
         activityList.addAll(result.data!.activity!);
@@ -230,7 +230,7 @@ class ActivityController extends GetxController {
     final result =
         await activityRepo.getActivitySuper(getActivity: GetActivity());
     isGetActivity.value = false;
-    if (result is DataSuccess<GetActivity>) {
+    if (result is DataSuccess) {
       activityList.clear();
       if (result.data?.activity != null) {
         activityList.addAll(result.data!.activity!);

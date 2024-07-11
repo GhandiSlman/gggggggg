@@ -6,10 +6,10 @@ import 'package:get/get.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_app_bar.dart';
-import 'package:lms/core/widgets/custom_text.dart';
 import 'package:lms/core/widgets/shimmer.dart';
 import 'package:lms/features/teacher/controller/class_schedule_controller.dart';
 import 'package:lms/features/teacher/presentation/widgets/class_schedule_card.dart';
+import 'package:lms/features/teacher/presentation/widgets/class_schedule_list_view.dart';
 
 class ClassScheduleScreen extends StatelessWidget {
   const ClassScheduleScreen({super.key});
@@ -29,86 +29,8 @@ class ClassScheduleScreen extends StatelessWidget {
               child: Obx(() {
                 return classScheduleController.isLoading.value
                     ? ShimmerWidget(height: 20.h)
-                    : ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: box.read('userType') == 'teacher'
-                            ? classScheduleController.scheduleByDay.keys
-                                .map((day) {
-                                return GestureDetector(
-                                  onTap: () => classScheduleController
-                                      .filterScheduleByDay(day),
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10.w),
-                                    child: Container(
-                                      width: 80.w,
-                                      decoration: BoxDecoration(
-                                          color: classScheduleController
-                                                      .selectedDay.value ==
-                                                  day
-                                              ? AppColor.primaryColor
-                                              : AppColor.whiteColor,
-                                          borderRadius:
-                                              BorderRadius.circular(30.r),
-                                          border: Border.all(
-                                              color: classScheduleController
-                                                          .selectedDay.value ==
-                                                      day
-                                                  ? AppColor.whiteColor
-                                                  : AppColor.primaryColor)),
-                                      child: Center(
-                                          child: CustomText(
-                                        text: day,
-                                        color: classScheduleController
-                                                    .selectedDay.value ==
-                                                day
-                                            ? AppColor.whiteColor
-                                            : AppColor.primaryColor,
-                                      )),
-                                    ),
-                                  ),
-                                );
-                              }).toList()
-                            : classScheduleController.scheduleByDayStudent.keys
-                                .map((day) {
-                                return GestureDetector(
-                                  onTap: () => classScheduleController
-                                      .filterScheduleByDayStudent(day),
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 10.w),
-                                    child: Container(
-                                      width: 80.w,
-                                      decoration: BoxDecoration(
-                                          color: classScheduleController
-                                                      .selectedDayStudent
-                                                      .value ==
-                                                  day
-                                              ? AppColor.primaryColor
-                                              : AppColor.whiteColor,
-                                          borderRadius:
-                                              BorderRadius.circular(30.r),
-                                          border: Border.all(
-                                              color: classScheduleController
-                                                          .selectedDayStudent
-                                                          .value ==
-                                                      day
-                                                  ? AppColor.whiteColor
-                                                  : AppColor.primaryColor)),
-                                      child: Center(
-                                          child: CustomText(
-                                        text: day,
-                                        color: classScheduleController
-                                                    .selectedDayStudent.value ==
-                                                day
-                                            ? AppColor.whiteColor
-                                            : AppColor.primaryColor,
-                                      )),
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                      );
+                    : ClassScheduleListView(
+                        classScheduleController: classScheduleController);
               }),
             ),
           ),
