@@ -15,8 +15,8 @@ import 'package:lms/features/teacher/model/add_continuous_rate.dart';
 import 'package:lms/features/teacher/model/add_continuous_rate_student.dart';
 import 'package:lms/features/teacher/model/coninuous_rating_student.dart';
 import 'package:lms/features/teacher/model/continuous_rating.dart';
+import 'package:lms/features/teacher/model/section_and_subjects.dart';
 import 'package:lms/features/teacher/model/update_continuous_rate.dart';
-
 
 class ContinuousRatingController extends GetxController {
   ContinuousRatingRepo continuousRatingRepo;

@@ -72,7 +72,7 @@ class TeacherWeekPlaneScreen extends StatelessWidget {
                       if (weekPlaneController
                           .selectedSectionSubjects.isNotEmpty) {
                         int subjectId = weekPlaneController
-                            .selectedSectionSubjects[index].id!;
+                            .selectedSectionSubjects[index].id;
                         weekPlaneController.updateSelectedSectionId(
                             weekPlaneController.selectedSectionId.value,
                             subjectId);

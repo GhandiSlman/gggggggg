@@ -12,6 +12,7 @@ import 'package:lms/features/students/model/student_attendance.dart';
 import 'package:lms/features/supervisor/controller/student_status_controller.dart';
 import 'package:lms/features/honor_board/data/honor_board_repo.dart';
 import 'package:lms/features/honor_board/model/honor_board.dart';
+import 'package:lms/features/teacher/model/section_and_subjects.dart';
 import 'package:lms/features/teacher/model/student_honor_board.dart';
 
 class HonorBoardController extends GetxController {
