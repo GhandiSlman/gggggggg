@@ -127,11 +127,7 @@ class WeekPlaneController extends GetxController
 
     isLoadingSection.value = false;
 
-<<<<<<< HEAD
     if (result is DataSuccess<StudentAttendance>) {
-=======
-    if (result is DataSuccess) {
->>>>>>> bed2355da4898242d6b3ea48195e86ee492c557c
       print(result.data);
       var attendance = result.data!;
       showSectionList.clear();
@@ -390,7 +386,8 @@ class WeekPlaneController extends GetxController
 
   void updateSelectedSubjectIdStudent(int subjectId) {
     selectedSubjectId.value = subjectId;
-    int sectionId = studentInfo.firstWhere((subject) => subject.id == subjectId).id!;
+    int sectionId =
+        studentInfo.firstWhere((subject) => subject.id == subjectId).id!;
     getWeekPlane(sectionId, subjectId);
   }
 
