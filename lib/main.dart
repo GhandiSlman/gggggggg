@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('hello git');
     LocaleController localeController = Get.find();
     return ScreenUtilInit(
       designSize: const Size(360, 690),
