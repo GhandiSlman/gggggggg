@@ -29,7 +29,7 @@ class HomeWorkRepoImp implements HomeWorkRepo {
         endPoint: 'teacher/homework/store',
         data: sectionSubjects,
         baseUrl: baseUrl,
-        fromJson: SectionSubjects.fromJson);
+        fromJson: (Map<String, dynamic> json) => Homework.fromJson(json));
     return response;
   }
 
@@ -39,7 +39,7 @@ class HomeWorkRepoImp implements HomeWorkRepo {
         endPoint: 'teacher/homework/update',
         data: homework,
         baseUrl: baseUrl,
-        fromJson: SectionSubjects.fromJson);
+        fromJson: Homework.fromJson);
     return response;
   }
 

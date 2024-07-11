@@ -1,15 +1,15 @@
 class CreateDetailsHomeWork {
   bool? status;
-  List<Data>? data;
+  List<HomeworkData>? data;
 
   CreateDetailsHomeWork({this.status, this.data});
 
   CreateDetailsHomeWork.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <HomeworkData>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(HomeworkData.fromJson(v));
       });
     }
   }
@@ -24,16 +24,16 @@ class CreateDetailsHomeWork {
   }
 }
 
-class Data {
+class HomeworkData {
   int? id;
   Name? name;
   String? createdAt;
   String? updatedAt;
   List<Grades>? grades;
 
-  Data({this.id, this.name, this.createdAt, this.updatedAt, this.grades});
+  HomeworkData({this.id, this.name, this.createdAt, this.updatedAt, this.grades});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  HomeworkData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'] != null ? Name.fromJson(json['name']) : null;
     createdAt = json['created_at'];
@@ -62,20 +62,20 @@ class Data {
 }
 
 class Name {
-  String? en;
   String? ar;
+  String? en;
 
-  Name({this.en, this.ar});
+  Name({this.ar, this.en});
 
   Name.fromJson(Map<String, dynamic> json) {
-    en = json['en'];
     ar = json['ar'];
+    en = json['en'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['en'] = en;
     data['ar'] = ar;
+    data['en'] = en;
     return data;
   }
 }
@@ -86,15 +86,10 @@ class Grades {
   Name? name;
   String? createdAt;
   String? updatedAt;
-  List<Sections>? sections;
+  List<SectionsHomeWork>? sections;
+  List<SubjectsHomeWork>? subjects;
 
-  Grades(
-      {this.id,
-      this.stageId,
-      this.name,
-      this.createdAt,
-      this.updatedAt,
-      this.sections});
+  Grades({this.id, this.stageId, this.name, this.createdAt, this.updatedAt, this.sections, this.subjects});
 
   Grades.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -103,9 +98,15 @@ class Grades {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     if (json['sections'] != null) {
-      sections = <Sections>[];
+      sections = <SectionsHomeWork>[];
       json['sections'].forEach((v) {
-        sections!.add(Sections.fromJson(v));
+        sections!.add(SectionsHomeWork.fromJson(v));
+      });
+    }
+    if (json['subjects'] != null) {
+      subjects = <SubjectsHomeWork>[];
+      json['subjects'].forEach((v) {
+        subjects!.add(SubjectsHomeWork.fromJson(v));
       });
     }
   }
@@ -122,38 +123,28 @@ class Grades {
     if (sections != null) {
       data['sections'] = sections!.map((v) => v.toJson()).toList();
     }
+    if (subjects != null) {
+      data['subjects'] = subjects!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
 
-class Sections {
+class SectionsHomeWork {
   int? id;
   int? gradeId;
   Name? name;
   String? createdAt;
   String? updatedAt;
-  List<SectionSubjects>? sectionSubjects;
 
-  Sections(
-      {this.id,
-      this.gradeId,
-      this.name,
-      this.createdAt,
-      this.updatedAt,
-      this.sectionSubjects});
+  SectionsHomeWork({this.id, this.gradeId, this.name, this.createdAt, this.updatedAt});
 
-  Sections.fromJson(Map<String, dynamic> json) {
+  SectionsHomeWork.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     gradeId = json['grade_id'];
     name = json['name'] != null ? Name.fromJson(json['name']) : null;
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    if (json['section_subjects'] != null) {
-      sectionSubjects = <SectionSubjects>[];
-      json['section_subjects'].forEach((v) {
-        sectionSubjects!.add(SectionSubjects.fromJson(v));
-      });
-    }
   }
 
   Map<String, dynamic> toJson() {
@@ -165,76 +156,20 @@ class Sections {
     }
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
-    if (sectionSubjects != null) {
-      data['section_subjects'] =
-          sectionSubjects!.map((v) => v.toJson()).toList();
-    }
     return data;
   }
 }
 
-class SectionSubjects {
-  int? id;
-  String? day;
-  String? time;
-  int? sectionId;
-  int? subjectId;
-  int? teacherId;
-  String? createdAt;
-  String? updatedAt;
-  Subject? subject;
-
-  SectionSubjects(
-      {this.id,
-      this.day,
-      this.time,
-      this.sectionId,
-      this.subjectId,
-      this.teacherId,
-      this.createdAt,
-      this.updatedAt,
-      this.subject});
-
-  SectionSubjects.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    day = json['day'];
-    time = json['time'];
-    sectionId = json['section_id'];
-    subjectId = json['subject_id'];
-    teacherId = json['teacher_id'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    subject =
-        json['subject'] != null ? Subject.fromJson(json['subject']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['day'] = day;
-    data['time'] = time;
-    data['section_id'] = sectionId;
-    data['subject_id'] = subjectId;
-    data['teacher_id'] = teacherId;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    if (subject != null) {
-      data['subject'] = subject!.toJson();
-    }
-    return data;
-  }
-}
-
-class Subject {
+class SubjectsHomeWork {
   int? id;
   Name? name;
   int? gradeId;
   String? createdAt;
   String? updatedAt;
 
-  Subject({this.id, this.name, this.gradeId, this.createdAt, this.updatedAt});
+  SubjectsHomeWork({this.id, this.name, this.gradeId, this.createdAt, this.updatedAt});
 
-  Subject.fromJson(Map<String, dynamic> json) {
+  SubjectsHomeWork.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'] != null ? Name.fromJson(json['name']) : null;
     gradeId = json['grade_id'];

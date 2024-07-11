@@ -38,12 +38,12 @@ class HomeWorkController extends GetxController
   var classList = <SelectedListItem>[].obs;
   var selectedSectionSubjectList = <SelectedListItem>[].obs;
 
-  Map<String, Map<String, List<SectionSubjects>>> subjectList =
-      <String, Map<String, List<SectionSubjects>>>{};
-  Map<String, Map<String, List<SectionSubjects>>> sectionSubjectList =
-      <String, Map<String, List<SectionSubjects>>>{};
+  Map<String, Map<String, List<SubjectsHomeWork>>> subjectList =
+      <String, Map<String, List<SubjectsHomeWork>>>{};
+  Map<String, Map<String, List<SectionsHomeWork>>> sectionSubjectList =
+      <String, Map<String, List<SectionsHomeWork>>>{};
 
-  RxList<HomeWorkData> homeWorkList = <HomeWorkData>[].obs;
+  RxList<GetHomeWorkData> homeWorkList = <GetHomeWorkData>[].obs;
 
   RxList<Tab> noDataTabs = <Tab>[
     Tab(
@@ -76,18 +76,18 @@ class HomeWorkController extends GetxController
                 '${box.read('langCode') == 'ar' ? grade.name!.ar! : grade.name!.en!} ${box.read('langCode') == 'ar' ? section.name!.ar! : section.name!.en!}';
             classList.add(SelectedListItem(name: combinedName));
             subjectList[combinedName] = {};
-            for (var sectionSubject in section.sectionSubjects!) {
+            for (var sectionSubject in grade.subjects!) {
               String combinedSectionSubjectName =
-                  '${box.read('langCode') == 'ar' ? section.name!.ar! : section.name!.en!} ${box.read('langCode') == 'ar' ? sectionSubject.subject!.name!.ar! : sectionSubject.subject!.name!.en!}';
+                  '${box.read('langCode') == 'ar' ? section.name!.ar! : section.name!.en!} ${box.read('langCode') == 'ar' ? sectionSubject.name!.ar! : sectionSubject.name!.en!}';
               selectedSectionSubjectList
                   .add(SelectedListItem(name: combinedSectionSubjectName));
               sectionToIdMap[combinedSectionSubjectName] = section.id!;
               subjectToIdMap[combinedSectionSubjectName] =
-                  sectionSubject.subject!.id!;
+                  sectionSubject.id!;
 
               String subjectName = box.read('langCode') == 'ar'
-                  ? sectionSubject.subject!.name!.ar!
-                  : sectionSubject.subject!.name!.en!;
+                  ? sectionSubject.name!.ar!
+                  : sectionSubject.name!.en!;
               if (!subjectList[combinedName]!.containsKey(subjectName)) {
                 subjectList[combinedName]![subjectName] = [];
               }
@@ -264,7 +264,7 @@ class HomeWorkController extends GetxController
       if (subjectList[className]?.containsKey(tabText) ?? false) {
         var sectionsSubjects = subjectList[className]![tabText]!.first;
         updateSelectedSectionId(
-            sectionsSubjects.id!, sectionsSubjects.subject!.id!);
+            sectionsSubjects.id!, sectionsSubjects.id!);
         getHomeWork();
       }
     }
