@@ -18,7 +18,7 @@ class ParentController extends GetxController {
     isLoadingGetChild.value = true;
     final result = await parentRepo.getMyChildren(myChildren: MyChildren());
     isLoadingGetChild.value = false;
-    if (result is DataSuccess<MyChildren>) {
+    if (result is DataSuccess) {
       myChildrenList.addAll(result.data!.data!.children!);
     } else if (result is DataFailed) {
       CustomToast.showToast(

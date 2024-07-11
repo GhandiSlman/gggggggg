@@ -47,15 +47,17 @@ class StudentScreen extends StatelessWidget {
                         ),
                 ),
               ),
-              Obx(() => TabBar(
+              Obx(
+                () => TabBar(
                   indicatorColor: AppColor.primaryColor,
                   labelColor: AppColor.primaryColor,
                   controller: studentController.tabController,
                   tabs: studentController.myTabs.isEmpty
                       ? studentController.noDataTabs.toList()
                       : studentController.myTabs.toList(),
-                //  onTap: studentController.handleTabSelection,
-                ),),
+                  //  onTap: studentController.handleTabSelection,
+                ),
+              ),
             ],
           ),
         ),
@@ -94,17 +96,17 @@ class StudentScreen extends StatelessWidget {
                                 fontSize: 20.sp,
                               ),
                             )
-                          : ListView.builder( 
+                          : ListView.builder(
                               itemCount: students.length,
                               itemBuilder: (context, index) {
                                 var student = students[index];
-                                var subject = subjectList![0]; // Assuming there's only one subject per tab
+                                var subject = subjectList![0];
                                 return Padding(
                                   padding: EdgeInsets.all(15.h),
                                   child: StudentCard(
                                     name: student.name!,
                                     studentId: student.id!,
-                                    subjectId: subject.id!, // Access the subject ID here
+                                    subjectId: subject.id!,
                                   ),
                                 );
                               },

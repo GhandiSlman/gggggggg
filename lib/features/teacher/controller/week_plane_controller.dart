@@ -127,7 +127,7 @@ class WeekPlaneController extends GetxController
 
     isLoadingSection.value = false;
 
-    if (result is DataSuccess<StudentAttendance>) {
+    if (result is DataSuccess) {
       print(result.data);
       var attendance = result.data!;
       showSectionList.clear();
@@ -260,7 +260,7 @@ class WeekPlaneController extends GetxController
         pageId: currentPage);
     weekPlane.clear();
     isLoadingWeekPlane.value = false;
-    if (result is DataSuccess<WeekPlaneModel>) {
+    if (result is DataSuccess) {
       weekPlane.clear();
       weekPlane.addAll(result.data!.data!.data!);
       hasMorePages = false;
@@ -320,7 +320,7 @@ class WeekPlaneController extends GetxController
     final result =
         await weekPlaneRepo.deleteWeekPlane(weekPlaneId: weekPlaneId);
     //isLoadingDelete.value = false;
-    if (result is DataSuccess<WeekPlaneModel>) {
+    if (result is DataSuccess) {
       weekPlane.removeWhere((weekPlane) => weekPlane.id == weekPlaneId);
       CustomToast.showToast(
         message: 'Lesson deleted successfully'.tr,
@@ -359,7 +359,7 @@ class WeekPlaneController extends GetxController
         subjectId: subjectId,
         pageId: currentPage);
 
-    if (result is DataSuccess<WeekPlaneModel>) {
+    if (result is DataSuccess) {
       if (result.data!.data != null) {
         hasMorePages = false;
       } else {
@@ -386,8 +386,8 @@ class WeekPlaneController extends GetxController
 
   void updateSelectedSubjectIdStudent(int subjectId) {
     selectedSubjectId.value = subjectId;
-    //int sectionId = studentInfo.firstWhere((subject) => subject.id == subjectId).id!;
-    getWeekPlane(0, subjectId);
+    int sectionId = studentInfo.firstWhere((subject) => subject.id == subjectId).id!;
+    getWeekPlane(sectionId, subjectId);
   }
 
   @override

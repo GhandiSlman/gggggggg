@@ -9,14 +9,15 @@ class GetHomeWorkModel {
     if (json['data'] != null) {
       data = <GetHomeWorkData>[];
       json['data'].forEach((v) {
-        data!.add(new GetHomeWorkData.fromJson(v));
+        data!.add(GetHomeWorkData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
+    final Map<String, dynamic> data = 
+    <String, dynamic>{};
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -63,32 +64,32 @@ class GetHomeWorkData {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     section =
-        json['section'] != null ? new Section.fromJson(json['section']) : null;
+        json['section'] != null ? Section.fromJson(json['section']) : null;
     subject =
-        json['subject'] != null ? new Section.fromJson(json['subject']) : null;
+        json['subject'] != null ? Section.fromJson(json['subject']) : null;
     teacher =
-        json['teacher'] != null ? new Teacher.fromJson(json['teacher']) : null;
+        json['teacher'] != null ? Teacher.fromJson(json['teacher']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['teacher_id'] = this.teacherId;
-    data['section_id'] = this.sectionId;
-    data['subject_id'] = this.subjectId;
-    data['title'] = this.title;
-    data['description'] = this.description;
-    data['end_date'] = this.endDate;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.section != null) {
-      data['section'] = this.section!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['teacher_id'] = teacherId;
+    data['section_id'] = sectionId;
+    data['subject_id'] = subjectId;
+    data['title'] = title;
+    data['description'] = description;
+    data['end_date'] = endDate;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (section != null) {
+      data['section'] = section!.toJson();
     }
-    if (this.subject != null) {
-      data['subject'] = this.subject!.toJson();
+    if (subject != null) {
+      data['subject'] = subject!.toJson();
     }
-    if (this.teacher != null) {
-      data['teacher'] = this.teacher!.toJson();
+    if (teacher != null) {
+      data['teacher'] = teacher!.toJson();
     }
     return data;
   }
@@ -106,20 +107,20 @@ class Section {
   Section.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     gradeId = json['grade_id'];
-    name = json['name'] != null ? new Name.fromJson(json['name']) : null;
+    name = json['name'] != null ? Name.fromJson(json['name']) : null;
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['grade_id'] = this.gradeId;
-    if (this.name != null) {
-      data['name'] = this.name!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['grade_id'] = gradeId;
+    if (name != null) {
+      data['name'] = name!.toJson();
     }
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -136,9 +137,9 @@ class Name {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['ar'] = this.ar;
-    data['en'] = this.en;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['ar'] = ar;
+    data['en'] = en;
     return data;
   }
 }
@@ -159,11 +160,11 @@ class Teacher {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['role'] = this.role;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['email'] = email;
+    data['role'] = role;
     return data;
   }
 }

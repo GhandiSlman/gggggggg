@@ -19,7 +19,7 @@ class NewsController extends GetxController {
     final DataState result = await newsRepo.getNews(newsModel: NewsModel());
     isLoadingGetNews.value = false;
     newsList.clear();
-    if (result is DataSuccess<NewsModel>) {
+    if (result is DataSuccess) {
       for (var news in result.data!.news!) {
         if (news.createdAt != null) {
           final DateTime dateTime = DateTime.parse(news.createdAt!);

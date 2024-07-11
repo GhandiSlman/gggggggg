@@ -46,9 +46,7 @@ class HomeWorkController extends GetxController
   RxList<GetHomeWorkData> homeWorkList = <GetHomeWorkData>[].obs;
 
   RxList<Tab> noDataTabs = <Tab>[
-    Tab(
-      text: 'No subjects'.tr
-    ),
+    Tab(text: 'No subjects'.tr),
   ].obs;
   RxList<Tab> myTabs = <Tab>[].obs;
 
@@ -60,7 +58,7 @@ class HomeWorkController extends GetxController
     final DataState result = await homeWorkRepo.getSubjects(
         createDetailsHomeWork: CreateDetailsHomeWork());
     isLoadingSubject.value = false;
-    if (result is DataSuccess<CreateDetailsHomeWork>) {
+    if (result is DataSuccess) {
       var createSubject = result.data!;
       classList.clear();
       subjectList.clear();
@@ -82,8 +80,7 @@ class HomeWorkController extends GetxController
               selectedSectionSubjectList
                   .add(SelectedListItem(name: combinedSectionSubjectName));
               sectionToIdMap[combinedSectionSubjectName] = section.id!;
-              subjectToIdMap[combinedSectionSubjectName] =
-                  sectionSubject.id!;
+              subjectToIdMap[combinedSectionSubjectName] = sectionSubject.id!;
 
               String subjectName = box.read('langCode') == 'ar'
                   ? sectionSubject.name!.ar!
@@ -242,7 +239,7 @@ class HomeWorkController extends GetxController
       subjectId: selectedSubjectId.value,
     );
     isLoadingGetHomeWork.value = false;
-    if (result is DataSuccess<GetHomeWorkModel>) {
+    if (result is DataSuccess) {
       homeWorkList.clear();
       homeWorkList.addAll(result.data!.data!);
     } else if (DataState is DataFailed) {
@@ -262,9 +259,9 @@ class HomeWorkController extends GetxController
       String tabText = myTabs[tabIndex].text!;
       String className = selectedSubject.first;
       if (subjectList[className]?.containsKey(tabText) ?? false) {
-        var sectionsSubjects = subjectList[className]![tabText]!.first;
-        updateSelectedSectionId(
-            sectionsSubjects.id!, sectionsSubjects.id!);
+        var sectionId = subjectList[className]![tabText]!.first;
+        var subjectId = sectionSubjectList[className]![tabText]!.first;
+        updateSelectedSectionId(sectionId.id!, subjectId.id!);
         getHomeWork();
       }
     }

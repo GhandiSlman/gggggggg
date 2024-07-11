@@ -45,7 +45,7 @@ class StudentStatusController extends GetxController {
     final DataState result =
         await studentStatusRepo.getSectionSubject(StudentAttendance());
     isLoadingSections.value = false;
-    if (result is DataSuccess<StudentAttendance>) {
+    if (result is DataSuccess) {
       var attendance = result.data!;
       classList.clear();
       studentList.clear();
@@ -113,7 +113,7 @@ class StudentStatusController extends GetxController {
         sectoinId: sectionId,
         subjectId: subjectId);
     isLoadingStudentStatus.value = false;
-    if (result is DataSuccess<StudentAttendanceStatus>) {
+    if (result is DataSuccess) {
       studentStatusList.value = result.data!.data!;
     } else {
       CustomToast.showToast(
