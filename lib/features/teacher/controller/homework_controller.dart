@@ -85,7 +85,7 @@ class HomeWorkController extends GetxController
                   '${box.read('langCode') == 'ar' ? section.name.ar : section.name.en!} ${box.read('langCode') == 'ar' ? sectionSubject.name.ar : sectionSubject.name.en!}';
               selectedSectionSubjectList.add(SelectedListItem(
                   name: combinedSectionSubjectName,
-                  value: sectionSubject.id.toString()));
+                  value: section.id.toString()));
               sectionToIdMap[combinedSectionSubjectName] = section.id;
               subjectToIdMap[combinedSectionSubjectName] = sectionSubject.id;
 
@@ -136,8 +136,11 @@ class HomeWorkController extends GetxController
         vsync: this);
   }
 
-  void updateSelectedSectionId(int sectionId, int subjectId) {
+  void updateSelectedSectionId(int? sectionId, int subjectId) {
     selectedSubjectId.value = subjectId;
+    if (sectionId != null) {
+      selectedSectionId.value = sectionId;
+    }
   }
 
   // void updateOnClassChange() {
@@ -273,9 +276,9 @@ class HomeWorkController extends GetxController
       String tabText = myTabs[tabIndex].text!;
       String className = selectedSubject.first;
       if (subjectList[className]?.containsKey(tabText) ?? false) {
-        var sectionId = subjectList[className]![tabText]!.first;
+        // var sectionId = subjectList[className]![tabText]!.first;
         var subjectId = sectionSubjectList[className]![tabText]!.first;
-        updateSelectedSectionId(sectionId.id!, subjectId.id!);
+        updateSelectedSectionId(null, subjectId.id!);
         getHomeWork();
       }
     }

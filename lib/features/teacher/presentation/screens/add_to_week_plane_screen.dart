@@ -44,9 +44,8 @@ class AddToWeekPlaneScreen extends StatelessWidget {
                 5.verticalSpace,
                 DropDownList(
                     onSelectedItems: (List<SelectedListItem> selectedItems) {
-                      String selectedSection = selectedItems.last.name;
                       weekPlaneController
-                          .updateSelectedSection(selectedSection);
+                          .updateSelectedSection(selectedItems.last);
                     },
                     dataList: weekPlaneController.showSectionList,
                     textEditingController:
