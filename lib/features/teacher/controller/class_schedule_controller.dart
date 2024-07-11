@@ -25,7 +25,7 @@ class ClassScheduleController extends GetxController {
     final DataState result = await classScheduleRepo.getClassSchedule(
         classSchedule: GetClassSchedule());
 
-    if (result is DataSuccess<GetClassSchedule>) {
+    if (result is DataSuccess) {
       isLoading.value = false;
       if (result.data?.classScheduleByDay != null) {
         scheduleByDay.addAll(result.data!.classScheduleByDay!);
@@ -69,7 +69,7 @@ class ClassScheduleController extends GetxController {
     final DataState result = await classScheduleRepo.getClassSchedualStudent(
         classSchedule: ClassSchedule());
 
-    if (result is DataSuccess<ClassSchedule>) {
+    if (result is DataSuccess) {
       isLoading.value = false;
       if (result.data?.classScheduleByDay != null) {
         scheduleByDayStudent.addAll(result.data!.classScheduleByDay!);

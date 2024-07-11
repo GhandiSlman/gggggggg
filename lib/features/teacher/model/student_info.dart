@@ -7,7 +7,7 @@ class StudentInfo {
     if (json['subjects'] != null) {
       subjects = <SubjectInfo>[];
       json['subjects'].forEach((v) {
-        subjects!.add(SubjectInfo.fromJson(v));
+        subjects!.add(SubjectInfo.fromJson(v['subjects']));
       });
     }
   }
@@ -19,6 +19,9 @@ class StudentInfo {
     }
     return data;
   }
+
+  @override
+  String toString() => subjects.toString();
 }
 
 class SubjectInfo {
@@ -28,7 +31,8 @@ class SubjectInfo {
   String? createdAt;
   String? updatedAt;
 
-  SubjectInfo({this.id, this.name, this.gradeId, this.createdAt, this.updatedAt});
+  SubjectInfo(
+      {this.id, this.name, this.gradeId, this.createdAt, this.updatedAt});
 
   SubjectInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -49,6 +53,9 @@ class SubjectInfo {
     data['updated_at'] = updatedAt;
     return data;
   }
+
+  @override
+  String toString() => "$name";
 }
 
 class Name {
@@ -68,4 +75,7 @@ class Name {
     data['en'] = en;
     return data;
   }
+
+  @override
+  String toString() => "$ar $en";
 }

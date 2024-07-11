@@ -101,8 +101,12 @@ class WeekPlaneController extends GetxController
 
     print(result.data);
     print('wdddddddddddddddddddddd');
-    if (result is DataSuccess<StudentInfo>) {
-      studentInfo.addAll(result.data!.subjects!);
+    if (result is DataSuccess) {
+      studentInfo.value = result.data!.subjects!;
+      updateTabs();
+      if (studentInfo.isNotEmpty) {
+        updateSelectedSubjectIdStudent(studentInfo[0].id!);
+      }
     } else if (result is DataFailed) {
       CustomToast.showToast(
         message: result.errorMessage!,
@@ -124,6 +128,7 @@ class WeekPlaneController extends GetxController
     isLoadingSection.value = false;
 
     if (result is DataSuccess<StudentAttendance>) {
+      print(result.data);
       var attendance = result.data!;
       showSectionList.clear();
       sectionList.clear();
@@ -178,19 +183,29 @@ class WeekPlaneController extends GetxController
     }
   }
 
+  var subjectIds = [];
+
   void updateSubjectsForSection(int sectionId) {
+    subjectIds.clear();
+    weekPlane.clear();
+    myTabs.clear();
+    selectedSectionSubjects.clear();
     var selectedSection = sectionList.entries
         .firstWhere((element) =>
             element.value.any((section) => section.id == sectionId))
         .value
         .firstWhere((section) => section.id == sectionId);
 
-    selectedSectionSubjects.value = selectedSection.sectionSubjects!
-        .map((subjectSection) => Subject(
-              id: subjectSection.subjectId,
-              name: subjectSection.subject!.name,
-            ))
-        .toList();
+    selectedSection.sectionSubjects!.forEach((value) {
+      if (!subjectIds.contains(value.subject!.id)) {
+        selectedSectionSubjects.add(Subject(
+          id: value.subject!.id,
+          name: value.subject!.name,
+        ));
+        print(subjectIds);
+        subjectIds.add(value.subject!.id);
+      }
+    });
 
     showSubjectList.clear();
     subjectNameToIdMap.clear();
@@ -219,7 +234,9 @@ class WeekPlaneController extends GetxController
             vsync: this);
       }
     } else if (box.read('userType') == 'student') {
+      print("asdasdasd" + studentInfo.length.toString());
       for (var subject in studentInfo) {
+        print('object');
         myTabs.add(Tab(
             text: box.read('langCode') == 'ar'
                 ? subject.name!.ar

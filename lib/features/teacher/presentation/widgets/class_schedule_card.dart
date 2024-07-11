@@ -37,26 +37,30 @@ class ClassScheduleCard extends StatelessWidget {
             ),
             child: ListTile(
               leading: SvgPicture.asset(AppImages.date2Image),
-              title: Row(
-                children: [
-                  CustomText(
-                    text: sectionName ?? '',
-                    fontSize: 20.sp,
-                    color: AppColor.primaryColor,
-                  ),
-                  box.read('userType') == 'teacher'
-                      ? CustomText(
-                          text: '-',
-                          fontSize: 20.sp,
-                          color: AppColor.primaryColor,
-                        )
-                      : const SizedBox(),
-                  CustomText(
-                    text: subjectName ?? '',
-                    fontSize: 20.sp,
-                    color: AppColor.primaryColor,
-                  ),
-                ],
+              title: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: AlignmentDirectional.centerStart,
+                child: Row(
+                  children: [
+                    CustomText(
+                      text: sectionName ?? '',
+                      fontSize: 20.sp,
+                      color: AppColor.primaryColor,
+                    ),
+                    box.read('userType') == 'teacher'
+                        ? CustomText(
+                            text: '-',
+                            fontSize: 20.sp,
+                            color: AppColor.primaryColor,
+                          )
+                        : const SizedBox(),
+                    CustomText(
+                      text: subjectName ?? '',
+                      fontSize: 20.sp,
+                      color: AppColor.primaryColor,
+                    ),
+                  ],
+                ),
               ),
               subtitle: Row(
                 children: [

@@ -24,7 +24,7 @@ class DataService {
     required String endPoint,
     required String baseUrl,
     Map<String, String>? queryParameters,
-    T Function(Map<String, dynamic>)? fromJson,
+    fromJson,
   }) async {
     try {
       if (await checkInternet()) {
@@ -37,7 +37,7 @@ class DataService {
         Uri.parse(baseUrl + endPoint).replace(queryParameters: queryParameters),
         headers: headers(),
       );
-      debugPrint('get param: $queryParameters');
+      debugPrint('get $endPoint param: $queryParameters');
       debugPrint('response: ${response.body}');
       return handleDataState(response: response, fromJson: fromJson!);
     } catch (e) {
@@ -121,7 +121,7 @@ class DataService {
           statusCode: HttpStatus.serviceUnavailable,
         );
       }
-      debugPrint('post body: ${json.encode(data)}');
+      debugPrint('post $endPoint body: ${json.encode(data)}');
       final response = await _client.post(
         Uri.parse(baseUrl + endPoint),
         headers: headers(),
@@ -144,15 +144,16 @@ class DataService {
 
   Future<DataState<T>> handleDataState<T>({
     required http.Response response,
-    required T Function(Map<String, dynamic>) fromJson,
+    required fromJson,
   }) async {
-    if (response.statusCode == HttpStatus.ok) {
+    if (response.statusCode == HttpStatus.ok ||
+        response.statusCode == HttpStatus.created) {
       final Map<String, dynamic> jsonData = json.decode(response.body);
       final object = fromJson(jsonData);
       return DataSuccess(object);
     } else {
       final Map<String, dynamic> jsonData = json.decode(response.body);
-      if (response.statusCode == 401) {
+      if (response.statusCode == 410) {
         Get.offAllNamed(AppRouter.loginScreen);
         box.erase();
       }
