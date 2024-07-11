@@ -135,9 +135,26 @@ class AddToWeekPlaneScreen extends StatelessWidget {
                           isUpdated == false
                               ? weekPlaneController
                                   .addWeekPlane()
-                                  .then((value) => Get.back())
+                                  .then((value) {
+                                  weekPlaneController.getSections();
+                                  weekPlaneController.getWeekPlane(
+                                      weekPlaneController
+                                          .selectedSectionId.value,
+                                      weekPlaneController
+                                          .selectedSubjectId.value);
+                                  Get.back();
+                                })
                               : weekPlaneController
-                                  .updateWeekPlane(weekPlaneId);
+                                  .updateWeekPlane(weekPlaneId)
+                                  .then((value) {
+                                  weekPlaneController.getSections();
+                                  weekPlaneController.getWeekPlane(
+                                      weekPlaneController
+                                          .selectedSectionId.value,
+                                      weekPlaneController
+                                          .selectedSubjectId.value);
+                                  Get.back();
+                                });
                         },
                         color: AppColor.primaryColor,
                         textColor: AppColor.whiteColor,

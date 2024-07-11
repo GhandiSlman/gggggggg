@@ -10,6 +10,7 @@ import 'package:lms/core/widgets/shimmer.dart';
 import 'package:lms/features/students/controller/student_controller.dart';
 import 'package:lms/features/students/model/student_attendance.dart';
 import 'package:lms/features/students/presentation/widgets/student_card.dart';
+import 'package:lms/features/teacher/model/section_and_subjects.dart';
 
 class StudentScreen extends StatelessWidget {
   const StudentScreen({super.key});
