@@ -46,7 +46,8 @@ class AddHomeWorkScreen extends StatelessWidget {
                   onSelectedItems: (List<SelectedListItem> selectedItems) {
                     if (selectedItems.isNotEmpty) {
                       String selectedClass = selectedItems.last.name;
-                      homeWorkController.updateSelectedClass(selectedItems.last);
+                      homeWorkController
+                          .updateSelectedClass(selectedItems.last);
 
                       int? sectionId =
                           homeWorkController.sectionToIdMap[selectedClass];
