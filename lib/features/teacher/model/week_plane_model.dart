@@ -14,7 +14,7 @@ class AddWeekPlaneModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['section_id'] = sectionId;
-    data['subject_id'] = sectionId;
+    data['subject_id'] = subjectId;
     data['lesson_title'] = title;
     data['lesson_description'] = description;
     data['lesson_date'] = date;
@@ -133,9 +133,8 @@ class UpdateWeekPlaneModel {
   UpdateWeekPlaneModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
-    weekPlan = json['weekPlan'] != null
-        ? WeekPlan.fromJson(json['weekPlan'])
-        : null;
+    weekPlan =
+        json['weekPlan'] != null ? WeekPlan.fromJson(json['weekPlan']) : null;
   }
 
   Map<String, dynamic> toJson() {

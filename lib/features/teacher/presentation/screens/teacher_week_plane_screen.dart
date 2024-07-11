@@ -51,7 +51,7 @@ class TeacherWeekPlaneScreen extends StatelessWidget {
                                 onSelectedItems:
                                     (List<SelectedListItem> selectedItems) {
                                   weekPlaneController.updateSelectedSection(
-                                      selectedItems.last.name);
+                                      selectedItems.last);
                                 },
                                 dataList: weekPlaneController.showSectionList,
                                 textEditingController:

@@ -58,6 +58,9 @@ class WeekPlaneController extends GetxController
 
   Future<void> addWeekPlane() async {
     isLoadingAdd.value = true;
+    print("section from endPoint:  ${selectedSectionId.value.toString()}");
+    print("subject from endPoint:  ${selectedSubjectId.value.toString()}");
+
     var addWeekPlaneModel = AddWeekPlaneModel(
       date: lessonDateController.text,
       description: lessonDescController.text,
@@ -142,8 +145,8 @@ class WeekPlaneController extends GetxController
             String sectionName = box.read('langCode') == 'ar'
                 ? section.name.ar
                 : section.name.en!;
-            showSectionList
-                .add(SelectedListItem(name: "$gradeName $sectionName"));
+            showSectionList.add(SelectedListItem(
+                name: "$gradeName $sectionName", value: section.id.toString()));
             sectionNameToIdMap["$gradeName $sectionName"] = section.id;
 
             if (!sectionList.containsKey("$gradeName $sectionName")) {
@@ -165,20 +168,22 @@ class WeekPlaneController extends GetxController
     }
   }
 
-  void updateSelectedSection(String sectionName) {
-    selectedSection.value = [sectionName];
-    if (sectionNameToIdMap.containsKey(sectionName)) {
-      int sectionId = sectionNameToIdMap[sectionName]!;
-      selectedSectionId.value = sectionId;
-      updateSubjectsForSection(sectionId);
+  void updateSelectedSection(SelectedListItem sectionName) {
+    // selectedSection.value = [sectionName.name];
+    if (sectionNameToIdMap.containsKey(sectionName.name)) {
+      selectedSectionId.value = int.tryParse(sectionName.value ?? "-1") ?? -1;
+      print("sectionName : ${selectedSectionId.value}");
+
+      updateSubjectsForSection(selectedSectionId.value);
     }
   }
 
   void updateSelectedSubject(String subjectName) {
     // myTabs.clear();
-    selectedSection.value = [subjectName];
+    // selectedSection.value = [subjectName];
     if (subjectNameToIdMap.containsKey(subjectName)) {
       int subjectId = subjectNameToIdMap[subjectName]!;
+      print(" subject : ${subjectId}");
       selectedSubjectId.value = subjectId;
     }
   }
@@ -186,6 +191,7 @@ class WeekPlaneController extends GetxController
   var subjectIds = [];
 
   void updateSubjectsForSection(int sectionId) {
+    print("section: $sectionId");
     subjectIds.clear();
     weekPlane.clear();
     selectedSectionSubjects.clear();
