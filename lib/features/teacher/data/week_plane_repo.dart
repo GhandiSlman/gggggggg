@@ -16,5 +16,7 @@ abstract class WeekPlaneRepo {
 
   Future<DataState> updateWeekPlane({required WeekPlan updateWeekPlaneModel});
 
+  Future<DataState> getSectionsAndSubjects();
+
   Future<DataState> getStudentInfo({required StudentInfo studentInfo});
 }

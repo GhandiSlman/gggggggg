@@ -3,6 +3,7 @@ import 'package:lms/core/data/data_state.dart';
 import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/features/students/model/student_attendance.dart';
 import 'package:lms/features/teacher/data/week_plane_repo.dart';
+import 'package:lms/features/teacher/model/section_and_subjects.dart';
 import 'package:lms/features/teacher/model/student_info.dart';
 import 'package:lms/features/teacher/model/week_plane_model.dart';
 
@@ -81,6 +82,16 @@ class WeekPlaneRepoImp implements WeekPlaneRepo {
       endPoint: 'student/info',
       baseUrl: baseUrl,
       fromJson: StudentInfo.fromJson,
+    );
+    return response;
+  }
+
+  @override
+  Future<DataState> getSectionsAndSubjects() async {
+    final response = await _dataService.getData(
+      endPoint: 'gradesWithSectionsAndSubjects',
+      baseUrl: baseUrl,
+      fromJson: SectionsAndSubjectsModel.fromJson,
     );
     return response;
   }
