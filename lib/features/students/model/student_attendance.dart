@@ -1,3 +1,5 @@
+import 'package:lms/features/teacher/model/section_and_subjects.dart';
+
 class StudentAttendance {
   bool? status;
   List<Result>? result;
@@ -236,35 +238,35 @@ class SectionSubjects {
   }
 }
 
-class Subject {
-  int? id;
-  Name? name;
-  int? gradeId;
-  String? createdAt;
-  String? updatedAt;
+// class Subject {
+//   int? id;
+//   Name? name;
+//   int? gradeId;
+//   String? createdAt;
+//   String? updatedAt;
 
-  Subject({this.id, this.name, this.gradeId, this.createdAt, this.updatedAt});
+//   Subject({this.id, this.name, this.gradeId, this.createdAt, this.updatedAt});
 
-  Subject.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'] != null ? Name.fromJson(json['name']) : null;
-    gradeId = json['grade_id'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
+//   Subject.fromJson(Map<String, dynamic> json) {
+//     id = json['id'];
+//     name = json['name'] != null ? Name.fromJson(json['name']) : null;
+//     gradeId = json['grade_id'];
+//     createdAt = json['created_at'];
+//     updatedAt = json['updated_at'];
+//   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    if (name != null) {
-      data['name'] = name!.toJson();
-    }
-    data['grade_id'] = gradeId;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    return data;
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['id'] = id;
+//     if (name != null) {
+//       data['name'] = name!.toJson();
+//     }
+//     data['grade_id'] = gradeId;
+//     data['created_at'] = createdAt;
+//     data['updated_at'] = updatedAt;
+//     return data;
+//   }
+// }
 class Students {
   int? id;
   String? name;

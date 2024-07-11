@@ -11,6 +11,7 @@ import 'package:lms/features/students/data/student_repo.dart';
 import 'package:lms/features/students/model/student_attendance.dart';
 import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:lms/features/students/model/student_status.dart';
+import 'package:lms/features/teacher/model/section_and_subjects.dart';
 
 class StudentController extends GetxController
     with GetTickerProviderStateMixin {
@@ -63,7 +64,7 @@ class StudentController extends GetxController
     isLoading.value = false;
     if (result is DataSuccess) {
       var attendance = result.data!;
-      
+
       classList.clear();
       studentList.clear();
       subjectList.clear();
@@ -78,7 +79,7 @@ class StudentController extends GetxController
             String combinedClassName =
                 '${box.read('langCode') == 'ar' ? grade.name!.ar! : grade.name!.en!} ${box.read('langCode') == 'ar' ? section.name!.ar! : section.name!.en!}';
             classList.add(SelectedListItem(name: combinedClassName));
-           
+
             studentList[combinedClassName] = {};
             subjectList[combinedClassName] = {};
             sectionSubjectList[combinedClassName] = [];

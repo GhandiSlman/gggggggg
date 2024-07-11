@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'dart:io';
+import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -105,9 +106,9 @@ class AddPostScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 5.h),
                 DropDownList(
-                  onSelectedItems: (List<String> selectedItems) {
+                  onSelectedItems: (List<SelectedListItem> selectedItems) {
                     if (selectedItems.isNotEmpty) {
-                      String selectedName = selectedItems.last;
+                      String selectedName = selectedItems.last.name;
                       postController.updateSelectedClass(selectedName);
 
                       String? classId =

@@ -1,3 +1,4 @@
+import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -41,9 +42,9 @@ class AddHonorBoardScreen extends StatelessWidget {
                   () => honorBoardController.isLoading.value
                       ? ShimmerWidget(height: 50.h)
                       : DropDownList(
-                          onSelectedItems: (List<String> selectedItems) {
+                          onSelectedItems: (List<SelectedListItem> selectedItems) {
                             honorBoardController
-                                .updateSelectedClass(selectedItems.last);
+                                .updateSelectedClass(selectedItems.last.name);
                           },
                           dataList: honorBoardController.showClassList,
                           textEditingController:
@@ -63,11 +64,11 @@ class AddHonorBoardScreen extends StatelessWidget {
                   () => honorBoardController.isLoading.value
                       ? ShimmerWidget(height: 50.h)
                       : DropDownList(
-                          onSelectedItems: (List<String> selectedItems) {
+                          onSelectedItems: (List<SelectedListItem> selectedItems) {
                             honorBoardController
-                                .updateSelectedSubject(selectedItems.last);
+                                .updateSelectedSubject(selectedItems.last.name);
                             String? subjectId = honorBoardController
-                                .subjectToIdMap[selectedItems.last];
+                                .subjectToIdMap[selectedItems.last.name];
                             if (subjectId != null) {
                               honorBoardController
                                   .updateSelectedSubjectId(subjectId);
@@ -111,9 +112,9 @@ class AddHonorBoardScreen extends StatelessWidget {
                       int index = entry.key;
                       TextEditingController controller = entry.value;
                       return DropDownList(
-                        onSelectedItems: (List<String> selectedItems) {
+                        onSelectedItems: (List<SelectedListItem> selectedItems) {
                           honorBoardController.updateSelectedStudent(
-                              selectedItems.last, index);
+                              selectedItems.last.name, index);
                         },
                         dataList: honorBoardController.showStudentList
                             .where((item) => !honorBoardController

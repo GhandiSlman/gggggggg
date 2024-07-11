@@ -133,7 +133,7 @@ class AddUpdateAdvScreen extends StatelessWidget {
                 5.verticalSpace,
                 CustomText(
                   color: AppColor.greyColor2,
-                  text: 'Text'.tr,
+                  text: 'Arabic'.tr,
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
@@ -148,7 +148,7 @@ class AddUpdateAdvScreen extends StatelessWidget {
                 25.verticalSpace,
                 CustomText(
                   color: AppColor.greyColor2,
-                  text: 'Text'.tr,
+                  text: 'English'.tr,
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
@@ -171,8 +171,22 @@ class AddUpdateAdvScreen extends StatelessWidget {
                           text: isUpdate == false ? 'Add'.tr : 'Update'.tr,
                           onTap: () {
                             isUpdate == false
-                                ? advertisementsController.addAd()
-                                : advertisementsController.updateAd(adId.toString());
+                                ? advertisementsController
+                                    .addAd()
+                                    .then((value) {
+                                    advertisementsController
+                                        .getMyAdvertisements();
+                                    advertisementsController
+                                        .getMyAdvertisements();
+                                    Get.back();
+                                  })
+                                : advertisementsController
+                                    .updateAd(adId.toString())
+                                    .then((value) => {
+                                          Get.back(),
+                                          advertisementsController
+                                              .getMyAdvertisements()
+                                        });
                           },
                           color: AppColor.primaryColor,
                           textColor: AppColor.whiteColor,

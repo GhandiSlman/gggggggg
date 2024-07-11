@@ -11,7 +11,7 @@ class DropDownList extends StatelessWidget {
   final String hint;
   final bool isCitySelected;
   final List<SelectedListItem>? dataList;
-  final Function(List<String>) onSelectedItems;
+  final Function(List<SelectedListItem>) onSelectedItems;
 
   const DropDownList({
     required this.textEditingController,
@@ -44,15 +44,16 @@ class DropDownList extends StatelessWidget {
                   DropDownState(
                     heightOfBottomSheet: 600.h,
                     DropDown(
+                      
                       dropDownBackgroundColor: AppColor.whiteColor,
                       isDismissible: true,
                       data: dataList ?? [],
                       searchHintText: 'Search'.tr,
                       selectedItems: (List<dynamic> selectedList) {
-                        List<String> list = [];
+                        List<SelectedListItem> list = [];
                         for (var item in selectedList) {
                           if (item is SelectedListItem) {
-                            list.add(item.name);
+                            list.add(item);
                             textEditingController.text = item.name;
                           }
                         }

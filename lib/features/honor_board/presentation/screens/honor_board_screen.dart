@@ -1,3 +1,4 @@
+import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -44,11 +45,11 @@ class HonorBoardScreen extends StatelessWidget {
                     padding: EdgeInsets.symmetric(
                         horizontal: 14.4.w, vertical: 10.h),
                     child: DropDownList(
-                      onSelectedItems: (List<String> selectedItems) {
+                      onSelectedItems: (List<SelectedListItem> selectedItems) {
                         // box.read('userType') == 'teacher'
                         //?
                         honorBoardController
-                            .updateSelectedClass(selectedItems.first);
+                            .updateSelectedClass(selectedItems.first.name);
                         // : studentStatusController
                         //     .updateSelectedClass(selectedItems.first);
                       },

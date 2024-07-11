@@ -7,8 +7,8 @@ import 'package:lms/core/data/data_state.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_toast.dart';
-import 'package:lms/features/students/model/student_attendance.dart';
 import 'package:lms/features/teacher/data/week_plane_repo.dart';
+import 'package:lms/features/teacher/model/section_and_subjects.dart';
 import 'package:lms/features/teacher/model/student_info.dart';
 import 'package:lms/features/teacher/model/week_plane_model.dart';
 
@@ -28,7 +28,7 @@ class WeekPlaneController extends GetxController
 
   var showSectionList = <SelectedListItem>[].obs;
   var showSubjectList = <SelectedListItem>[].obs;
-  Map<String, List<Sections>> sectionList = <String, List<Sections>>{};
+  Map<String, List<Section>> sectionList = <String, List<Section>>{};
   RxList<String> selectedSection = <String>[].obs;
   Map<String, int> sectionNameToIdMap = {};
   Map<String, int> subjectNameToIdMap = {};
@@ -122,12 +122,11 @@ class WeekPlaneController extends GetxController
   Future<void> getSections() async {
     isLoadingSection.value = true;
 
-    final result =
-        await weekPlaneRepo.getSections(studentAttendance: StudentAttendance());
+    final result = await weekPlaneRepo.getSectionsAndSubjects();
 
     isLoadingSection.value = false;
 
-    if (result is DataSuccess<StudentAttendance>) {
+    if (result is DataSuccess) {
       print(result.data);
       var attendance = result.data!;
       showSectionList.clear();
@@ -135,17 +134,17 @@ class WeekPlaneController extends GetxController
       sectionNameToIdMap.clear();
       selectedSection.clear();
       selectedSectionSubjects.clear();
-      for (var res in attendance.result!) {
-        for (var grade in res.grades!) {
+      for (var res in attendance.result) {
+        for (Grade grade in res.grades) {
           String gradeName =
-              box.read('langCode') == 'ar' ? grade.name!.ar! : grade.name!.en!;
-          for (var section in grade.sections!) {
+              box.read('langCode') == 'ar' ? grade.name.ar : grade.name.en!;
+          for (Section section in grade.sections) {
             String sectionName = box.read('langCode') == 'ar'
-                ? section.name!.ar!
-                : section.name!.en!;
+                ? section.name.ar
+                : section.name.en!;
             showSectionList
                 .add(SelectedListItem(name: "$gradeName $sectionName"));
-            sectionNameToIdMap["$gradeName $sectionName"] = section.id!;
+            sectionNameToIdMap["$gradeName $sectionName"] = section.id;
 
             if (!sectionList.containsKey("$gradeName $sectionName")) {
               sectionList["$gradeName $sectionName"] = [];
@@ -176,6 +175,7 @@ class WeekPlaneController extends GetxController
   }
 
   void updateSelectedSubject(String subjectName) {
+    // myTabs.clear();
     selectedSection.value = [subjectName];
     if (subjectNameToIdMap.containsKey(subjectName)) {
       int subjectId = subjectNameToIdMap[subjectName]!;
@@ -188,7 +188,6 @@ class WeekPlaneController extends GetxController
   void updateSubjectsForSection(int sectionId) {
     subjectIds.clear();
     weekPlane.clear();
-    myTabs.clear();
     selectedSectionSubjects.clear();
     var selectedSection = sectionList.entries
         .firstWhere((element) =>
@@ -196,15 +195,8 @@ class WeekPlaneController extends GetxController
         .value
         .firstWhere((section) => section.id == sectionId);
 
-    selectedSection.sectionSubjects!.forEach((value) {
-      if (!subjectIds.contains(value.subject!.id)) {
-        selectedSectionSubjects.add(Subject(
-          id: value.subject!.id,
-          name: value.subject!.name,
-        ));
-        print(subjectIds);
-        subjectIds.add(value.subject!.id);
-      }
+    selectedSection.subjects.forEach((value) {
+      selectedSectionSubjects.add(value);
     });
 
     showSubjectList.clear();
@@ -212,9 +204,9 @@ class WeekPlaneController extends GetxController
 
     for (var subject in selectedSectionSubjects) {
       String subjectName =
-          box.read('langCode') == 'ar' ? subject.name!.ar! : subject.name!.en!;
+          box.read('langCode') == 'ar' ? subject.name.ar : subject.name.en!;
       showSubjectList.add(SelectedListItem(name: subjectName));
-      subjectNameToIdMap[subjectName] = subject.id!;
+      subjectNameToIdMap[subjectName] = subject.id;
     }
 
     updateTabs();
@@ -224,9 +216,8 @@ class WeekPlaneController extends GetxController
     myTabs.clear();
     if (box.read('userType') == 'teacher') {
       for (var subject in selectedSectionSubjects) {
-        String subjectName = box.read('langCode') == 'ar'
-            ? subject.name!.ar!
-            : subject.name!.en!;
+        String subjectName =
+            box.read('langCode') == 'ar' ? subject.name.ar : subject.name.en!;
 
         myTabs.add(Tab(text: subjectName));
         tabController = TabController(
@@ -264,7 +255,7 @@ class WeekPlaneController extends GetxController
       weekPlane.clear();
       weekPlane.addAll(result.data!.data!.data!);
       hasMorePages = false;
-    } else if (result is DataFailed<WeekPlaneModel>) {
+    } else if (result is DataFailed) {
       CustomToast.showToast(
         message: result.errorMessage!,
         backgroundColor: AppColor.redColor,

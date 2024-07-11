@@ -1,3 +1,4 @@
+import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ import 'package:lms/core/widgets/shimmer.dart';
 import 'package:lms/features/students/controller/student_controller.dart';
 import 'package:lms/features/students/model/student_attendance.dart';
 import 'package:lms/features/students/presentation/widgets/student_card.dart';
+import 'package:lms/features/teacher/model/section_and_subjects.dart';
 
 class StudentScreen extends StatelessWidget {
   const StudentScreen({super.key});
@@ -33,10 +35,10 @@ class StudentScreen extends StatelessWidget {
                           height: 50.h,
                         )
                       : DropDownList(
-                          onSelectedItems: (List<String> selectedItems) {
+                          onSelectedItems: (List<SelectedListItem> selectedItems) {
                             if (selectedItems.isNotEmpty) {
                               studentController
-                                  .updateSelectedClass(selectedItems.last);
+                                  .updateSelectedClass(selectedItems.last.name);
                             }
                           },
                           dataList: studentController.classList,

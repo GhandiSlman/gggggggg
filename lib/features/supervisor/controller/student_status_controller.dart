@@ -11,6 +11,7 @@ import 'package:lms/core/widgets/custom_toast.dart';
 import 'package:lms/features/students/model/student_attendance.dart';
 import 'package:lms/features/supervisor/data/student_status_repo.dart';
 import 'package:lms/features/supervisor/model/student_attendance_status.dart';
+import 'package:lms/features/teacher/model/section_and_subjects.dart';
 
 class StudentStatusController extends GetxController {
   StudentStatusRepo studentStatusRepo;
@@ -100,7 +101,7 @@ class StudentStatusController extends GetxController {
     if (sectionSubjectList.containsKey(className)) {
       for (var sectionSubject in sectionSubjectList[className]!) {
         selectedSectionId.value = sectionSubject.sectionId!;
-           selectedSubjectId.value = sectionSubject.subject!.id!;
+        selectedSubjectId.value = sectionSubject.subject!.id!;
       }
       getStudentStatus(selectedSectionId.value, selectedSubjectId.value);
     }

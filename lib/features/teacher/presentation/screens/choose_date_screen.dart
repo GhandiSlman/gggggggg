@@ -1,3 +1,4 @@
+import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -35,8 +36,10 @@ class ChooseDateScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.all(mq.height * .02),
                       child: DropDownList(
-                          onSelectedItems: (List<String> selectedItems) {
-                            teacherController.selectedCities = selectedItems;
+                          onSelectedItems:
+                              (List<SelectedListItem> selectedItems) {
+                            teacherController.selectedCities =
+                                selectedItems.map((e) => e.name).toList();
                           },
                           dataList: teacherController.cityList,
                           textEditingController:

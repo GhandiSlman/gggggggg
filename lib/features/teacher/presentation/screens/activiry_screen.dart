@@ -1,3 +1,4 @@
+import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -44,9 +45,9 @@ class ActivityScreen extends StatelessWidget {
                     () => activityController.isLoadingSection.value
                         ? ShimmerWidget(height: 50.h)
                         : DropDownList(
-                            onSelectedItems: (List<String> selectedItems) {
+                            onSelectedItems: (List<SelectedListItem> selectedItems) {
                               activityController
-                                  .updateSelectedSection(selectedItems.last);
+                                  .updateSelectedSection(selectedItems.last.name);
                             },
                             dataList: activityController.showSectionList,
                             textEditingController:
