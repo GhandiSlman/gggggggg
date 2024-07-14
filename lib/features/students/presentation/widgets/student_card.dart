@@ -25,7 +25,8 @@ class StudentCard extends StatelessWidget {
     final StudentController studentController = Get.find();
 
     return Obx(() {
-      String? status = studentController.studentAttendanceStatus[studentId];
+     String key = '${studentId}_$subjectId';
+      String? status = studentController.studentAttendanceStatus[key];
       Color cardColor;
 
       switch (status) {
@@ -85,7 +86,7 @@ class StudentCard extends StatelessWidget {
         ),
         child: Container(
           decoration: BoxDecoration(
-            color: cardColor, // Change card color based on attendance status
+            color: cardColor,
             borderRadius: BorderRadius.circular(10.r),
           ),
           height: 75.h,
@@ -112,7 +113,7 @@ class StudentCard extends StatelessWidget {
                   child: FittedBox(
                     child: CustomText(
                       text: name,
-                      fontSize: 20.sp,
+                      fontSize: 18.sp,
                       color: AppColor.primaryColor,
                     ),
                   ),

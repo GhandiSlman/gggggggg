@@ -37,7 +37,6 @@ class WeekPlaneController extends GetxController
   RxBool isLoadingWeekPlane = false.obs;
 
   RxList<SubjectInfo> studentInfo = <SubjectInfo>[].obs;
-  // RxBool isLoadingDelete = false.obs;
   bool isUpdate = false;
   late final TextEditingController sectionController;
   late final TextEditingController subjectController;
@@ -51,15 +50,13 @@ class WeekPlaneController extends GetxController
 
   RxList<Tab> myTabs = <Tab>[].obs;
 
-  RxList<WeekPlaneDetails> weekPlane = <WeekPlaneDetails>[].obs;
+  List<WeekPlaneDetails> weekPlane = <WeekPlaneDetails>[];
   int currentPage = 1;
   bool hasMorePages = true;
   RxBool isMoreLoading = false.obs;
 
   Future<void> addWeekPlane() async {
     isLoadingAdd.value = true;
-    print("section from endPoint:  ${selectedSectionId.value.toString()}");
-    print("subject from endPoint:  ${selectedSubjectId.value.toString()}");
 
     var addWeekPlaneModel = AddWeekPlaneModel(
       date: lessonDateController.text,
@@ -100,10 +97,7 @@ class WeekPlaneController extends GetxController
     final result =
         await weekPlaneRepo.getStudentInfo(studentInfo: StudentInfo());
     studentInfo.clear();
-    print('sccxxxxxxxxxxxxxxxxxxxxx');
 
-    print(result.data);
-    print('wdddddddddddddddddddddd');
     if (result is DataSuccess) {
       studentInfo.value = result.data!.subjects!;
       updateTabs();
@@ -130,7 +124,6 @@ class WeekPlaneController extends GetxController
     isLoadingSection.value = false;
 
     if (result is DataSuccess) {
-      print(result.data);
       var attendance = result.data!;
       showSectionList.clear();
       sectionList.clear();
@@ -169,31 +162,32 @@ class WeekPlaneController extends GetxController
   }
 
   void updateSelectedSection(SelectedListItem sectionName) {
-    // selectedSection.value = [sectionName.name];
     if (sectionNameToIdMap.containsKey(sectionName.name)) {
       selectedSectionId.value = int.tryParse(sectionName.value ?? "-1") ?? -1;
-      print("sectionName : ${selectedSectionId.value}");
 
       updateSubjectsForSection(selectedSectionId.value);
+
+      // Automatically select the first tab and get the weekly plan
+      if (myTabs.isNotEmpty) {
+        String firstTabText = myTabs[0].text!;
+        if (subjectNameToIdMap.containsKey(firstTabText)) {
+          int subjectId = subjectNameToIdMap[firstTabText]!;
+          selectedSubjectId.value = subjectId;
+          getWeekPlane(selectedSectionId.value, selectedSubjectId.value);
+        }
+      }
     }
   }
 
   void updateSelectedSubject(String subjectName) {
-    // myTabs.clear();
-    // selectedSection.value = [subjectName];
     if (subjectNameToIdMap.containsKey(subjectName)) {
       int subjectId = subjectNameToIdMap[subjectName]!;
-      print(" subject : ${subjectId}");
       selectedSubjectId.value = subjectId;
     }
   }
 
-  var subjectIds = [];
-
   void updateSubjectsForSection(int sectionId) {
-    print("section: $sectionId");
-    subjectIds.clear();
-    weekPlane.clear();
+   // weekPlane.clear();
     selectedSectionSubjects.clear();
     var selectedSection = sectionList.entries
         .firstWhere((element) =>
@@ -201,9 +195,9 @@ class WeekPlaneController extends GetxController
         .value
         .firstWhere((section) => section.id == sectionId);
 
-    selectedSection.subjects.forEach((value) {
+    for (var value in selectedSection.subjects) {
       selectedSectionSubjects.add(value);
-    });
+    }
 
     showSubjectList.clear();
     subjectNameToIdMap.clear();
@@ -226,21 +220,25 @@ class WeekPlaneController extends GetxController
             box.read('langCode') == 'ar' ? subject.name.ar : subject.name.en!;
 
         myTabs.add(Tab(text: subjectName));
-        tabController = TabController(
-            length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
-            vsync: this);
       }
     } else if (box.read('userType') == 'student') {
-      print("asdasdasd" + studentInfo.length.toString());
       for (var subject in studentInfo) {
-        print('object');
         myTabs.add(Tab(
             text: box.read('langCode') == 'ar'
                 ? subject.name!.ar
                 : subject.name!.en));
-        tabController = TabController(
-            length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
-            vsync: this);
+      }
+    }
+    tabController = TabController(
+        length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
+        vsync: this);
+
+    if (myTabs.isNotEmpty) {
+      String firstTabText = myTabs[0].text!;
+      if (subjectNameToIdMap.containsKey(firstTabText)) {
+        int subjectId = subjectNameToIdMap[firstTabText]!;
+        selectedSubjectId.value = subjectId;
+        getWeekPlane(selectedSectionId.value, selectedSubjectId.value);
       }
     }
   }
@@ -255,10 +253,10 @@ class WeekPlaneController extends GetxController
         sectionId: sectionId,
         subjectId: subjectId,
         pageId: currentPage);
-    weekPlane.clear();
+   // weekPlane.clear();
     isLoadingWeekPlane.value = false;
     if (result is DataSuccess) {
-      weekPlane.clear();
+      //weekPlane.clear();
       weekPlane.addAll(result.data!.data!.data!);
       hasMorePages = false;
     } else if (result is DataFailed) {
@@ -313,10 +311,8 @@ class WeekPlaneController extends GetxController
   }
 
   Future<void> deleteWeekPlane(int weekPlaneId) async {
-    //isLoadingDelete.value = true;
     final result =
         await weekPlaneRepo.deleteWeekPlane(weekPlaneId: weekPlaneId);
-    //isLoadingDelete.value = false;
     if (result is DataSuccess) {
       weekPlane.removeWhere((weekPlane) => weekPlane.id == weekPlaneId);
       CustomToast.showToast(
@@ -328,7 +324,6 @@ class WeekPlaneController extends GetxController
         textColor: AppColor.whiteColor,
       );
     } else if (result is DataFailed) {
-      // isLoadingDelete.value = false;
       CustomToast.showToast(
         message: 'Failed to delete lesson'.tr,
         backgroundColor: AppColor.redColor,
@@ -393,17 +388,12 @@ class WeekPlaneController extends GetxController
     tabController = TabController(
         length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
         vsync: this);
+
     box.read('userType') == 'student'
         ? getStudentInf().then((value) {
-            //  getWeekPlane(studentInfo[0].id!, 0);
             updateTabs();
           })
         : getSections();
-    //getSections();
-    // List<Sections> temp = sectionList[sectionList.keys.first]!;
-    // print('=================');
-    // print(studentInfo[0].id!);
-    // print('=================');
 
     sectionController = TextEditingController();
     subjectController = TextEditingController();

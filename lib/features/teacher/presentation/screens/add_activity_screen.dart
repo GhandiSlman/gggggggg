@@ -23,7 +23,6 @@ class AddActivityScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final arguments = Get.arguments;
     final activityId = arguments['activityId'];
-    print(activityId);
     final isUpdated = arguments['isUpdate'];
     return Scaffold(
       backgroundColor: AppColor.scaffoldColor,
