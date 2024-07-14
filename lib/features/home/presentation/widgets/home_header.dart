@@ -114,12 +114,12 @@ class HomeHeader extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CustomText(
-                          text: 'Ghandi Alslman',
+                          text: box.read('name'),
                           color: AppColor.whiteColor,
                           fontSize: 20.sp,
                         ),
                         CustomText(
-                          text: 'Fourth year',
+                          text: box.read('email'),
                           color: AppColor.whiteColor,
                           fontSize: 15.sp,
                         ),

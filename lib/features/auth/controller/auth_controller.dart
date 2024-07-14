@@ -6,8 +6,8 @@ import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_toast.dart';
-import 'package:lms/features/auth/data/models/login_model.dart';
-import 'package:lms/features/auth/data/remote_repo/auth_repo.dart';
+import 'package:lms/features/auth/models/login_model.dart';
+import 'package:lms/features/auth/data/auth_repo.dart';
 import 'package:lms/core/data/data_state.dart';
 
 class AuthController extends GetxController {
@@ -43,7 +43,8 @@ class AuthController extends GetxController {
     if (loginResult is DataSuccess) {
       await box.write('token', loginResult.data!.accessToken);
       await box.write('userType', loginResult.data!.user!.role);
-
+      await box.write('name', loginResult.data.user.name);
+      await box.write('email', loginResult.data.user.email);
       Get.offAllNamed(AppRouter.homeScreen);
     } else if (loginResult is DataFailed) {
       CustomToast.showToast(
