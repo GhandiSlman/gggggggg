@@ -6,13 +6,16 @@ import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_images.dart';
 import 'package:lms/core/widgets/custom_app_bar.dart';
 import 'package:lms/core/widgets/custom_text_field.dart';
+import 'package:lms/features/chat/controller/chat_controller.dart';
+import 'package:lms/features/chat/models/contact_model.dart';
+import 'package:lms/features/chat/models/send_message_model.dart';
 import 'package:lms/features/comments/presentation/widgets/comment_image_button.dart';
 import 'package:lms/features/teacher/controller/teacher_controller.dart';
 import 'package:lms/features/teacher/presentation/widgets/message_card.dart';
 
-class ChatDetails extends StatelessWidget {
-  const ChatDetails({super.key});
-
+class ChatDetails extends GetView<ChatController> {
+  const ChatDetails({super.key, required this.contactModel});
+  final ContactModel contactModel;
   @override
   Widget build(BuildContext context) {
     TeacherController teacherController = Get.find();
@@ -24,18 +27,24 @@ class ChatDetails extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: ListView.separated(
-                itemBuilder: (BuildContext context, int index) {
-                  return const MessageCard();
-                },
-                itemCount: 5,
-                separatorBuilder: (BuildContext context, int index) => SizedBox(
-                  height: 10.h,
-                ),
-              ),
+              child: Obx(() {
+                var chatController = Get.find<ChatController>();
+                if (chatController.getConversationsIsLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return ListView.separated(
+                    itemBuilder: (BuildContext context, int index) {
+                      return MessageCard(
+                          message: chatController.messages[index]);
+                    },
+                    itemCount: chatController.messages.length,
+                    separatorBuilder: (BuildContext context, int index) =>
+                        12.verticalSpace);
+              }),
             ),
             SizedBox(height: 10.h),
             Obx(() => CustomTextField(
+                  controller: controller.textController,
                   minLine: 1,
                   maxLine: 2,
                   onChanged: (String val) {
@@ -56,6 +65,11 @@ class ChatDetails extends StatelessWidget {
                                 Icons.send,
                                 color: AppColor.whiteColor,
                               ),
+                              onTap: () {
+                                controller.sendMessage(SendMessageModel(
+                                    message: controller.textController.text,
+                                    receiverId: contactModel.id));
+                              },
                             )
                           : CommentImageButton(
                               icon: SvgPicture.asset(AppImages.cameraImage),

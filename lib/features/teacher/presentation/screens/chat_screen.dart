@@ -3,18 +3,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/widgets/custom_app_bar.dart';
+import 'package:lms/features/chat/controller/chat_controller.dart';
 import 'package:lms/features/parent/presentation/screens/parent_chat_screen.dart';
 import 'package:lms/features/supervisor/presentation/screens/super_visor_chats_screen.dart';
 
 import '../../controller/teacher_controller.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends GetView<ChatController> {
   const ChatScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ChatController(Get.find()));
     TeacherController teacherController = Get.put(TeacherController());
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: AppColor.scaffoldColor,
       appBar: CustomAppBar(
           title: 'Chats'.tr,
@@ -22,7 +24,6 @@ class ChatScreen extends StatelessWidget {
             preferredSize: Size.fromHeight(50.h),
             child: Column(
               children: [
-                
                 TabBar(
                   indicatorColor: AppColor.primaryColor,
                   labelColor: AppColor.primaryColor,

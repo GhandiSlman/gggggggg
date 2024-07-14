@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:lms/core/data/notification_provider.dart';
 import 'package:lms/core/local/local.dart';
 import 'package:lms/core/local/local_controller.dart';
 import 'package:lms/core/utils/app_consts.dart';
@@ -15,6 +16,7 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await GetStorage.init();
   await DependencyInjection.init();
+  await FireBaseAPi().initNotifications();
   runApp(const MyApp());
 }
 

@@ -84,7 +84,9 @@ class AppRouter {
     GetPage(name: teacherWeekPlane, page: () => const TeacherWeekPlaneScreen()),
     GetPage(name: parentChatScreen, page: () => const ParentChatScreen()),
     GetPage(name: chatScreen, page: () => const ChatScreen()),
-    GetPage(name: chatDetails, page: () => const ChatDetails()),
+    GetPage(
+        name: chatDetails,
+        page: () => ChatDetails(contactModel: Get.arguments)),
     GetPage(
         name: superVisorPresence, page: () => const SuperVisorPresenceScreen()),
     GetPage(
@@ -103,10 +105,11 @@ class AppRouter {
     GetPage(
         name: advertisementsScreen, page: () => const AdvertisementsScreen()),
     GetPage(name: newsScreen, page: () => const NewsScreen()),
-     GetPage(name: continousRatingScreen, page: () => const ContinousRatingScreen()),
-     GetPage(name: addRate, page: () => const AddRate()),
-     GetPage(name: assignRatescreen, page: () => const AssignedRatesScreen()),
-     GetPage(name: addAssignRatescreen, page: () => const AddAsignRateScreen()),
-     GetPage(name: settingsScreen, page: () => const SettingSreen()),
+    GetPage(
+        name: continousRatingScreen, page: () => const ContinousRatingScreen()),
+    GetPage(name: addRate, page: () => const AddRate()),
+    GetPage(name: assignRatescreen, page: () => const AssignedRatesScreen()),
+    GetPage(name: addAssignRatescreen, page: () => const AddAsignRateScreen()),
+    GetPage(name: settingsScreen, page: () => const SettingSreen()),
   ];
 }
