@@ -31,7 +31,7 @@ class HomeGridView extends StatelessWidget {
                 ? homeController.parentImages
                 : homeController.studentImages;
 
-    final List onPressedActions = userType =='teacher'
+    final List onPressedActions = userType == 'teacher'
         ? homeController.teacherOnPressed
         : userType == 'supervisor'
             ? homeController.superVisorOnPressed
@@ -79,6 +79,7 @@ class HomeGridView extends StatelessWidget {
             onTap: onPressedActions[index],
             child: Container(
               decoration: boxDecoration,
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
               child: Column(
                 children: [
                   SizedBox(height: 10.h),
