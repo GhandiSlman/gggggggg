@@ -51,7 +51,7 @@ class ActivityController extends GetxController {
   }
 
   Future<void> getSections() async {
-    print("hellllllllll");
+
     isLoadingSection.value = true;
 
     final result =
@@ -123,7 +123,7 @@ class ActivityController extends GetxController {
         isLongDuration: false,
         textColor: AppColor.whiteColor,
       );
-      print("zzzzzzzzzzzzzzzzzzzzzzzzzz");
+  
       // to test
     } else if (result is DataFailed) {
       CustomToast.showToast(

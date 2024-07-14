@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:firebase_messaging/firebase_messaging.dart'; // Add this import
 import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
@@ -33,9 +34,12 @@ class AuthController extends GetxController {
   Future<void> login() async {
     isLoading.value = true;
     loginErrorMessage.value = null;
+    String? deviceToken = await FirebaseMessaging.instance.getToken();
+
     final loginModel = LoginModel(
       email: email.text,
       password: password.text,
+      deviceToken: deviceToken,
     );
 
     final DataState loginResult = await authRepo.logIn(loginModel: loginModel);
@@ -43,8 +47,8 @@ class AuthController extends GetxController {
     if (loginResult is DataSuccess) {
       await box.write('token', loginResult.data!.accessToken);
       await box.write('userType', loginResult.data!.user!.role);
-      await box.write('name', loginResult.data.user.name);
-      await box.write('email', loginResult.data.user.email);
+      await box.write('name', loginResult.data.user!.name);
+      await box.write('email', loginResult.data.user!.email);
       Get.offAllNamed(AppRouter.homeScreen);
     } else if (loginResult is DataFailed) {
       CustomToast.showToast(
