@@ -59,7 +59,7 @@ class _ChatContactsScreenState extends State<ChatContactsScreen>
                       if (controller.contactsModel?.supervisors != null)
                         Tab(text: 'Supervisors'.tr),
                       if (controller.contactsModel?.guardians != null)
-                        Tab(text: 'Guardians'.tr),
+                        Tab(text: 'Parents'.tr),
                     ],
                   ),
                 ],
