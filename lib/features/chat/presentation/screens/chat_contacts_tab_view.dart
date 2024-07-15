@@ -7,7 +7,7 @@ import 'package:lms/features/chat/models/contact_model.dart';
 import 'package:lms/features/chat/presentation/widgets/chat_contact_card.dart';
 
 class ChatContactsTabView extends GetView<ChatController> {
-  const ChatContactsTabView(this.list, {super.key});
+  const ChatContactsTabView({required this.list, super.key});
   final List<ContactModel> list;
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class ChatContactsTabView extends GetView<ChatController> {
                   separatorBuilder: (BuildContext context, int index) =>
                       16.verticalSpace,
                 )
-              : const CircularProgressIndicator(),
+              : const Center(child: CircularProgressIndicator()),
         ),
       ),
     );

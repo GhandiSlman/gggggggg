@@ -37,8 +37,8 @@ class AuthController extends GetxController {
     String? deviceToken = await FirebaseMessaging.instance.getToken();
 
     final loginModel = LoginModel(
-      email: email.text,
-      password: password.text,
+      email: email.text.trim(),
+      password: password.text.trim(),
       deviceToken: deviceToken,
     );
 
@@ -50,6 +50,8 @@ class AuthController extends GetxController {
       await box.write('id', loginResult.data!.user!.id);
       await box.write('name', loginResult.data.user!.name);
       await box.write('email', loginResult.data.user!.email);
+      email.clear();
+      password.clear();
       Get.offAllNamed(AppRouter.homeScreen);
     } else if (loginResult is DataFailed) {
       CustomToast.showToast(
