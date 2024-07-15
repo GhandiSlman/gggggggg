@@ -47,6 +47,7 @@ class AuthController extends GetxController {
     if (loginResult is DataSuccess) {
       await box.write('token', loginResult.data!.accessToken);
       await box.write('userType', loginResult.data!.user!.role);
+      await box.write('id', loginResult.data!.user!.id);
       await box.write('name', loginResult.data.user!.name);
       await box.write('email', loginResult.data.user!.email);
       Get.offAllNamed(AppRouter.homeScreen);

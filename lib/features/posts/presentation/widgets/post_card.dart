@@ -51,7 +51,8 @@ class PostCard extends StatelessWidget {
                         ),
                       ),
                       50.horizontalSpace,
-                      box.read('userType') == 'teacher'
+                      box.read('userType') == 'teacher' &&
+                              box.read('id') == post.teacherId
                           ? IconButton(
                               onPressed: () {
                                 showDialog(
@@ -60,42 +61,48 @@ class PostCard extends StatelessWidget {
                                     return Obx(() => postController
                                             .isLoadingDeletePost.value
                                         ? const LoadingWidget()
-                                        : SimpleDialog(
-                                            children: [
-                                              ListTile(
-                                                title: CustomText(
-                                                    text: 'Update'.tr),
-                                                leading: SvgPicture.asset(
-                                                    AppImages.updateImage),
-                                                onTap: () {
-                                                  Get.toNamed(
-                                                      AppRouter.addPostScreen,
-                                                      arguments: {
-                                                        'postId': post.id,
-                                                        'isUpdate': postController
-                                                                .isUpdatePost ==
-                                                            false,
-                                                        'desCon': postController
-                                                                .descController
-                                                                .text =
-                                                            post.description!,
-                                                      });
-                                                },
+                                        : Dialog(
+                                            child: SizedBox(
+                                              height: 120,
+                                              child: Column(
+                                                children: [
+                                                  ListTile(
+                                                    title: CustomText(
+                                                        text: 'Update'.tr),
+                                                    leading: SvgPicture.asset(
+                                                        AppImages.updateImage),
+                                                    onTap: () {
+                                                      Get.toNamed(
+                                                          AppRouter
+                                                              .addPostScreen,
+                                                          arguments: {
+                                                            'postId': post.id,
+                                                            'isUpdate':
+                                                                postController
+                                                                        .isUpdatePost ==
+                                                                    false,
+                                                            'desCon': postController
+                                                                    .descController
+                                                                    .text =
+                                                                post.description!,
+                                                          });
+                                                    },
+                                                  ),
+                                                  ListTile(
+                                                    title: CustomText(
+                                                        text: 'Delete'.tr),
+                                                    leading: SvgPicture.asset(
+                                                        AppImages.delete2Image),
+                                                    onTap: () {
+                                                      postController
+                                                          .deletePost(post.id!)
+                                                          .then((value) =>
+                                                              Get.back());
+                                                    },
+                                                  ),
+                                                ],
                                               ),
-                                              ListTile(
-                                                title: CustomText(
-                                                    text: 'Delete'.tr),
-                                                leading: SvgPicture.asset(
-                                                    AppImages.delete2Image),
-                                                onTap: () {
-                                        
-                                                  postController
-                                                      .deletePost(post.id!)
-                                                      .then((value) =>
-                                                          Get.back());
-                                                },
-                                              ),
-                                            ],
+                                            ),
                                           ));
                                   },
                                 );

@@ -3,11 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/features/chat/controller/chat_controller.dart';
-import 'package:lms/features/supervisor/presentation/widgets/chat_card.dart';
+import 'package:lms/features/chat/models/contact_model.dart';
+import 'package:lms/features/chat/presentation/widgets/chat_contact_card.dart';
 
-class SuperVisorChatScreen extends GetView<ChatController> {
-  const SuperVisorChatScreen({super.key});
-
+class ChatContactsTabView extends GetView<ChatController> {
+  const ChatContactsTabView(this.list, {super.key});
+  final List<ContactModel> list;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,18 +18,13 @@ class SuperVisorChatScreen extends GetView<ChatController> {
         child: Obx(
           () => !controller.getContactsIsLoading.value
               ? ListView.separated(
-                  itemCount:
-                      controller.teacherContactsModel!.supervisors.length,
-                  itemBuilder: (_, index) {
-                    return ChatCard(
-                      contactModel:
-                          controller.teacherContactsModel!.supervisors[index],
-                    );
-                  },
+                  itemCount: list.length,
+                  itemBuilder: (_, index) =>
+                      ChatCard(contactModel: list[index]),
                   separatorBuilder: (BuildContext context, int index) =>
-                      SizedBox(height: 20.h),
+                      16.verticalSpace,
                 )
-              : const SizedBox(),
+              : const CircularProgressIndicator(),
         ),
       ),
     );

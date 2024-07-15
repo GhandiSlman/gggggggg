@@ -1,3 +1,5 @@
+import 'package:lms/features/auth/models/login_model.dart';
+
 class GetCommentModel {
   bool? status;
   GetCommentData? result;
@@ -91,6 +93,7 @@ class Comments {
   String? comment;
   String? createdAt;
   String? updatedAt;
+  User? user;
 
   Comments(
       {this.id,
@@ -98,6 +101,7 @@ class Comments {
       this.userId,
       this.comment,
       this.createdAt,
+      this.user,
       this.updatedAt});
 
   Comments.fromJson(Map<String, dynamic> json) {
@@ -107,6 +111,7 @@ class Comments {
     comment = json['comment'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -129,8 +134,7 @@ class GetCommentWeekPlane {
 
   GetCommentWeekPlane.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    result =
-        json['result'] != null ? Result.fromJson(json['result']) : null;
+    result = json['result'] != null ? Result.fromJson(json['result']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -153,7 +157,7 @@ class Result {
   String? lessonDate;
   String? createdAt;
   String? updatedAt;
-  List<CommentsWeekPlane>? comments;
+  List<Comments>? comments;
 
   Result(
       {this.id,
@@ -178,9 +182,9 @@ class Result {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     if (json['comments'] != null) {
-      comments = <CommentsWeekPlane>[];
+      comments = <Comments>[];
       json['comments'].forEach((v) {
-        comments!.add(CommentsWeekPlane.fromJson(v));
+        comments!.add(Comments.fromJson(v));
       });
     }
   }
@@ -199,47 +203,6 @@ class Result {
     if (comments != null) {
       data['comments'] = comments!.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class CommentsWeekPlane {
-  int? id;
-  int? teacherId;
- // Null? guardianId;
-  int? weekPlanId;
-  String? comment;
-  String? createdAt;
-  String? updatedAt;
-
-  CommentsWeekPlane(
-      {this.id,
-      this.teacherId,
-     // this.guardianId,
-      this.weekPlanId,
-      this.comment,
-      this.createdAt,
-      this.updatedAt});
-
-  CommentsWeekPlane.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    teacherId = json['teacher_id'];
-   // guardianId = json['guardian_id'];
-    weekPlanId = json['week_plan_id'];
-    comment = json['comment'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['teacher_id'] = teacherId;
-    //data['guardian_id'] = guardianId;
-    data['week_plan_id'] = weekPlanId;
-    data['comment'] = comment;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
     return data;
   }
 }

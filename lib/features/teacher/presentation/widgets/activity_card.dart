@@ -18,6 +18,7 @@ class ActivityCard extends StatelessWidget {
   String desc;
   String title;
   String? sectionName;
+  final int teacherId;
   ActivityCard({
     super.key,
     this.activity,
@@ -25,6 +26,7 @@ class ActivityCard extends StatelessWidget {
     required this.date,
     required this.desc,
     this.sectionName,
+    required this.teacherId,
   });
 
   @override
@@ -75,7 +77,8 @@ class ActivityCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (box.read('userType') == 'teacher')
+                if (box.read('userType') == 'teacher' &&
+                    box.read('id') == teacherId)
                   IconButton(
                     onPressed: () {
                       showDialog(

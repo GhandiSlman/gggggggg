@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lms/core/utils/app_consts.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage? message) async {}
@@ -11,7 +12,7 @@ class FireBaseAPi {
     await _firebaseMessaging.requestPermission();
     final fcmToken = await _firebaseMessaging.getToken();
     debugPrint(fcmToken);
-    box.write(  "fcm_token", fcmToken );
+    box.write("fcm_token", fcmToken);
     initpushnotification();
   }
 
@@ -25,7 +26,9 @@ class FireBaseAPi {
     await FirebaseMessaging.instance.getInitialMessage().then((value) {
       FirebaseMessaging.onMessageOpenedApp.listen(handlemessage);
       FirebaseMessaging.onBackgroundMessage(handlemessage);
-      FirebaseMessaging.onMessage.listen((event) {});
-});
-}
+      FirebaseMessaging.onMessage.listen((event) {
+        Get.snackbar('title', 'message');
+      });
+    });
+  }
 }

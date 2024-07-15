@@ -72,7 +72,7 @@ class ContinuousRatingController extends GetxController {
     showStudentList.clear();
     isLoadingStudentSubject.value = false;
 
-    if (result is DataSuccess) {
+    if (result is DataSuccess<StudentAttendance>) {
       classList.clear();
       showClassList.clear();
       subjectList.clear();
@@ -92,26 +92,36 @@ class ContinuousRatingController extends GetxController {
             for (var sectionSubject in section.sectionSubjects!) {
               // Add subjects to subject list
               String subjectName = box.read('langCode') == 'ar'
-                  ? sectionSubject.subject!.name!.ar!
-                  : sectionSubject.subject!.name!.en!;
+                  ? sectionSubject.subject!.name.ar
+                  : sectionSubject.subject!.name.en!;
               if (!subjectList.containsKey(className)) {
                 subjectList[className] = [];
               }
-              subjectList[className]!.add(sectionSubject.subject!);
-              showSubjectList.add(SelectedListItem(name: subjectName));
-              subjectToIdMap[subjectName] =
-                  sectionSubject.subject!.id!.toString();
-
-              // Add students to student list
-              for (var student in section.students!) {
-                String studentName = student.name!;
-                showStudentList.add(SelectedListItem(name: studentName));
-                studentToIdMap[studentName] = student.id.toString();
-                if (!studentList.containsKey(className)) {
-                  studentList[className] = [];
-                }
-                studentList[className]!.add(student);
+              if (!subjectList[className]!
+                  .map((e) => e.id)
+                  .contains(sectionSubject.subject!.id)) {
+                subjectList[className]!.add(sectionSubject.subject!);
               }
+
+              if (!showSubjectList
+                  .map((e) => e.value)
+                  .contains(sectionSubject.subject!.id.toString())) {
+                showSubjectList.add(SelectedListItem(
+                    name: subjectName,
+                    value: sectionSubject.subject!.id.toString()));
+              }
+
+              subjectToIdMap[subjectName] =
+                  sectionSubject.subject!.id.toString();
+            }
+            for (var student in section.students!) {
+              String studentName = student.name!;
+              showStudentList.add(SelectedListItem(name: studentName));
+              studentToIdMap[studentName] = student.id.toString();
+              if (!studentList.containsKey(className)) {
+                studentList[className] = [];
+              }
+              studentList[className]!.add(student);
             }
           }
         }

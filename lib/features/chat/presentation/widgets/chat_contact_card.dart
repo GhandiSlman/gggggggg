@@ -16,7 +16,11 @@ class ChatCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         Get.find<ChatController>().getConversations(contactModel.id);
-        Get.toNamed(AppRouter.chatDetails,arguments: contactModel);
+        Get.toNamed(AppRouter.chatDetails, arguments: contactModel)!
+            .whenComplete(() {
+          Get.find<ChatController>().currentRecieverId = -1;
+          Get.find<ChatController>().getContacts();
+        });
       },
       child: ListTile(
         tileColor: AppColor.whiteColor,

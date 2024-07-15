@@ -16,37 +16,44 @@ class Message {
   final int senderId;
   final int receiverId;
   final bool isSender;
-  final String message;
+  bool isSending;
+  final String? message;
+  String? image;
 
   Message({
     this.id = 0,
     this.isSender = true,
+    this.isSending = false,
     this.senderId = 0,
     required this.receiverId,
-    required this.message,
+    this.message,
+    this.image,
   });
 
   factory Message.fromJson(Map<String, dynamic> json) {
+    bool isImage = json['message'].toString().contains('ChatMessageImages');
     return Message(
-      id: json['id'],
-      senderId: json['sender_id'],
-      receiverId: json['receiver_id'],
+      id: json['id'] ?? 0,
+      receiverId: int.parse(json['receiver_id'].toString()),
+      senderId: int.parse(json['sender_id'].toString()),
       isSender: json['is_sender'] ?? false,
-      message: json['message'],
+      message: isImage ? null : json['message'],
+      image: !isImage ? null : json['message'],
     );
   }
 
   factory Message.sendFromJson(Map<String, dynamic> map) {
     var json = map['chat'];
+    bool isImage = json['message'].toString().contains('ChatMessageImages');
     return Message(
-      id: json['id'],
-      senderId: json['sender_id'],
-      receiverId: json['receiver_id'],
+      id: json['id'] ?? 0,
+      receiverId: int.parse(json['receiver_id'].toString()),
+      senderId: int.parse(json['sender_id'].toString()),
       isSender: json['is_sender'] ?? false,
-      message: json['message'],
+      message: isImage ? null : json['message'],
+      image: !isImage ? null : json['message'],
     );
   }
-
   Map<String, dynamic> toJson() {
     return {
       'id': id,

@@ -4,17 +4,15 @@ import 'package:get/get.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/widgets/custom_app_bar.dart';
 import 'package:lms/features/chat/controller/chat_controller.dart';
-import 'package:lms/features/parent/presentation/screens/parent_chat_screen.dart';
-import 'package:lms/features/supervisor/presentation/screens/super_visor_chats_screen.dart';
 
-import '../../controller/teacher_controller.dart';
+import '../../../teacher/controller/teacher_controller.dart';
 
-class ChatScreen extends GetView<ChatController> {
-  const ChatScreen({super.key});
+class ChatContactsScreen extends GetView<ChatController> {
+  const ChatContactsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ChatController(Get.find()));
+    Get.find<ChatController>().getContacts();
     TeacherController teacherController = Get.put(TeacherController());
     return Scaffold(
       backgroundColor: AppColor.scaffoldColor,
@@ -35,9 +33,8 @@ class ChatScreen extends GetView<ChatController> {
           )),
       body: TabBarView(
         controller: teacherController.tabController,
-        children: const [
-          SuperVisorChatScreen(),
-          ParentChatScreen(),
+        children: [
+          // ChatContactsTabView(),
         ],
       ),
     );

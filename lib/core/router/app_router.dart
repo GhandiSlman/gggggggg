@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:lms/core/screens/setting_screen.dart';
 import 'package:lms/features/auth/presentation/screens/login_sceen.dart';
-import 'package:lms/features/parent/presentation/screens/parent_chat_screen.dart';
 import 'package:lms/features/posts/presentation/screens/add_update_post_screen.dart';
 import 'package:lms/features/supervisor/presentation/screens/add_update_adv_screen.dart';
 import 'package:lms/features/supervisor/presentation/screens/advertisements_screen.dart';
@@ -11,7 +10,6 @@ import 'package:lms/features/parent/presentation/screens/son_achievement_screen.
 import 'package:lms/features/parent/presentation/screens/sons_screen.dart.dart';
 import 'package:lms/features/parent/presentation/screens/student_honor_board_screen.dart';
 import 'package:lms/features/students/presentation/screens/student_screen.dart';
-import 'package:lms/features/supervisor/presentation/screens/super_visor_chats_screen.dart';
 import 'package:lms/features/comments/presentation/screens/comments_screen.dart';
 import 'package:lms/features/home/presentation/screens/home_screen.dart';
 import 'package:lms/features/posts/presentation/screens/posts_screen.dart';
@@ -24,8 +22,8 @@ import 'package:lms/features/honor_board/presentation/screens/add_update_honor_b
 import 'package:lms/features/teacher/presentation/screens/add_rate_screen.dart';
 import 'package:lms/features/teacher/presentation/screens/add_to_week_plane_screen.dart';
 import 'package:lms/features/teacher/presentation/screens/assigned_rates_screen.dart';
-import 'package:lms/features/teacher/presentation/screens/chat_details.dart';
-import 'package:lms/features/teacher/presentation/screens/chat_screen.dart';
+import 'package:lms/features/chat/presentation/screens/chat_conversation_screen.dart';
+import 'package:lms/features/chat/presentation/screens/chat_contacts_screen.dart';
 import 'package:lms/features/teacher/presentation/screens/choose_date_screen.dart';
 import 'package:lms/features/teacher/presentation/screens/class_schedule_screen.dart';
 import 'package:lms/features/teacher/presentation/screens/continous_rating_screen.dart';
@@ -43,9 +41,9 @@ class AppRouter {
   static const String addPostScreen = '/addPostScreen';
   static const String techerClassRoomScreen = '/techerClassRoomScreen';
   static const String activityScreen = '/activityScreen';
-  static const String allchatsScreen = '/allchatsScreen';
+  // static const String allchatsScreen = '/allchatsScreen';
   static const String teacherWeekPlane = '/teacherWeekPlane';
-  static const String parentChatScreen = '/parentChatScreen';
+  // static const String parentChatScreen = '/parentChatScreen';
   static const String chatScreen = '/chatScreen';
   static const String chatDetails = '/chatDetails';
   static const String superVisorPresence = '/superVisorPresence';
@@ -80,13 +78,13 @@ class AppRouter {
         name: techerClassRoomScreen,
         page: () => const TeacherClassRoomScreen()),
     GetPage(name: activityScreen, page: () => const ActivityScreen()),
-    GetPage(name: allchatsScreen, page: () => const SuperVisorChatScreen()),
+    // GetPage(name: allchatsScreen, page: () => const SupervisorChatScreen()),
     GetPage(name: teacherWeekPlane, page: () => const TeacherWeekPlaneScreen()),
-    GetPage(name: parentChatScreen, page: () => const ParentChatScreen()),
-    GetPage(name: chatScreen, page: () => const ChatScreen()),
+    // GetPage(name: parentChatScreen, page: () => const ParentChatScreen()),
+    GetPage(name: chatScreen, page: () => const ChatContactsScreen()),
     GetPage(
         name: chatDetails,
-        page: () => ChatDetails(contactModel: Get.arguments)),
+        page: () => ChatConversationScreen(contactModel: Get.arguments)),
     GetPage(
         name: superVisorPresence, page: () => const SuperVisorPresenceScreen()),
     GetPage(

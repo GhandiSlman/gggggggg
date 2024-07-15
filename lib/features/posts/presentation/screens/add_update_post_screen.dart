@@ -138,7 +138,13 @@ class AddPostScreen extends StatelessWidget {
                           text: isUpdate == true ? 'Update Post'.tr : 'Post'.tr,
                           onTap: () {
                             isUpdate == true
-                                ? postController.updatePost(postId)
+                                ? postController
+                                    .updatePost(postId)
+                                    .then((value) {
+                                    postController.getClasses();
+                                    Get.back();
+                                    Get.back();
+                                  })
                                 : postController.addPost().then((value) {
                                     postController.getClasses();
                                     Get.back();
