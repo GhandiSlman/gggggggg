@@ -194,7 +194,7 @@ class ContinuousRatingController extends GetxController {
     }
   }
 
-  Future<void> getContinuousRatingStudent(int rateId) async {
+  Future<void> getContinuousRatingStudent(String rateId) async {
     isLoadnigGetRateStudent.value = true;
     final DataState result =
         await continuousRatingRepo.getContinuousRateStudent(

@@ -68,7 +68,8 @@ class AddAsignRateScreen extends StatelessWidget {
                         .isLoadingStudentSubject.value
                     ? ShimmerWidget(height: 50.h)
                     : DropDownList(
-                        onSelectedItems: (List<SelectedListItem> selectedItems) {
+                        onSelectedItems:
+                            (List<SelectedListItem> selectedItems) {
                           continuousRatingController
                               .updateSelectedSubject(selectedItems.last.name);
                           String? subjectId = continuousRatingController
@@ -97,6 +98,8 @@ class AddAsignRateScreen extends StatelessWidget {
                             continuousRatingController
                                 .addRateStudent(id)
                                 .then((value) {
+                              continuousRatingController
+                                  .getContinuousRatingStudent(id);
                               Get.back();
                             });
                           },

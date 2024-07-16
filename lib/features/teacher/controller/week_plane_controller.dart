@@ -50,7 +50,7 @@ class WeekPlaneController extends GetxController
 
   RxList<Tab> myTabs = <Tab>[].obs;
 
-  List<WeekPlaneDetails> weekPlane = <WeekPlaneDetails>[];
+  RxList<WeekPlaneDetails> weekPlane = <WeekPlaneDetails>[].obs;
   int currentPage = 1;
   bool hasMorePages = true;
   RxBool isMoreLoading = false.obs;
@@ -187,7 +187,7 @@ class WeekPlaneController extends GetxController
   }
 
   void updateSubjectsForSection(int sectionId) {
-   // weekPlane.clear();
+    // weekPlane.clear();
     selectedSectionSubjects.clear();
     var selectedSection = sectionList.entries
         .firstWhere((element) =>
@@ -247,16 +247,14 @@ class WeekPlaneController extends GetxController
     isLoadingWeekPlane.value = true;
     currentPage = 1;
     hasMorePages = true;
-    weekPlane.clear();
     final result = await weekPlaneRepo.getWeekPlane(
         weekPlaneModel: WeekPlaneModel(),
         sectionId: sectionId,
         subjectId: subjectId,
         pageId: currentPage);
-   // weekPlane.clear();
+    weekPlane.clear();
     isLoadingWeekPlane.value = false;
     if (result is DataSuccess) {
-      //weekPlane.clear();
       weekPlane.addAll(result.data!.data!.data!);
       hasMorePages = false;
     } else if (result is DataFailed) {
@@ -373,10 +371,13 @@ class WeekPlaneController extends GetxController
 
   void updateSelectedSectionId(int sectionId, int subjectId) {
     selectedSectionId.value = sectionId;
+    selectedSubjectId.value = subjectId;
     getWeekPlane(sectionId, subjectId);
   }
 
-  void updateSelectedSubjectIdStudent(int subjectId) {
+  void updateSelectedSubjectIdStudent(
+    int subjectId,
+  ) {
     selectedSubjectId.value = subjectId;
     int sectionId =
         studentInfo.firstWhere((subject) => subject.id == subjectId).id!;
