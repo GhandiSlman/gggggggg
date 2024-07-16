@@ -10,18 +10,18 @@ class HonorBoardRepoImp implements HonorBoardRepo {
   final DataService _dataService;
   HonorBoardRepoImp(this._dataService);
 
-  @override
-  Future<DataState> addHonorBoard(
-      {required CreateHonorBoardModel createHonorBoardModel}) async {
-    final DataState response = await _dataService.postData(
-        endPoint: 'teacher/honorBoard/store',
-        data: createHonorBoardModel.toJson(),
-        baseUrl: baseUrl,
-        fromJson: (Map<String, dynamic> json) =>
-            GetHonorBoardModel.fromJson(json));
+  // @override
+  // Future<DataState> addHonorBoard(
+  //     {required CreateHonorBoardModel createHonorBoardModel}) async {
+  //   final DataState response = await _dataService.postData(
+  //       endPoint: 'teacher/honorBoard/store',
+  //       data: createHonorBoardModel.toJson(),
+  //       baseUrl: baseUrl,
+  //       fromJson: (Map<String, dynamic> json) =>
+  //           GetHonorBoardModel.fromJson(json));
 
-    return response;
-  }
+  //   return response;
+  // }
 
   @override
   Future<DataState> getClassSubjectStudent(

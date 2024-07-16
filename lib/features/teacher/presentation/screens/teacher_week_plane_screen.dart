@@ -77,10 +77,11 @@ class TeacherWeekPlaneScreen extends StatelessWidget {
                             .selectedSectionSubjects.isNotEmpty) {
                           int subjectId = weekPlaneController
                               .selectedSectionSubjects[index].id;
+                              
                           weekPlaneController.updateSelectedSectionId(
                               weekPlaneController.selectedSectionId.value,
                               subjectId);
-                        }
+                       }
                       } else if (box.read('userType') == 'student') {
                         if (weekPlaneController.studentInfo.isNotEmpty) {
                           int subjectId =

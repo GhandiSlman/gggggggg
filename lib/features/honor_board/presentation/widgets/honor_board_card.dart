@@ -14,7 +14,7 @@ import 'package:lms/features/honor_board/model/honor_board.dart';
 class TeacherHonorBoardCard extends StatelessWidget {
   String subjectName;
   int subjectId;
-  GetHonorBoardModel getHonorBoard;
+  HonorBoard getHonorBoard;
   TeacherHonorBoardCard({
     super.key,
     required this.subjectId,

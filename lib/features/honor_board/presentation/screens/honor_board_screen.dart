@@ -6,6 +6,7 @@ import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_app_bar.dart';
+import 'package:lms/core/widgets/custom_text.dart';
 import 'package:lms/core/widgets/drop_down.dart';
 import 'package:lms/core/widgets/shimmer.dart';
 import 'package:lms/features/honor_board/controller/honor_board_controller.dart';
@@ -17,8 +18,6 @@ class HonorBoardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HonorBoardController honorBoardController = Get.find();
-    //  StudentStatusController studentStatusController = Get.find();
-    // String userType = box.read('userType') ?? '';
 
     return Scaffold(
       floatingActionButton: box.read('userType') == 'teacher'
@@ -46,20 +45,10 @@ class HonorBoardScreen extends StatelessWidget {
                         horizontal: 14.4.w, vertical: 10.h),
                     child: DropDownList(
                       onSelectedItems: (List<SelectedListItem> selectedItems) {
-                        // box.read('userType') == 'teacher'
-                        //?
-                        honorBoardController
-                            .updateSelectedClass(selectedItems.first.name);
-                        // : studentStatusController
-                        //     .updateSelectedClass(selectedItems.first);
+                        honorBoardController.updateSelectedClass(selectedItems.first.name);
                       },
-                      dataList:
-                          // box.read('userType') == 'teacher'
-                          //     ?
-                          honorBoardController.showClassList,
-                      //  : studentStatusController.classList,
-                      textEditingController:
-                          honorBoardController.classController,
+                      dataList: honorBoardController.showClassList,
+                      textEditingController: honorBoardController.classController,
                       hint: 'Choose class'.tr,
                       isCitySelected: true,
                     ),
@@ -67,26 +56,6 @@ class HonorBoardScreen extends StatelessWidget {
                 )
               : null),
       body: Obx(() {
-        // if (honorBoardController.selectedClass.isEmpty) {
-        //   return Center(
-        //     child: Text(
-        //       'Choose a class'.tr,
-        //       style: TextStyle(fontSize: 18.sp, color: AppColor.primaryColor),
-        //     ),
-        //   );
-        // } else if (honorBoardController.isGetHonor.value) {
-        //   return ListView.builder(
-        //     itemCount: 3,
-        //     itemBuilder: (context, index) => Padding(
-        //       padding: EdgeInsets.all(10.h),
-        //       child: ShimmerWidget(height: 50.h),
-        //     ),
-        //   );
-        // }
-        //else {
-        // return
-        // Obx(() {
-        //  List<String> subjects = studentStatusController.getSubjectList();
         return honorBoardController.isGetHonor.value
             ? ListView.builder(
                 itemCount: 3,
@@ -96,62 +65,29 @@ class HonorBoardScreen extends StatelessWidget {
                     child: ShimmerWidget(height: 75.h),
                   );
                 })
-            : ListView.builder(
-                itemCount: box.read('userType') == 'student'
-                    ? honorBoardController.honorBoardList.length
-                    : honorBoardController.filteredHonorBoardList.length,
+            :  honorBoardController.selectedSubjects.isEmpty? Center(
+              child: CustomText(text: 'No data availabe'.tr , fontSize: 20.sp,color: AppColor.primaryColor,)
+            ): ListView.builder(
+                itemCount: honorBoardController.selectedSubjects.length,
                 itemBuilder: (context, index) {
+                  final subject = honorBoardController.selectedSubjects[index];
                   return Padding(
                     padding: EdgeInsets.all(10.h),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // CustomText(
-                        //   text: subjects.isNotEmpty
-                        //       ? subjects[index % subjects.length]
-                        //       : 'No subjects',
-                        //   color: AppColor.primaryColor,
-                        //   fontSize: 18.sp,
-                        // ),
                         TeacherHonorBoardCard(
-                            getHonorBoard: box.read('userType') == 'student'
-                                ? honorBoardController.honorBoardList[index]
-                                : honorBoardController
-                                    .filteredHonorBoardList[index],
-                            subjectName: box.read('langCode') == 'ar'
-                                ? box.read('userType') == 'student'
-                                    ? honorBoardController.honorBoardList[index]
-                                        .data![index].subjects![index].name!.ar!
-                                    : honorBoardController
-                                        .filteredHonorBoardList[index]
-                                        .data![index]
-                                        .subjects![index]
-                                        .name!
-                                        .ar!
-                                : box.read('userType') == 'student'
-                                    ? honorBoardController.honorBoardList[index]
-                                        .data![index].subjects![index].name!.en!
-                                    : honorBoardController
-                                        .filteredHonorBoardList[index]
-                                        .data![index]
-                                        .subjects![index]
-                                        .name!
-                                        .en!,
-                            subjectId: box.read('userType') == 'student'
-                                ? honorBoardController.honorBoardList[index]
-                                    .data![index].subjects![index].id!
-                                : honorBoardController
-                                    .filteredHonorBoardList[index]
-                                    .data![index]
-                                    .subjects![index]
-                                    .id!),
+                          getHonorBoard: honorBoardController.honorBoardList[index],
+                          subjectName: box.read('langCode') == 'ar'
+                              ? subject.name!.ar!
+                              : subject.name!.en!,
+                          subjectId: subject.id!,
+                        ),
                       ],
                     ),
                   );
                 },
               );
-        //  });
-        // }
       }),
     );
   }

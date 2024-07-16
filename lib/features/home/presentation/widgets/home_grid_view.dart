@@ -14,7 +14,16 @@ class HomeGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
     String userType = box.read('userType');
-
+  //   final List<String> techerTitle = [
+  //   'Student Attendance'.tr,
+  //   'Class table'.tr,
+  //   'Activity'.tr,
+  //   'Home Work'.tr,
+  //   'Daily Coverage'.tr,
+  //   'Chats'.tr,
+  //   'Continuous Rating'.tr,
+  //   'Week Plan'.tr,
+  // ];
     final List<String> titles = userType == 'teacher'
         ? homeController.techerTitle
         : userType == 'supervisor'

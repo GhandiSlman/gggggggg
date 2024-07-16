@@ -165,7 +165,7 @@ class WeekPlaneController extends GetxController
     if (sectionNameToIdMap.containsKey(sectionName.name)) {
       selectedSectionId.value = int.tryParse(sectionName.value ?? "-1") ?? -1;
 
-      updateSubjectsForSection(selectedSectionId.value);
+     updateSubjectsForSection(selectedSectionId.value);
 
       // Automatically select the first tab and get the weekly plan
       if (myTabs.isNotEmpty) {
@@ -174,6 +174,7 @@ class WeekPlaneController extends GetxController
           int subjectId = subjectNameToIdMap[firstTabText]!;
           selectedSubjectId.value = subjectId;
           getWeekPlane(selectedSectionId.value, selectedSubjectId.value);
+         
         }
       }
     }
@@ -186,38 +187,14 @@ class WeekPlaneController extends GetxController
     }
   }
 
-  void updateSubjectsForSection(int sectionId) {
-    // weekPlane.clear();
-    selectedSectionSubjects.clear();
-    var selectedSection = sectionList.entries
-        .firstWhere((element) =>
-            element.value.any((section) => section.id == sectionId))
-        .value
-        .firstWhere((section) => section.id == sectionId);
-
-    for (var value in selectedSection.subjects) {
-      selectedSectionSubjects.add(value);
-    }
-
-    showSubjectList.clear();
-    subjectNameToIdMap.clear();
-
-    for (var subject in selectedSectionSubjects) {
-      String subjectName =
-          box.read('langCode') == 'ar' ? subject.name.ar : subject.name.en!;
-      showSubjectList.add(SelectedListItem(name: subjectName));
-      subjectNameToIdMap[subjectName] = subject.id;
-    }
-
-    updateTabs();
-  }
+  
 
   void updateTabs() {
     myTabs.clear();
     if (box.read('userType') == 'teacher') {
       for (var subject in selectedSectionSubjects) {
         String subjectName =
-            box.read('langCode') == 'ar' ? subject.name.ar : subject.name.en!;
+            box.read('langCode') == 'ar' ? subject.name!.ar : subject.name!.en!;
 
         myTabs.add(Tab(text: subjectName));
       }
@@ -243,6 +220,31 @@ class WeekPlaneController extends GetxController
     }
   }
 
+void updateSubjectsForSection(int sectionId) {
+    // weekPlane.clear();
+    selectedSectionSubjects.clear();
+    var selectedSection = sectionList.entries
+        .firstWhere((element) =>
+            element.value.any((section) => section.id == sectionId))
+        .value
+        .firstWhere((section) => section.id == sectionId);
+
+    for (var value in selectedSection.subjects) {
+      selectedSectionSubjects.add(value);
+    }
+
+    showSubjectList.clear();
+    subjectNameToIdMap.clear();
+
+    for (var subject in selectedSectionSubjects) {
+      String subjectName =
+          box.read('langCode') == 'ar' ? subject.name!.ar : subject.name!.en!;
+      showSubjectList.add(SelectedListItem(name: subjectName));
+      subjectNameToIdMap[subjectName] = subject.id;
+    }
+
+    updateTabs();
+  }
   Future<void> getWeekPlane(int sectionId, int subjectId) async {
     isLoadingWeekPlane.value = true;
     currentPage = 1;
