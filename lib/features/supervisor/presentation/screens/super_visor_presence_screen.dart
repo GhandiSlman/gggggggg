@@ -32,10 +32,14 @@ class SuperVisorPresenceScreen extends StatelessWidget {
                               height: 50.h,
                             )
                           : DropDownList(
-                              onSelectedItems: (List<SelectedListItem> selectedItems) {
+                              onSelectedItems:
+                                  (List<SelectedListItem> selectedItems) {
                                 if (selectedItems.isNotEmpty) {
+                                  studentStatusController.updateSelectedClass(
+                                      selectedItems.last.name);
                                   studentStatusController
-                                      .updateSelectedClass(selectedItems.last.name);
+                                          .selectedSectionId.value =
+                                      int.parse(selectedItems.last.value!);
                                 }
                               },
                               dataList: studentStatusController.classList,
@@ -53,19 +57,15 @@ class SuperVisorPresenceScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Container(
-            color: AppColor.greyColor,
-            width: double.infinity,
-            height: 25.h,
-            child: Center(
-              child: Obx(
-                () => CustomText(
-                  text: studentStatusController.studentStatusList.isNotEmpty
-                      ? studentStatusController.studentStatusList[0].date ?? ''
-                      : 'No date available',
-                  color: AppColor.greyColor2,
-                ),
-              ),
+          Obx(
+            () => TabBar(
+              indicatorColor: AppColor.primaryColor,
+              labelColor: AppColor.primaryColor,
+              controller: studentStatusController.tabController,
+              tabs: studentStatusController.myTabs.isEmpty
+                  ? studentStatusController.noDataTabs.toList()
+                  : studentStatusController.myTabs.toList(),
+              onTap: studentStatusController.handleTabBarChange,
             ),
           ),
           Expanded(

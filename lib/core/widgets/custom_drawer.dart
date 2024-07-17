@@ -54,7 +54,7 @@ class CustomDrawer extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CustomText(
-                          text: 'Ghandi Alslman',
+                          text: box.read('name'),
                           color: AppColor.whiteColor,
                           fontSize: 20.sp,
                         ),
@@ -120,63 +120,63 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 )
               : const SizedBox(),
-          ListTile(
-            title: Row(
-              children: [
-                SvgPicture.asset(AppImages.shareImage),
-                SizedBox(
-                  width: 5.w,
-                ),
-                CustomText(
-                  text: 'Share app'.tr,
-                  color: AppColor.primaryColor,
-                )
-              ],
-            ),
-            trailing: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: AppColor.primaryColor,
-              size: 20.sp,
-            ),
-          ),
-          ListTile(
-            title: Row(
-              children: [
-                SvgPicture.asset(AppImages.contactUsImage),
-                SizedBox(
-                  width: 5.w,
-                ),
-                CustomText(
-                  text: 'Contact Us'.tr,
-                  color: AppColor.primaryColor,
-                )
-              ],
-            ),
-            trailing: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: AppColor.primaryColor,
-              size: 20.sp,
-            ),
-          ),
-          ListTile(
-            title: Row(
-              children: [
-                SvgPicture.asset(AppImages.aboutImage),
-                SizedBox(
-                  width: 5.w,
-                ),
-                CustomText(
-                  text: 'About Us'.tr,
-                  color: AppColor.primaryColor,
-                )
-              ],
-            ),
-            trailing: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: AppColor.primaryColor,
-              size: 20.sp,
-            ),
-          ),
+          // ListTile(
+          //   title: Row(
+          //     children: [
+          //       SvgPicture.asset(AppImages.shareImage),
+          //       SizedBox(
+          //         width: 5.w,
+          //       ),
+          //       CustomText(
+          //         text: 'Share app'.tr,
+          //         color: AppColor.primaryColor,
+          //       )
+          //     ],
+          //   ),
+          //   trailing: Icon(
+          //     Icons.arrow_forward_ios_rounded,
+          //     color: AppColor.primaryColor,
+          //     size: 20.sp,
+          //   ),
+          // ),
+          // ListTile(
+          //   title: Row(
+          //     children: [
+          //       SvgPicture.asset(AppImages.contactUsImage),
+          //       SizedBox(
+          //         width: 5.w,
+          //       ),
+          //       CustomText(
+          //         text: 'Contact Us'.tr,
+          //         color: AppColor.primaryColor,
+          //       )
+          //     ],
+          //   ),
+          //   trailing: Icon(
+          //     Icons.arrow_forward_ios_rounded,
+          //     color: AppColor.primaryColor,
+          //     size: 20.sp,
+          //   ),
+          // ),
+          // ListTile(
+          //   title: Row(
+          //     children: [
+          //       SvgPicture.asset(AppImages.aboutImage),
+          //       SizedBox(
+          //         width: 5.w,
+          //       ),
+          //       CustomText(
+          //         text: 'About Us'.tr,
+          //         color: AppColor.primaryColor,
+          //       )
+          //     ],
+          //   ),
+          //   trailing: Icon(
+          //     Icons.arrow_forward_ios_rounded,
+          //     color: AppColor.primaryColor,
+          //     size: 20.sp,
+          //   ),
+          // ),
           InkWell(
             onTap: () {
               Get.toNamed(AppRouter.settingsScreen);

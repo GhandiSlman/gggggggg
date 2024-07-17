@@ -48,20 +48,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: [
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 15.w,
-            vertical: 15.h,
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.r),
-                color: AppColor.scaffoldColor),
-            height: 20.h,
-            width: 20.w,
-            child: Center(child: SvgPicture.asset(AppImages.notiImage)),
-          ),
-        ),
+        // Padding(
+        //   padding: EdgeInsets.symmetric(
+        //     horizontal: 15.w,
+        //     vertical: 15.h,
+        //   ),
+        //   child: Container(
+        //     decoration: BoxDecoration(
+        //         borderRadius: BorderRadius.circular(5.r),
+        //         color: AppColor.scaffoldColor),
+        //     height: 20.h,
+        //     width: 20.w,
+        //     child: Center(child: SvgPicture.asset(AppImages.notiImage)),
+        //   ),
+        // ),
       ],
     );
   }

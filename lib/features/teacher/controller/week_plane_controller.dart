@@ -97,9 +97,15 @@ class WeekPlaneController extends GetxController
     final result =
         await weekPlaneRepo.getStudentInfo(studentInfo: StudentInfo());
     studentInfo.clear();
-
+    var subIds = [];
     if (result is DataSuccess) {
-      studentInfo.value = result.data!.subjects!;
+      // studentInfo.value =
+      result.data!.subjects!.forEach((e) {
+        if (!subIds.contains(e.id)) {
+          studentInfo.add(e);
+          subIds.add(e.id);
+        }
+      });
       updateTabs();
       if (studentInfo.isNotEmpty) {
         updateSelectedSubjectIdStudent(studentInfo[0].id!);
@@ -165,7 +171,7 @@ class WeekPlaneController extends GetxController
     if (sectionNameToIdMap.containsKey(sectionName.name)) {
       selectedSectionId.value = int.tryParse(sectionName.value ?? "-1") ?? -1;
 
-     updateSubjectsForSection(selectedSectionId.value);
+      updateSubjectsForSection(selectedSectionId.value);
 
       // Automatically select the first tab and get the weekly plan
       if (myTabs.isNotEmpty) {
@@ -174,7 +180,6 @@ class WeekPlaneController extends GetxController
           int subjectId = subjectNameToIdMap[firstTabText]!;
           selectedSubjectId.value = subjectId;
           getWeekPlane(selectedSectionId.value, selectedSubjectId.value);
-         
         }
       }
     }
@@ -186,8 +191,6 @@ class WeekPlaneController extends GetxController
       selectedSubjectId.value = subjectId;
     }
   }
-
-  
 
   void updateTabs() {
     myTabs.clear();
@@ -220,7 +223,7 @@ class WeekPlaneController extends GetxController
     }
   }
 
-void updateSubjectsForSection(int sectionId) {
+  void updateSubjectsForSection(int sectionId) {
     // weekPlane.clear();
     selectedSectionSubjects.clear();
     var selectedSection = sectionList.entries
@@ -245,6 +248,7 @@ void updateSubjectsForSection(int sectionId) {
 
     updateTabs();
   }
+
   Future<void> getWeekPlane(int sectionId, int subjectId) async {
     isLoadingWeekPlane.value = true;
     currentPage = 1;
