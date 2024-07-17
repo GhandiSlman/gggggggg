@@ -37,14 +37,8 @@ class AuthController extends GetxController {
     String? deviceToken = await FirebaseMessaging.instance.getToken();
 
     final loginModel = LoginModel(
-<<<<<<< HEAD
       email: email.text.trim(),
       password: password.text.trim(),
-=======
-      email: email.text,
-      password: password.text,
-      deviceToken: deviceToken,
->>>>>>> 6afa7c659bf1b7cf57e2341fbf1a2afdea434074
     );
 
     final DataState loginResult = await authRepo.logIn(loginModel: loginModel);
