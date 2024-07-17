@@ -142,7 +142,7 @@ class SectionsHomeWork {
   SectionsHomeWork.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     gradeId = json['grade_id'];
-    name = json['name'] != null ? Name.fromJson(json['name']) : null;
+    //name = json['name'] != null ? Name.fromJson(json['name']) : null;
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }

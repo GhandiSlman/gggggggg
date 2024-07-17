@@ -1,8 +1,8 @@
 import 'package:lms/core/data/data_repo.dart';
 import 'package:lms/core/data/data_state.dart';
 import 'package:lms/core/utils/app_consts.dart';
-import 'package:lms/features/auth/data/models/login_model.dart';
-import 'package:lms/features/auth/data/remote_repo/auth_repo.dart';
+import 'package:lms/features/auth/models/login_model.dart';
+import 'package:lms/features/auth/data/auth_repo.dart';
 
 class AuthRepoImpl implements AuthRepo {
   final DataService _dataService;
@@ -24,8 +24,12 @@ class AuthRepoImpl implements AuthRepo {
     final response =
         await _dataService.getData(endPoint: 'logout', baseUrl: baseUrl,
         fromJson: (Map<String, dynamic> json) => GetLoginModel.fromJson(json),
-        token: box.read('token'),
         );
     return response;
   }
+  
+  // @override
+  // Future<DataState> getInfo({required GetLoginModel getLoginModel}) async{
+  //     final response = await _dataService.getData(endPoint: 'endPoint', baseUrl: baseUrl)
+  // }
 }

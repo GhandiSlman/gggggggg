@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lms/core/utils/app_color.dart';
 
 class CustomToast {
   static void showToast({
@@ -19,6 +21,17 @@ class CustomToast {
       backgroundColor: backgroundColor,
       textColor: textColor,
       fontSize: fontSize,
+    );
+  }
+
+  static void customErrorToast(String title) {
+    CustomToast.showToast(
+      message: title,
+      backgroundColor: AppColor.redColor,
+      fontSize: 15.sp,
+      gravity: ToastGravity.BOTTOM,
+      textColor: AppColor.whiteColor,
+      toastDuration: 1,
     );
   }
 }

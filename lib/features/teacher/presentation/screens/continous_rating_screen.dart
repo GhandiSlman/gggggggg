@@ -66,7 +66,7 @@ class ContinousRatingScreen extends StatelessWidget {
                                 continuousRatingController
                                     .getContinuousRatingStudent(
                                   continuousRatingController
-                                      .ratingList[index].id!,
+                                      .ratingList[index].id.toString(),
                                 );
                               },
                               child: ContinuousRatingCard(

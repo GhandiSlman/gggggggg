@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:firebase_messaging/firebase_messaging.dart'; // Add this import
 import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_toast.dart';
-import 'package:lms/features/auth/data/models/login_model.dart';
-import 'package:lms/features/auth/data/remote_repo/auth_repo.dart';
+import 'package:lms/features/auth/models/login_model.dart';
+import 'package:lms/features/auth/data/auth_repo.dart';
 import 'package:lms/core/data/data_state.dart';
 
 class AuthController extends GetxController {
@@ -33,9 +34,17 @@ class AuthController extends GetxController {
   Future<void> login() async {
     isLoading.value = true;
     loginErrorMessage.value = null;
+    String? deviceToken = await FirebaseMessaging.instance.getToken();
+
     final loginModel = LoginModel(
+<<<<<<< HEAD
       email: email.text.trim(),
       password: password.text.trim(),
+=======
+      email: email.text,
+      password: password.text,
+      deviceToken: deviceToken,
+>>>>>>> 6afa7c659bf1b7cf57e2341fbf1a2afdea434074
     );
 
     final DataState loginResult = await authRepo.logIn(loginModel: loginModel);
@@ -43,7 +52,8 @@ class AuthController extends GetxController {
     if (loginResult is DataSuccess) {
       await box.write('token', loginResult.data!.accessToken);
       await box.write('userType', loginResult.data!.user!.role);
-
+      await box.write('name', loginResult.data.user!.name);
+      await box.write('email', loginResult.data.user!.email);
       Get.offAllNamed(AppRouter.homeScreen);
     } else if (loginResult is DataFailed) {
       CustomToast.showToast(

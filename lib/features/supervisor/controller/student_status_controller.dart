@@ -14,7 +14,7 @@ import 'package:lms/features/supervisor/model/student_attendance_status.dart';
 import 'package:lms/features/teacher/model/section_and_subjects.dart';
 
 class StudentStatusController extends GetxController {
-  StudentStatusRepo studentStatusRepo;
+  final StudentStatusRepo studentStatusRepo;
   StudentStatusController(this.studentStatusRepo);
 
   RxList<StudentAttendanceStatusData> studentStatusList =
@@ -27,12 +27,17 @@ class StudentStatusController extends GetxController {
   RxInt selectedSubjectId = 0.obs;
   late final TextEditingController classController;
   var classList = <SelectedListItem>[].obs;
+  var selectedSectionSubjectList = <SelectedListItem>[].obs;
+
   Map<String, Map<String, List<Students>>> studentList =
       <String, Map<String, List<Students>>>{};
   Map<String, Map<String, List<Subject>>> subjectList =
       <String, Map<String, List<Subject>>>{};
   Map<String, List<SectionSubjects>> sectionSubjectList =
       <String, List<SectionSubjects>>{};
+
+  var sectionToIdMap = <String, int>{}.obs;
+  var subjectToIdMap = <String, int>{}.obs;
 
   @override
   void onInit() {
@@ -52,6 +57,8 @@ class StudentStatusController extends GetxController {
       studentList.clear();
       subjectList.clear();
       sectionSubjectList.clear();
+      sectionToIdMap.clear();
+      subjectToIdMap.clear();
 
       String currentDay = DateFormat('EEEE').format(DateTime.now());
 
@@ -60,7 +67,8 @@ class StudentStatusController extends GetxController {
           for (var section in grade.sections!) {
             String combinedClassName =
                 '${box.read('langCode') == 'ar' ? grade.name!.ar! : grade.name!.en!} ${box.read('langCode') == 'ar' ? section.name!.ar! : section.name!.en!}';
-            classList.add(SelectedListItem(name: combinedClassName));
+            classList.add(SelectedListItem(
+                name: combinedClassName, value: section.id.toString()));
             studentList[combinedClassName] = {};
             subjectList[combinedClassName] = {};
             sectionSubjectList[combinedClassName] = [];
@@ -75,10 +83,13 @@ class StudentStatusController extends GetxController {
                 if (!subjectList[combinedClassName]!.containsKey(subjectName)) {
                   subjectList[combinedClassName]![subjectName] = [];
                 }
-                subjectList[combinedClassName]![subjectName]!
-                    .add(sectionSubject.subject!);
+                // studentList[combinedClassName]![subjectName]!
+                //     .add(sectionSubject.subject!);
 
                 sectionSubjectList[combinedClassName]!.add(sectionSubject);
+
+                sectionToIdMap[combinedClassName] = section.id!;
+                subjectToIdMap[combinedClassName] = sectionSubject.subject!.id!;
               }
             }
           }
@@ -98,16 +109,20 @@ class StudentStatusController extends GetxController {
 
   void updateSelectedClass(String className) {
     selectedClass.value = [className];
-    if (sectionSubjectList.containsKey(className)) {
-      for (var sectionSubject in sectionSubjectList[className]!) {
-        selectedSectionId.value = sectionSubject.sectionId!;
-        selectedSubjectId.value = sectionSubject.subject!.id!;
-      }
-      getStudentStatus(selectedSectionId.value, selectedSubjectId.value);
-    }
+  
+      if (sectionToIdMap.containsKey(className)
+    
+          )
+          {
+        selectedSectionId.value = sectionToIdMap[className]!;
+        selectedSubjectId.value = subjectToIdMap[className]!;
+
+          getStudentStatus( selectedSectionId.value , selectedSubjectId.value);
+     }
+   
   }
 
-  Future<void> getStudentStatus(int sectionId, int subjectId) async {
+  Future<void> getStudentStatus(int sectionId , int subjectId) async {
     isLoadingStudentStatus.value = true;
     final result = await studentStatusRepo.getStudentStatus(
         studentAttendanceStatus: StudentAttendanceStatus(),
@@ -116,7 +131,7 @@ class StudentStatusController extends GetxController {
     isLoadingStudentStatus.value = false;
     if (result is DataSuccess) {
       studentStatusList.value = result.data!.data!;
-    } else {
+    } else if (result is DataFailed) {
       CustomToast.showToast(
         message: result.errorMessage!,
         backgroundColor: AppColor.redColor,
@@ -128,11 +143,11 @@ class StudentStatusController extends GetxController {
     }
   }
 
-  List<String> getSubjectList() {
-    if (selectedClass.isEmpty) {
-      return [];
-    }
-    String className = selectedClass.first;
-    return subjectList[className]?.keys.toList() ?? [];
-  }
+  // List<String> getSubjectList() {
+  //   if (selectedClass.isEmpty) {
+  //     return [];
+  //   }
+  //   String className = selectedClass.first;
+  //   return subjectList[className]?.keys.toList() ?? [];
+  // }
 }

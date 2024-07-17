@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-
 import 'package:lms/core/data/data_state.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
@@ -31,9 +30,8 @@ class HonorBoardController extends GetxController {
   late final TextEditingController subjectController;
   StudentStatusController studentStatusController = Get.find();
 
-  RxList<GetHonorBoardModel> honorBoardList = <GetHonorBoardModel>[].obs;
-  RxList<GetHonorBoardModel> filteredHonorBoardList =
-      <GetHonorBoardModel>[].obs;
+  RxList<HonorBoard> honorBoardList = <HonorBoard>[].obs;
+  RxList<GetHonorBoardModel> filteredHonorBoardList = <GetHonorBoardModel>[].obs;
 
   // Class
   var showClassList = <SelectedListItem>[].obs;
@@ -42,8 +40,7 @@ class HonorBoardController extends GetxController {
 
   // Subject
   var showSubjectList = <SelectedListItem>[].obs;
-  Map<String, List<Subject>> subjectList = <String, List<Subject>>{};
-  RxList<String> selectedSubject = <String>[].obs;
+  RxList<Subjects> selectedSubjects = <Subjects>[].obs;
   RxString selectedSubjectId = ''.obs;
   var subjectToIdMap = <String, String>{}.obs;
 
@@ -52,54 +49,11 @@ class HonorBoardController extends GetxController {
   Map<String, List<Students>> studentList = <String, List<Students>>{};
   RxList<String> selectedStudents = <String>[].obs;
   RxString selectedStudentIdRate = ''.obs;
-  RxList<TextEditingController> studentDropDownControllers =
-      <TextEditingController>[].obs;
+  RxList<TextEditingController> studentDropDownControllers = <TextEditingController>[].obs;
   var studentToIdMap = <String, String>{}.obs;
 
-  //honor board
+  // Honor board
   RxList<HonorBoardStudent> honorBoardStudentList = <HonorBoardStudent>[].obs;
-  Future<void> addHonorBoard() async {
-    isAdding.value = true;
-    List<String> studentIds = selectedStudents
-        .map((name) {
-          var student = studentList[selectedClass.first]?.firstWhere(
-            (student) => student.name == name,
-          );
-          return student?.id.toString() ?? '';
-        })
-        .where((id) => id.isNotEmpty)
-        .toList();
-
-    final createHonorBoardModel = CreateHonorBoardModel(
-      title: titleController.text,
-      subjectId: selectedSubjectId.value,
-      studentIds: studentIds,
-    );
-    final DataState result = await honorBoardRepo.addHonorBoard(
-        createHonorBoardModel: createHonorBoardModel);
-    isAdding.value = false;
-    if (result is DataSuccess) {
-      titleController.clear();
-      CustomToast.showToast(
-        message: 'Honor board added successfully',
-        backgroundColor: AppColor.greenColor,
-        fontSize: 15.sp,
-        gravity: ToastGravity.BOTTOM,
-        textColor: AppColor.whiteColor,
-        toastDuration: 1,
-      );
-    } else if (result is DataFailed) {
-      isAdding.value = false;
-      CustomToast.showToast(
-        message: 'Failed to add honor board',
-        backgroundColor: AppColor.redColor,
-        fontSize: 15.sp,
-        gravity: ToastGravity.BOTTOM,
-        textColor: AppColor.whiteColor,
-        toastDuration: 1,
-      );
-    }
-  }
 
   void updateSelectedSubjectId(String subjectId) {
     selectedSubjectId.value = subjectId;
@@ -116,73 +70,21 @@ class HonorBoardController extends GetxController {
     }
   }
 
-  Future<void> getClassSubjectStudent() async {
-    isLoading.value = true;
-
-    final result = await honorBoardRepo.getClassSubjectStudent(
-        studentAttendance: StudentAttendance());
-
-    isLoading.value = false;
-    subjectList.clear();
-    if (result is DataSuccess) {
-      var attendance = result.data!;
-      classList.clear();
-      showClassList.clear();
-      subjectList.clear();
-      showSubjectList.clear();
-      studentList.clear();
-      showStudentList.clear();
-
-      for (var res in attendance.result!) {
-        for (var grade in res.grades!) {
-          String className =
-              box.read('langCode') == 'ar' ? grade.name!.ar! : grade.name!.en!;
-          showClassList.add(SelectedListItem(name: className));
-
-          classList[className] = [];
-          for (var section in grade.sections!) {
-            // box.read('userType') == 'teacher'
-            //     ? classList[className]!.addAll(section.students!)
-            //     : null;
-            for (var sectionSubject in section.sectionSubjects!) {
-              String subjectName = box.read('langCode') == 'ar'
-                  ? sectionSubject.subject!.name!.ar!
-                  : sectionSubject.subject!.name!.en!;
-              showSubjectList.add(SelectedListItem(name: subjectName));
-              subjectToIdMap[subjectName] =
-                  sectionSubject.subject!.id!.toString();
-              // if (box.read('userType') == 'teacher') {
-              //   for (var student in section.students!) {
-              //     if (!studentList.containsKey(className)) {
-              //       studentList[className] = [];
-              //     }
-              //     studentList[className]!.add(student);
-              //   }
-              // }
-            }
-          }
-        }
-      }
-    } else if (result is DataFailed) {
-      CustomToast.showToast(
-        message: 'Failed to load data',
-        backgroundColor: AppColor.redColor,
-        fontSize: 15.sp,
-        gravity: ToastGravity.BOTTOM,
-        textColor: AppColor.whiteColor,
-        toastDuration: 1,
-      );
-    }
-  }
-
   void updateSelectedClass(String className) {
     selectedClass.value = [className];
-    filterStudentsByClass(className);
-    getHonorBoardByClass();
+    selectedSubjects.clear();
+    final selectedGrade = honorBoardList.firstWhere((grade) {
+      return (box.read('langCode') == 'ar' ? grade.name!.ar! : grade.name!.en!) == className;
+    }, );
+
+    if (selectedGrade.subjects != null) {
+      selectedSubjects.addAll(selectedGrade.subjects!);
+    }
+     filterStudentsByClass(className);
   }
 
   void updateSelectedSubject(String subjectName) {
-    selectedSubject.value = [subjectName];
+    selectedClass.value = [subjectName];
     if (subjectToIdMap.containsKey(subjectName)) {
       updateSelectedSubjectId(subjectToIdMap[subjectName]!);
     }
@@ -190,9 +92,8 @@ class HonorBoardController extends GetxController {
 
   void filterStudentsByClass(String className) {
     showStudentList.value = studentList[className]?.map((student) {
-          return SelectedListItem(name: student.name!);
-        }).toList() ??
-        [];
+      return SelectedListItem(name: student.name!);
+    }).toList() ?? [];
   }
 
   void updateSelectedStudent(String studentName, int index) {
@@ -219,30 +120,19 @@ class HonorBoardController extends GetxController {
     }
   }
 
-  void filterHonorBoardsByClass(String className) {
-    filteredHonorBoardList.value = honorBoardList.where((honorBoard) {
-      return honorBoard.data!.any((honorBoardData) {
-        return honorBoardData.name!.ar! == className ||
-            honorBoardData.name!.en! == className;
-      });
-    }).toList();
-  }
-
   Future<void> getHonorBoardByClass() async {
-    // if (selectedClass.isEmpty) {
-    //   return;
-    // }
-
     isGetHonor.value = true;
-    final result = await honorBoardRepo.getHonorBoard(
-        getHonorBoardModel: GetHonorBoardModel());
+    final result = await honorBoardRepo.getHonorBoard(getHonorBoardModel: GetHonorBoardModel());
     isGetHonor.value = false;
     if (result is DataSuccess) {
       honorBoardList.clear();
-      honorBoardList.add(result.data);
-      box.read('userType') == 'teacher'
-          ? filterHonorBoardsByClass(selectedClass.first)
-          : null;
+      honorBoardList.addAll(result.data!.data!);
+      showClassList.clear();
+      for (var honorBoard in honorBoardList) {
+        showClassList.add(
+          SelectedListItem(name: box.read('langCode') == 'ar' ? honorBoard.name!.ar! : honorBoard.name!.en!),
+        );
+      }
     } else {
       CustomToast.showToast(
         message: 'Failed to load honor boards',
@@ -257,9 +147,7 @@ class HonorBoardController extends GetxController {
 
   Future<void> getStudentHonorBoard(int subjectId) async {
     isLoadingStudentH.value = true;
-    final result = await honorBoardRepo.getStudentHonorBoard(
-        getStudentHonorBoardModel: GetStudentHonorBoardModel(),
-        subjectId: subjectId);
+    final result = await honorBoardRepo.getStudentHonorBoard(getStudentHonorBoardModel: GetStudentHonorBoardModel(), subjectId: subjectId);
     isLoadingStudentH.value = false;
     if (result is DataSuccess) {
       honorBoardStudentList.clear();
@@ -278,9 +166,7 @@ class HonorBoardController extends GetxController {
   }
 
   Future<void> deleteHonorBoard(int honorBoardId) async {
-    final result =
-        await honorBoardRepo.deleteHonorBoard(honorBoardId: honorBoardId);
-
+    final result = await honorBoardRepo.deleteHonorBoard(honorBoardId: honorBoardId);
     if (result is DataSuccess) {
       CustomToast.showToast(
         message: 'Honor board deleted successfully'.tr,
@@ -309,10 +195,7 @@ class HonorBoardController extends GetxController {
     subjectController = TextEditingController();
     classControllerAdd = TextEditingController();
 
-    box.read('userType') == 'teacher'
-        ? getClassSubjectStudent()
-        : getHonorBoardByClass();
-    // getStudentHonorBoard()
+    getHonorBoardByClass();
 
     super.onInit();
   }

@@ -134,9 +134,15 @@ class AddHomeWorkScreen extends StatelessWidget {
                                 ? homeWorkController
                                     .addHomeWork()
                                     .then((value) {
+                                    homeWorkController.getHomeWork();
                                     Get.back();
                                   })
-                                : homeWorkController.updateHomeWork(homeWorkId);
+                                : homeWorkController
+                                    .updateHomeWork(homeWorkId)
+                                    .then((value) {
+                                    homeWorkController.getHomeWork();
+                                    Get.back();
+                                  });
                           },
                           color: AppColor.primaryColor,
                           textColor: AppColor.whiteColor,

@@ -13,8 +13,7 @@ import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:lms/features/students/model/student_status.dart';
 import 'package:lms/features/teacher/model/section_and_subjects.dart';
 
-class StudentController extends GetxController
-    with GetTickerProviderStateMixin {
+class StudentController extends GetxController with GetTickerProviderStateMixin {
   final StudentRepo studentRepo;
 
   StudentController(this.studentRepo);
@@ -31,14 +30,11 @@ class StudentController extends GetxController
       text: 'No subjects'.tr,
     )
   ].obs;
-  Map<String, Map<String, List<Students>>> studentList =
-      <String, Map<String, List<Students>>>{};
-  Map<String, Map<String, List<Subject>>> subjectList =
-      <String, Map<String, List<Subject>>>{};
-  Map<String, List<SectionSubjects>> sectionSubjectList =
-      <String, List<SectionSubjects>>{};
+  Map<String, Map<String, List<Students>>> studentList = <String, Map<String, List<Students>>>{};
+  Map<String, Map<String, List<Subject>>> subjectList = <String, Map<String, List<Subject>>>{};
+  Map<String, List<SectionSubjects>> sectionSubjectList = <String, List<SectionSubjects>>{};
 
-  RxMap<int, String> studentAttendanceStatus = <int, String>{}.obs;
+  RxMap<String, String> studentAttendanceStatus = <String, String>{}.obs;
 
   @override
   void onInit() {
@@ -121,15 +117,11 @@ class StudentController extends GetxController
 
   void loadSavedAttendanceStatus() {
     Map<String, dynamic> savedStatus = box.read('attendanceStatus') ?? {};
-    studentAttendanceStatus.value = savedStatus
-        .map((key, value) => MapEntry(int.parse(key), value.toString()));
+    studentAttendanceStatus.value = savedStatus.map((key, value) => MapEntry(key, value.toString()));
   }
 
   void saveAttendanceStatus() {
-    box.write(
-        'attendanceStatus',
-        studentAttendanceStatus
-            .map((key, value) => MapEntry(key.toString(), value)));
+    box.write('attendanceStatus', studentAttendanceStatus);
   }
 
   void updateSelectedClass(String className) {
@@ -138,7 +130,7 @@ class StudentController extends GetxController
     if (sectionSubjectList.containsKey(className)) {
       for (var sectionSubject in sectionSubjectList[className]!) {
         String subjectName = box.read('langCode') == 'ar'
-            ? sectionSubject.subject!.name!.ar!
+            ? sectionSubject.subject!.name!.ar
             : sectionSubject.subject!.name!.en!;
         myTabs.add(Tab(text: subjectName));
       }
@@ -148,9 +140,9 @@ class StudentController extends GetxController
     }
   }
 
-  Future<void> handleAttendance(
-      String status, int studentId, int subjectId) async {
-    studentAttendanceStatus[studentId] = status;
+  Future<void> handleAttendance(String status, int studentId, int subjectId) async {
+    String key = '${studentId}_$subjectId';
+    studentAttendanceStatus[key] = status;
     String date = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
     final studentStatusModel = StudentStatus(
       status: status,

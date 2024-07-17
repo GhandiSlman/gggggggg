@@ -14,7 +14,16 @@ class HomeGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     HomeController homeController = Get.put(HomeController());
     String userType = box.read('userType');
-
+  //   final List<String> techerTitle = [
+  //   'Student Attendance'.tr,
+  //   'Class table'.tr,
+  //   'Activity'.tr,
+  //   'Home Work'.tr,
+  //   'Daily Coverage'.tr,
+  //   'Chats'.tr,
+  //   'Continuous Rating'.tr,
+  //   'Week Plan'.tr,
+  // ];
     final List<String> titles = userType == 'teacher'
         ? homeController.techerTitle
         : userType == 'supervisor'
@@ -31,7 +40,7 @@ class HomeGridView extends StatelessWidget {
                 ? homeController.parentImages
                 : homeController.studentImages;
 
-    final List onPressedActions = userType =='teacher'
+    final List onPressedActions = userType == 'teacher'
         ? homeController.teacherOnPressed
         : userType == 'supervisor'
             ? homeController.superVisorOnPressed
@@ -79,6 +88,7 @@ class HomeGridView extends StatelessWidget {
             onTap: onPressedActions[index],
             child: Container(
               decoration: boxDecoration,
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
               child: Column(
                 children: [
                   SizedBox(height: 10.h),

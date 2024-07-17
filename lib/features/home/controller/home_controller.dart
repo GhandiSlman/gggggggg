@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:lms/core/local/local_controller.dart';
 import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_images.dart';
@@ -133,4 +134,5 @@ class HomeController extends GetxController {
           AppRouter.teacherWeekPlane,
         ),
   ];
+
 }

@@ -7,11 +7,12 @@ import 'package:lms/core/data/data_repo.dart';
 import 'package:lms/core/data/internet_checker.dart';
 import 'package:lms/core/local/local_controller.dart';
 import 'package:lms/features/auth/controller/auth_controller.dart';
-import 'package:lms/features/auth/data/remote_repo/auth_repo.dart';
-import 'package:lms/features/auth/data/remote_repo/auth_repo_imp.dart';
+import 'package:lms/features/auth/data/auth_repo.dart';
+import 'package:lms/features/auth/data/auth_repo_imp.dart';
 import 'package:lms/features/comments/data/comment_repo.dart';
 import 'package:lms/features/comments/data/comment_repo_imp.dart';
 import 'package:lms/features/comments/controller/comment_controller.dart';
+import 'package:lms/features/home/controller/home_controller.dart';
 import 'package:lms/features/parent/controller/parent_controller.dart';
 import 'package:lms/features/parent/data/parent_repo.dart';
 import 'package:lms/features/parent/data/parent_repo_imp.dart';
@@ -55,7 +56,7 @@ class DependencyInjection {
   static Future<void> init() async {
     //Local Controller
 
-    Get.put(LocaleController(), permanent: true);
+    Get.put<LocaleController>(LocaleController(), permanent: true);
 
     // HTTP Client
     Get.put<http.Client>(http.Client(), permanent: true);
@@ -79,6 +80,7 @@ class DependencyInjection {
     // StudentController Lazy Initialization
     Get.lazyPut<StudentController>(() => StudentController(Get.find()),
         fenix: true);
+
 
     //weekPlane  Repository lazy Initialization
     Get.lazyPut<WeekPlaneRepo>(() => WeekPlaneRepoImp(Get.find()), fenix: true);

@@ -108,7 +108,7 @@ class StudentScreen extends StatelessWidget {
                                   child: StudentCard(
                                     name: student.name!,
                                     studentId: student.id!,
-                                    subjectId: subject.id!,
+                                    subjectId: subject.id,
                                   ),
                                 );
                               },

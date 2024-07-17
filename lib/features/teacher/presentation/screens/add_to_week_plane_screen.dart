@@ -135,7 +135,6 @@ class AddToWeekPlaneScreen extends StatelessWidget {
                               ? weekPlaneController
                                   .addWeekPlane()
                                   .then((value) {
-                                  weekPlaneController.getSections();
                                   weekPlaneController.getWeekPlane(
                                       weekPlaneController
                                           .selectedSectionId.value,
@@ -146,7 +145,6 @@ class AddToWeekPlaneScreen extends StatelessWidget {
                               : weekPlaneController
                                   .updateWeekPlane(weekPlaneId)
                                   .then((value) {
-                                  weekPlaneController.getSections();
                                   weekPlaneController.getWeekPlane(
                                       weekPlaneController
                                           .selectedSectionId.value,

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "610808329778",
+    "project_id": "kindergarten-839f8",
+    "storage_bucket": "kindergarten-839f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610808329778:android:5857c0078d08c7e7136e2b",
+        "android_client_info": {
+          "package_name": "com.example.lms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEA_Pn4ev_pVBKJAj9muDcJHlhuuZ5TIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610808329778:android:ec144d9d14f0a538136e2b",
+        "android_client_info": {
+          "package_name": "dev.technoplus.ryiad"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEA_Pn4ev_pVBKJAj9muDcJHlhuuZ5TIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

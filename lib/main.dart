@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,9 +8,11 @@ import 'package:lms/core/local/local_controller.dart';
 import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/utils/injector.dart';
 import 'package:lms/core/router/app_router.dart';
+import 'package:lms/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await GetStorage.init();
   await DependencyInjection.init();
   runApp(const MyApp());
@@ -20,7 +23,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('hello git');
     LocaleController localeController = Get.find();
     return ScreenUtilInit(
       designSize: const Size(360, 690),
