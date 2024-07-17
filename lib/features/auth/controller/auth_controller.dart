@@ -34,8 +34,8 @@ class AuthController extends GetxController {
     isLoading.value = true;
     loginErrorMessage.value = null;
     final loginModel = LoginModel(
-      email: email.text,
-      password: password.text,
+      email: email.text.trim(),
+      password: password.text.trim(),
     );
 
     final DataState loginResult = await authRepo.logIn(loginModel: loginModel);
