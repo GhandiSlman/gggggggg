@@ -37,7 +37,7 @@ class ContinuousRatingRepoImp implements ContinuousRatingRepo {
   @override
   Future<DataState> getContinuousRateStudent(
       {required GetContinuousRateStudent getContinuousRateStudent,
-      required int rateId}) async {
+      required String rateId}) async {
     final response = await _dataService.getData(
       endPoint: 'teacher/reinforcement-xp-student/index/$rateId',
       baseUrl: baseUrl,

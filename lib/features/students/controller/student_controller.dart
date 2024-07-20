@@ -130,8 +130,8 @@ class StudentController extends GetxController with GetTickerProviderStateMixin 
     if (sectionSubjectList.containsKey(className)) {
       for (var sectionSubject in sectionSubjectList[className]!) {
         String subjectName = box.read('langCode') == 'ar'
-            ? sectionSubject.subject!.name.ar
-            : sectionSubject.subject!.name.en!;
+            ? sectionSubject.subject!.name!.ar
+            : sectionSubject.subject!.name!.en!;
         myTabs.add(Tab(text: subjectName));
       }
       tabController = TabController(

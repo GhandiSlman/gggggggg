@@ -138,14 +138,14 @@ class Section {
 // Subject Model
 class Subject {
   int id;
-  Name name;
+  Name? name;
   int gradeId;
   DateTime createdAt;
   DateTime updatedAt;
 
   Subject({
     required this.id,
-    required this.name,
+   this.name,
     required this.gradeId,
     required this.createdAt,
     required this.updatedAt,
@@ -161,7 +161,7 @@ class Subject {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "name": name.toJson(),
+        "name": name,
         "grade_id": gradeId,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),

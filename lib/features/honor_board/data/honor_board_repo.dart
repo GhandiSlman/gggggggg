@@ -4,10 +4,10 @@ import 'package:lms/features/honor_board/model/honor_board.dart';
 import 'package:lms/features/teacher/model/student_honor_board.dart';
 
 abstract class HonorBoardRepo {
-  Future<DataState> addHonorBoard(
-      {required CreateHonorBoardModel createHonorBoardModel});
-  Future<DataState> getClassSubjectStudent(
-      {required StudentAttendance studentAttendance});
+  // Future<DataState> addHonorBoard(
+  //     {required CreateHonorBoardModel createHonorBoardModel});
+  // Future<DataState> getClassSubjectStudent(
+  //     {required StudentAttendance studentAttendance});
   Future<DataState> getHonorBoard(
       {required GetHonorBoardModel getHonorBoardModel});
 

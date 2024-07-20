@@ -92,8 +92,8 @@ class ContinuousRatingController extends GetxController {
             for (var sectionSubject in section.sectionSubjects!) {
               // Add subjects to subject list
               String subjectName = box.read('langCode') == 'ar'
-                  ? sectionSubject.subject!.name.ar
-                  : sectionSubject.subject!.name.en!;
+                  ? sectionSubject.subject!.name?.ar ?? ''
+                  : sectionSubject.subject!.name?.en ?? '';
               if (!subjectList.containsKey(className)) {
                 subjectList[className] = [];
               }
@@ -204,7 +204,7 @@ class ContinuousRatingController extends GetxController {
     }
   }
 
-  Future<void> getContinuousRatingStudent(int rateId) async {
+  Future<void> getContinuousRatingStudent(String rateId) async {
     isLoadnigGetRateStudent.value = true;
     final DataState result =
         await continuousRatingRepo.getContinuousRateStudent(
