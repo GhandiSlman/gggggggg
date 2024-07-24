@@ -122,67 +122,6 @@ class StudentStatusController extends GetxController
     // print(subjectToIdMap[subjectName]);
   }
 
-  // Future<void> geSectionSubject() async {
-  //   isLoadingSections.value = true;
-  //   final DataState result =
-  //       await studentStatusRepo.getSectionSubject(StudentAttendance());
-  //   isLoadingSections.value = false;
-  //   if (result is DataSuccess) {
-  //     var attendance = result.data!;
-  //     classList.clear();
-  //     studentList.clear();
-  //     subjectList.clear();
-  //     sectionSubjectList.clear();
-  //     sectionToIdMap.clear();
-  //     subjectToIdMap.clear();
-
-  //     String currentDay = DateFormat('EEEE').format(DateTime.now());
-
-  //     for (var res in attendance.result!) {
-  //       for (var grade in res.grades!) {
-  //         for (var section in grade.sections!) {
-  //           String combinedClassName =
-  //               '${box.read('langCode') == 'ar' ? grade.name!.ar! : grade.name!.en!} ${box.read('langCode') == 'ar' ? section.name!.ar! : section.name!.en!}';
-  //           classList.add(SelectedListItem(
-  //               name: combinedClassName, value: section.id.toString()));
-  //           studentList[combinedClassName] = {};
-  //           subjectList[combinedClassName] = {};
-  //           sectionSubjectList[combinedClassName] = [];
-  //           for (var sectionSubject in section.sectionSubjects!) {
-  //             if (sectionSubject.day == currentDay) {
-  //               String subjectName = box.read('langCode') == 'ar'
-  //                   ? sectionSubject.subject!.name!.ar!
-  //                   : sectionSubject.subject!.name!.en!;
-  //               if (!studentList[combinedClassName]!.containsKey(subjectName)) {
-  //                 studentList[combinedClassName]![subjectName] = [];
-  //               }
-  //               if (!subjectList[combinedClassName]!.containsKey(subjectName)) {
-  //                 subjectList[combinedClassName]![subjectName] = [];
-  //               }
-  //               // studentList[combinedClassName]![subjectName]!
-  //               //     .add(sectionSubject.subject!);
-
-  //               sectionSubjectList[combinedClassName]!.add(sectionSubject);
-
-  //               sectionToIdMap[combinedClassName] = section.id!;
-  //               subjectToIdMap[combinedClassName] = sectionSubject.subject!.id!;
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   } else if (result is DataFailed) {
-  //     CustomToast.showToast(
-  //       message: result.errorMessage!,
-  //       backgroundColor: AppColor.redColor,
-  //       fontSize: 15.sp,
-  //       gravity: ToastGravity.BOTTOM,
-  //       isLongDuration: false,
-  //       textColor: AppColor.whiteColor,
-  //     );
-  //   }
-  // }
-
   void updateSelectedClass(String className) {
     subjectIds.clear();
     selectedSection.value = className;

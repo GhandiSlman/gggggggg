@@ -15,16 +15,18 @@ class StudentStatusRepoImp implements StudentStatusRepo {
       required int sectoinId,
       required int subjectId}) {
     final response = _dataService.getData(
-        endPoint: 'supervisor/studentAttendance/index/$sectoinId/$subjectId',
+        endPoint: 'supervisor/studentAttendance/index/$subjectId/$sectoinId',
         baseUrl: baseUrl,
-        fromJson:(Map<String , dynamic> json)=> StudentAttendanceStatus.fromJson(json)
-        );
+        fromJson: (Map<String, dynamic> json) =>
+            StudentAttendanceStatus.fromJson(json));
     return response;
   }
+
   @override
-  Future<DataState> getSectionSubject(StudentAttendance studentAttendance) async {
+  Future<DataState> getSectionSubject(
+      StudentAttendance studentAttendance) async {
     final response = await _dataService.getData(
-      endPoint:'stages',
+      endPoint: 'stages',
       baseUrl: baseUrl,
       fromJson: (Map<String, dynamic> json) => StudentAttendance.fromJson(json),
     );

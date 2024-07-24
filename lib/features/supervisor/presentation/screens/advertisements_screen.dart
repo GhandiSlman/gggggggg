@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
+import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_app_bar.dart';
 import 'package:lms/core/widgets/shimmer.dart';
 import 'package:lms/features/supervisor/controller/advertisements_controller.dart';
@@ -13,21 +14,24 @@ class AdvertisementsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AdvertisementsController advertisementsController = Get.find();
+    AdvertisementsController advertisementsController =
+        Get.put<AdvertisementsController>(Get.find());
     return Scaffold(
       backgroundColor: AppColor.scaffoldColor,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.toNamed(AppRouter.addUpdateAdvScreen, arguments: {
-            'isUpdate': advertisementsController.isUpdate == true,
-          });
-        },
-        backgroundColor: AppColor.primaryColor,
-        child: Icon(
-          Icons.add,
-          color: AppColor.whiteColor,
-        ),
-      ),
+      floatingActionButton: box.read("userType") == 'supervisor'
+          ? FloatingActionButton(
+              onPressed: () {
+                Get.toNamed(AppRouter.addUpdateAdvScreen, arguments: {
+                  'isUpdate': advertisementsController.isUpdate == true,
+                });
+              },
+              backgroundColor: AppColor.primaryColor,
+              child: Icon(
+                Icons.add,
+                color: AppColor.whiteColor,
+              ),
+            )
+          : null,
       appBar: CustomAppBar(
         title: 'Advertisements'.tr,
         bottom: PreferredSize(

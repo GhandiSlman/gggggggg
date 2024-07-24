@@ -107,7 +107,7 @@ class SuperVisorPresenceScreen extends StatelessWidget {
                       var studentStatus =
                           studentStatusController.studentStatusList[index];
                       return StudentStatusCard(
-                        name: studentStatus.status ?? '',
+                        name: studentStatus.student?.name ?? '',
                         status: studentStatus.status ?? '',
                       );
                     },

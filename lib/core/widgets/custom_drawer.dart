@@ -120,6 +120,72 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 )
               : const SizedBox(),
+
+          box.read('userType') == 'teacher' ||
+                  box.read('userType') == 'student' ||
+                  box.read('userType') == 'parent'
+              ? InkWell(
+                  onTap: () {
+                    Get.toNamed(AppRouter.advertisementsScreen);
+                  },
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        SvgPicture.asset(
+                          AppImages.adImage,
+                          color: AppColor.primaryColor,
+                          height: 24,
+                        ),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        CustomText(
+                          text: 'Advertisments'.tr,
+                          color: AppColor.primaryColor,
+                        )
+                      ],
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: AppColor.primaryColor,
+                      size: 20.sp,
+                    ),
+                  ),
+                )
+              : const SizedBox(),
+
+          box.read('userType') == 'teacher' ||
+                  box.read('userType') == 'student' ||
+                  box.read('userType') == 'parent'
+              ? InkWell(
+                  onTap: () {
+                    Get.toNamed(AppRouter.newsScreen);
+                  },
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        SvgPicture.asset(
+                          AppImages.newsImage,
+                          color: AppColor.primaryColor,
+                          height: 22,
+                        ),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        CustomText(
+                          text: 'News'.tr,
+                          color: AppColor.primaryColor,
+                        )
+                      ],
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: AppColor.primaryColor,
+                      size: 20.sp,
+                    ),
+                  ),
+                )
+              : const SizedBox(),
           // ListTile(
           //   title: Row(
           //     children: [

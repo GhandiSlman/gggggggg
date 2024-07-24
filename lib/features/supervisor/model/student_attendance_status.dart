@@ -1,3 +1,5 @@
+import 'package:lms/features/teacher/model/coninuous_rating_student.dart';
+
 class StudentAttendanceStatus {
   bool? status;
   List<StudentAttendanceStatusData>? data;
@@ -27,6 +29,7 @@ class StudentAttendanceStatus {
 class StudentAttendanceStatusData {
   int? id;
   int? studentId;
+  Student? student;
   int? subjectId;
   String? status;
   String? date;
@@ -40,6 +43,7 @@ class StudentAttendanceStatusData {
       this.status,
       this.date,
       this.createdAt,
+      this.student,
       this.updatedAt});
 
   StudentAttendanceStatusData.fromJson(Map<String, dynamic> json) {
@@ -50,6 +54,7 @@ class StudentAttendanceStatusData {
     date = json['date'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    student = Student.fromJson(json['student']);
   }
 
   Map<String, dynamic> toJson() {

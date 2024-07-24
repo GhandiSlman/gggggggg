@@ -71,26 +71,26 @@ class TeacherWeekPlaneScreen extends StatelessWidget {
                   tabs: weekPlaneController.myTabs.isEmpty
                       ? weekPlaneController.noDataTabs.toList()
                       : weekPlaneController.myTabs.toList(),
-                      onTap: (index) {
-                      if (box.read('userType') == 'teacher') {
-                        if (weekPlaneController
-                            .selectedSectionSubjects.isNotEmpty) {
-                          int subjectId = weekPlaneController
-                              .selectedSectionSubjects[index].id;
-                              
-                          weekPlaneController.updateSelectedSectionId(
-                              weekPlaneController.selectedSectionId.value,
-                              subjectId);
-                       }
-                      } else if (box.read('userType') == 'student') {
-                        if (weekPlaneController.studentInfo.isNotEmpty) {
-                          int subjectId =
-                              weekPlaneController.studentInfo[index].id!;
-                          weekPlaneController
-                              .updateSelectedSubjectIdStudent(subjectId);
-                        }
+                  onTap: (index) {
+                    if (box.read('userType') == 'teacher') {
+                      if (weekPlaneController
+                          .selectedSectionSubjects.isNotEmpty) {
+                        int subjectId = weekPlaneController
+                            .selectedSectionSubjects[index].id;
+
+                        weekPlaneController.updateSelectedSectionId(
+                            weekPlaneController.selectedSectionId.value,
+                            subjectId);
                       }
-                    },
+                    } else if (box.read('userType') == 'student') {
+                      if (weekPlaneController.studentInfo.isNotEmpty) {
+                        int subjectId =
+                            weekPlaneController.studentInfo[index].id!;
+                        weekPlaneController
+                            .updateSelectedSubjectIdStudent(subjectId);
+                      }
+                    }
+                  },
                 ),
               ),
             ],
@@ -129,8 +129,7 @@ class TeacherWeekPlaneScreen extends StatelessWidget {
                                 ),
                               )
                             : ListView.builder(
-                                itemCount:
-                                    weekPlaneController.weekPlane.length,
+                                itemCount: weekPlaneController.weekPlane.length,
                                 itemBuilder: (context, index) {
                                   var weekPlan =
                                       weekPlaneController.weekPlane[index];
@@ -138,8 +137,7 @@ class TeacherWeekPlaneScreen extends StatelessWidget {
                                     padding: EdgeInsets.all(15.h),
                                     child: WeekPlaneCard(
                                       weekPlaneDetails: weekPlan,
-                                      title: weekPlan.lessonTitle ??
-                                          'No title',
+                                      title: weekPlan.lessonTitle ?? 'No title',
                                       date: weekPlan.lessonDate ?? 'No date',
                                     ),
                                   );
