@@ -48,7 +48,7 @@ class HonorBoardController extends GetxController {
               subjectDropList.add(SelectedListItem(
                   name: subjectName, value: subject.subject!.id.toString()));
             }
-            for (var student in section.students!) {
+            for (var student in section.students) {
               studentDropList.add(SelectedListItem(
                   name: student.name!, value: student.id.toString()));
             }

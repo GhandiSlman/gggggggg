@@ -323,8 +323,18 @@ class HomeWorkController extends GetxController
           getHomeWork();
         }
       }
+    } else {
+      String tabText = myTabs[tabIndex].text!;
+      int id = 0;
+      subjects.forEach((e) {
+        if (e.name!.ar == tabText || e.name!.en == tabText) {
+          id = e.id!;
+        }
+      });
+      selectedSubjectId.value = id;
+
+      getHomeWork();
     }
-    getHomeWork();
   }
 
   @override

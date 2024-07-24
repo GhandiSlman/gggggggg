@@ -16,7 +16,9 @@ class ContinuousRatingRepoImp implements ContinuousRatingRepo {
   Future<DataState> getContinuousRating(
       {required ContinuousRating continuousRating}) async {
     final response = await _dataService.getData(
-      endPoint: 'teacher/reinforcement-xp/index',
+      endPoint: box.read("userType") == "teacher"
+          ? 'teacher/reinforcement-xp/index'
+          : "student/reinforcement-xp-student",
       baseUrl: baseUrl,
       fromJson: (Map<String, dynamic> json) => ContinuousRating.fromJson(json),
     );
@@ -100,6 +102,18 @@ class ContinuousRatingRepoImp implements ContinuousRatingRepo {
           : 'stages',
       baseUrl: baseUrl,
       fromJson: (Map<String, dynamic> json) => StudentAttendance.fromJson(json),
+    );
+    return response;
+  }
+
+  @override
+  Future<DataState> getStudentRating(
+      {required GetContinuousRateStudent getContinuousRateStudent}) async {
+    final response = await _dataService.getData(
+      endPoint: "student/reinforcement-xp-student",
+      baseUrl: baseUrl,
+      fromJson: (Map<String, dynamic> json) =>
+          GetContinuousRateStudent.fromJson(json),
     );
     return response;
   }

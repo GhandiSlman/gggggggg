@@ -18,15 +18,34 @@ import 'package:lms/features/teacher/model/continuous_rating.dart';
 import 'package:lms/features/teacher/model/section_and_subjects.dart';
 import 'package:lms/features/teacher/model/update_continuous_rate.dart';
 
-class ContinuousRatingController extends GetxController {
+class ContinuousRatingController extends GetxController
+    with GetTickerProviderStateMixin {
   ContinuousRatingRepo continuousRatingRepo;
   ContinuousRatingController(
       this.continuousRatingRepo, this.honorBoardController);
+
+  @override
+  void onInit() {
+    box.read('userType') == 'teacher' ? getClassSubjectStudent() : null;
+    getContinuousRating();
+    tabController = TabController(
+        length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
+        vsync: this);
+
+    rateController = TextEditingController();
+    pointController = TextEditingController();
+    super.onInit();
+  }
 
   late final TextEditingController rateController;
   late final TextEditingController pointController;
 
   HonorBoardController honorBoardController;
+  late TabController tabController;
+  RxList<Tab> noDataTabs = <Tab>[
+    Tab(text: 'No subjects'.tr),
+  ].obs;
+  RxList<Tab> myTabs = <Tab>[].obs;
 
   RxBool isLoadingGetCon = false.obs;
   RxBool isLoadingAddCon = false.obs;
@@ -154,21 +173,27 @@ class ContinuousRatingController extends GetxController {
 
   Future<void> getContinuousRating() async {
     isLoadingGetCon.value = true;
-    final DataState result = await continuousRatingRepo.getContinuousRating(
-        continuousRating: ContinuousRating());
-    isLoadingGetCon.value = false;
-    ratingList.clear();
-    if (result is DataSuccess) {
-      ratingList.addAll(result.data!.data!);
-    } else if (result is DataFailed) {
-      CustomToast.showToast(
-        message: 'Failed to add activity'.tr,
-        backgroundColor: AppColor.redColor,
-        fontSize: 15.sp,
-        gravity: ToastGravity.BOTTOM,
-        isLongDuration: false,
-        textColor: AppColor.whiteColor,
-      );
+    if (box.read("userType") == "teacher") {
+      final DataState result = await continuousRatingRepo.getContinuousRating(
+          continuousRating: ContinuousRating());
+      isLoadingGetCon.value = false;
+      ratingList.clear();
+      if (result is DataSuccess) {
+        ratingList.addAll(result.data!.data!);
+      } else if (result is DataFailed) {
+        CustomToast.showToast(
+          message: 'Failed to add activity'.tr,
+          backgroundColor: AppColor.redColor,
+          fontSize: 15.sp,
+          gravity: ToastGravity.BOTTOM,
+          isLongDuration: false,
+          textColor: AppColor.whiteColor,
+        );
+      }
+    } else {
+      final DataState result = await continuousRatingRepo.getStudentRating(
+          getContinuousRateStudent: GetContinuousRateStudent());
+      isLoadingGetCon.value = false;
     }
   }
 
@@ -341,14 +366,5 @@ class ContinuousRatingController extends GetxController {
         textColor: AppColor.whiteColor,
       );
     }
-  }
-
-  @override
-  void onInit() {
-    box.read('userType') == 'teacher' ? getClassSubjectStudent() : null;
-    getContinuousRating();
-    rateController = TextEditingController();
-    pointController = TextEditingController();
-    super.onInit();
   }
 }

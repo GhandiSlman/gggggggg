@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
+import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_app_bar.dart';
 import 'package:lms/core/widgets/custom_text.dart';
 import 'package:lms/core/widgets/shimmer.dart';
@@ -16,18 +17,20 @@ class ContinousRatingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     ContinuousRatingController continuousRatingController = Get.find();
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColor.primaryColor,
-        onPressed: () {
-          Get.toNamed(AppRouter.addRate, arguments: {
-            'isUpdate': continuousRatingController.isUpdate == false,
-          });
-        },
-        child: Icon(
-          Icons.add,
-          color: AppColor.whiteColor,
-        ),
-      ),
+      floatingActionButton: box.read("userType") == "student"
+          ? null
+          : FloatingActionButton(
+              backgroundColor: AppColor.primaryColor,
+              onPressed: () {
+                Get.toNamed(AppRouter.addRate, arguments: {
+                  'isUpdate': continuousRatingController.isUpdate == false,
+                });
+              },
+              child: Icon(
+                Icons.add,
+                color: AppColor.whiteColor,
+              ),
+            ),
       backgroundColor: AppColor.scaffoldColor,
       appBar: CustomAppBar(title: 'Continuous Rating'.tr),
       body: Padding(
@@ -66,7 +69,8 @@ class ContinousRatingScreen extends StatelessWidget {
                                 continuousRatingController
                                     .getContinuousRatingStudent(
                                   continuousRatingController
-                                      .ratingList[index].id.toString(),
+                                      .ratingList[index].id
+                                      .toString(),
                                 );
                               },
                               child: ContinuousRatingCard(
