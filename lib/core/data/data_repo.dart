@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
@@ -9,8 +10,7 @@ import 'package:lms/core/data/internet_checker.dart';
 import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_consts.dart';
 import 'data_state.dart';
-import 'package:path/path.dart';
-//import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as p;
 import 'package:http_parser/http_parser.dart';
 
 class DataService {
@@ -22,7 +22,7 @@ class DataService {
   Future<DataState<T>> getData<T>({
     String? token,
     required String endPoint,
-    required String baseUrl,
+    String baseUrl = baseUrl,
     Map<String, String>? queryParameters,
     fromJson,
   }) async {
@@ -74,27 +74,33 @@ class DataService {
         if (value is List<String>) {
           for (String imagePath in value) {
             File imageFile = File(imagePath);
+            XFile? compressedImage = await compressImage(imageFile);
+            if (compressedImage != null) {
+              request.files.add(
+                http.MultipartFile(
+                  'images[]',
+                  compressedImage.openRead(),
+                  await getFileLength(compressedImage),
+                  filename: p.basename(compressedImage.path),
+                  contentType: MediaType('image', 'jpeg'),
+                ),
+              );
+            }
+          }
+        } else if (key == 'image') {
+          File imageFile = File(value);
+          XFile? compressedImage = await compressImage(imageFile);
+          if (compressedImage != null) {
             request.files.add(
               http.MultipartFile(
-                'images[]',
-                imageFile.readAsBytes().asStream(),
-                imageFile.lengthSync(),
-                filename: basename(imageFile.path),
+                'image',
+                compressedImage.openRead(),
+                await getFileLength(compressedImage),
+                filename: p.basename(compressedImage.path),
                 contentType: MediaType('image', 'jpeg'),
               ),
             );
           }
-        } else if (key == 'image') {
-          File imageFile = File(value);
-          request.files.add(
-            http.MultipartFile(
-              'image',
-              imageFile.readAsBytes().asStream(),
-              imageFile.lengthSync(),
-              filename: basename(imageFile.path),
-              contentType: MediaType('image', 'jpeg'),
-            ),
-          );
         } else {
           request.fields[key] = value.toString();
         }
@@ -186,5 +192,26 @@ class DataService {
       headerMap[HttpHeaders.authorizationHeader] = 'Bearer $token';
     }
     return headerMap;
+  }
+
+  Future<int> getFileLength(XFile xfile) async {
+    final file = File(xfile.path);
+    return file.lengthSync();
+  }
+
+  Future<XFile?> compressImage(File imageFile) async {
+    // Generate a unique target path
+    String fileName = p.basename(imageFile.path);
+    String dirPath = p.dirname(imageFile.path);
+    String targetPath =
+        '$dirPath/${fileName}_compressed.jpg'; // Append "_compressed" to the original file name
+
+    // Compress the image
+    final compressedImage = await FlutterImageCompress.compressAndGetFile(
+      imageFile.path,
+      targetPath,
+      quality: 88, // Adjust compression level as needed
+    );
+    return compressedImage;
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,7 +24,7 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     PostController postController = Get.find();
     return Container(
-      height: 380.h,
+      // height: 380.h,
       width: double.infinity,
       color: AppColor.whiteColor,
       child: Column(
@@ -115,8 +117,7 @@ class PostCard extends StatelessWidget {
                     width: 70.w,
                     child: FittedBox(
                       child: CustomText(
-                        text:
-                            '${'before'.tr} ${postController.formatDate(post.createdAt!)}',
+                        text: postController.formatDate(post.createdAt!),
                         color: AppColor.greyColor,
                         fontSize: 15.sp,
                       ),
@@ -127,10 +128,14 @@ class PostCard extends StatelessWidget {
             ],
           ),
           10.verticalSpace,
-          CustomText(
-            text: post.description ?? '',
-            color: AppColor.greyColor,
-            fontSize: 15.sp,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: CustomText(
+              text: post.description ?? '',
+              color: AppColor.greyColor,
+              fontSize: 15.sp,
+              maxLine: 3,
+            ),
           ),
           10.verticalSpace,
           SizedBox(

@@ -8,27 +8,21 @@ import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_images.dart';
 import 'package:lms/core/widgets/custom_text.dart';
-import 'package:lms/features/honor_board/controller/honor_board_controller.dart';
-import 'package:lms/features/honor_board/model/honor_board.dart';
+import 'package:lms/features/honor_board/model/honor_model.dart';
 
 class TeacherHonorBoardCard extends StatelessWidget {
-  String subjectName;
-  int subjectId;
-  HonorBoard getHonorBoard;
-  TeacherHonorBoardCard({
+  final Honor honor;
+  const TeacherHonorBoardCard({
     super.key,
-    required this.subjectId,
-    required this.getHonorBoard,
-    required this.subjectName,
+    required this.honor,
   });
 
   @override
   Widget build(BuildContext context) {
-    HonorBoardController honorBoardController = Get.find();
     return InkWell(
       onTap: () {
-        honorBoardController.getStudentHonorBoard(subjectId);
-        Get.toNamed(AppRouter.studentHonorBoardScreen);
+        Get.toNamed(AppRouter.studentHonorBoardScreen,
+            arguments: honor.students);
       },
       child: Container(
           decoration: BoxDecoration(
@@ -42,12 +36,10 @@ class TeacherHonorBoardCard extends StatelessWidget {
               ),
               child: ListTile(
                 leading: SvgPicture.asset(AppImages.honorImage),
-                title: FittedBox(
-                  child: CustomText(
-                    text: '${'Honor board for'.tr} $subjectName',
-                    fontSize: 10.sp,
-                    color: AppColor.primaryColor,
-                  ),
+                title: CustomText(
+                  text: honor.title,
+                  fontSize: 14.sp,
+                  color: AppColor.primaryColor,
                 ),
               ))),
     );

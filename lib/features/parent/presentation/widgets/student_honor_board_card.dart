@@ -1,25 +1,23 @@
 import 'package:auto_size_text/auto_size_text.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_images.dart';
 import 'package:lms/core/widgets/custom_text.dart';
-import 'package:lms/features/honor_board/controller/honor_board_controller.dart';
-import 'package:lms/features/teacher/model/student_honor_board.dart';
+import 'package:lms/features/teacher/model/coninuous_rating_student.dart';
 
 class StudentHonorBoardCard extends StatelessWidget {
-  final int? index;
-  final HonorBoardStudent honorBoardStudent;
+  final int index;
+  final List<Student> students;
 
-  const StudentHonorBoardCard(
-      {super.key, this.index, required this.honorBoardStudent});
+  const StudentHonorBoardCard({
+    super.key,
+    required this.index,
+    required this.students,
+  });
 
   @override
   Widget build(BuildContext context) {
-    HonorBoardController honorBoardController = Get.find();
     return Stack(
       children: [
         Container(
@@ -42,34 +40,21 @@ class StudentHonorBoardCard extends StatelessWidget {
                       child: Image.asset(AppImages.studentH)),
                 ),
                 5.verticalSpace,
-                Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: honorBoardStudent.students?.length,
-                    itemBuilder: (context, studentIndex) {
-                      return Center(
-                        child: AutoSizeText(
-                          honorBoardStudent.students![studentIndex].name ??
-                              'No Name', // Display student name
-                          style: TextStyle(
-                            color: AppColor.primaryColor,
-                            //   fontSize: 18.sp,
-                          ),
-                          maxLines: 3,
-                          minFontSize: 5.sp,
-                          maxFontSize: 18.sp,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      );
-                    },
+                AutoSizeText(
+                  students[index].name ?? 'No Name',
+                  style: TextStyle(
+                    color: AppColor.primaryColor,
+                    fontSize: 18.sp,
                   ),
+                  maxLines: 3,
+                  minFontSize: 0,
                 ),
               ],
             ),
           ),
         ),
-        Positioned(
-          left: 25.h,
+        PositionedDirectional(
+          start: 25.h,
           child: Container(
             width: 20.w,
             height: 25.h,
@@ -80,29 +65,8 @@ class StudentHonorBoardCard extends StatelessWidget {
                     bottomRight: Radius.circular(7.r))),
             child: Center(
               child: CustomText(
-                text: index.toString(),
+                text: (index + 1).toString(),
                 color: AppColor.whiteColor,
-              ),
-            ),
-          ),
-        ),
-        Positioned(
-          right: 25.h,
-          child: InkWell(
-            onTap: () {
-              honorBoardController.deleteHonorBoard(honorBoardStudent.id!);
-            },
-            child: Container(
-              width: 20.w,
-              height: 25.h,
-              decoration: BoxDecoration(
-                  color: AppColor.redColor,
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(7.r),
-                      bottomRight: Radius.circular(7.r))),
-              child: Padding(
-                padding: EdgeInsets.all(3.h),
-                child: SvgPicture.asset(AppImages.deleteImage),
               ),
             ),
           ),

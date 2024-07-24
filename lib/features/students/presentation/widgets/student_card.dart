@@ -25,7 +25,7 @@ class StudentCard extends StatelessWidget {
     final StudentController studentController = Get.find();
 
     return Obx(() {
-     String key = '${studentId}_$subjectId';
+      String key = '${studentId}_$subjectId';
       String? status = studentController.studentAttendanceStatus[key];
       Color cardColor;
 
@@ -104,18 +104,16 @@ class StudentCard extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10.r),
-                    child: Image.asset(AppImages.childrenImage, fit: BoxFit.fill),
+                    child:
+                        Image.asset(AppImages.childrenImage, fit: BoxFit.fill),
                   ),
                 ),
                 SizedBox(width: 25.w),
-                SizedBox(
-                  width: 80.w,
-                  child: FittedBox(
-                    child: CustomText(
-                      text: name,
-                      fontSize: 18.sp,
-                      color: AppColor.primaryColor,
-                    ),
+                Expanded(
+                  child: CustomText(
+                    text: name,
+                    fontSize: 18.sp,
+                    color: AppColor.primaryColor,
                   ),
                 ),
               ],

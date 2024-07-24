@@ -145,7 +145,7 @@ class Subject {
 
   Subject({
     required this.id,
-   this.name,
+    this.name,
     required this.gradeId,
     required this.createdAt,
     required this.updatedAt,

@@ -63,7 +63,7 @@ class SubjectCard extends StatelessWidget {
           decoration: BoxDecoration(
               color: AppColor.whiteColor,
               borderRadius: BorderRadius.circular(10.r)),
-          height: 80.h,
+          // height: 80.h,
           child: Padding(
               padding: EdgeInsets.symmetric(
                 vertical: 7.h,
@@ -75,11 +75,21 @@ class SubjectCard extends StatelessWidget {
                   fontSize: 20.sp,
                   color: AppColor.primaryColor,
                 ),
-                subtitle: Row(
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SvgPicture.asset(AppImages.dateImage),
-                    SizedBox(width: 5.w),
-                    CustomText(text: date)
+                    Row(
+                      children: [
+                        SvgPicture.asset(AppImages.dateImage),
+                        SizedBox(width: 5.w),
+                        CustomText(text: date)
+                      ],
+                    ),
+                    CustomText(
+                      text: homeWorkData.description ?? '',
+                      maxLine: 3,
+                      color: Colors.grey,
+                    ),
                   ],
                 ),
               ))),

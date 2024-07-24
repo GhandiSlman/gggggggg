@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,18 +41,19 @@ class AddHonorBoardScreen extends StatelessWidget {
                 ),
                 10.verticalSpace,
                 Obx(
-                  () => honorBoardController.isLoading.value
+                  () => honorBoardController.isGradesLoading.value
                       ? ShimmerWidget(height: 50.h)
                       : DropDownList(
-                          onSelectedItems: (List<SelectedListItem> selectedItems) {
-                            honorBoardController
-                                .updateSelectedClass(selectedItems.last.name);
+                          onSelectedItems:
+                              (List<SelectedListItem> selectedItems) {
+                            honorBoardController.selectedGradesId.value =
+                                selectedItems.first.value.toString();
                           },
-                          dataList: honorBoardController.showClassList,
-                          textEditingController:
-                              honorBoardController.classControllerAdd,
+                          dataList: honorBoardController.gradesDropList,
+                          textEditingController: TextEditingController(),
                           hint: 'Choose class'.tr,
-                          isCitySelected: true),
+                          isCitySelected: true,
+                        ),
                 ),
                 10.verticalSpace,
                 CustomText(
@@ -61,22 +64,16 @@ class AddHonorBoardScreen extends StatelessWidget {
                 ),
                 10.verticalSpace,
                 Obx(
-                  () => honorBoardController.isLoading.value
-                      ? ShimmerWidget(height: 50.h)
+                  () => honorBoardController.selectedGradesId.value.isEmpty
+                      ? const Center(child: CustomText(text: 'Select a grade'))
                       : DropDownList(
-                          onSelectedItems: (List<SelectedListItem> selectedItems) {
-                            honorBoardController
-                                .updateSelectedSubject(selectedItems.last.name);
-                            String? subjectId = honorBoardController
-                                .subjectToIdMap[selectedItems.last.name];
-                            if (subjectId != null) {
-                              honorBoardController
-                                  .updateSelectedSubjectId(subjectId);
-                            }
+                          onSelectedItems:
+                              (List<SelectedListItem> selectedItems) {
+                            honorBoardController.selectedSubjectId.value =
+                                selectedItems.first.value.toString();
                           },
-                          dataList: honorBoardController.showSubjectList,
-                          textEditingController:
-                              honorBoardController.subjectController,
+                          dataList: honorBoardController.subjectDropList,
+                          textEditingController: TextEditingController(),
                           hint: 'Choose subject'.tr,
                           isCitySelected: true,
                         ),
@@ -90,7 +87,8 @@ class AddHonorBoardScreen extends StatelessWidget {
                 ),
                 10.verticalSpace,
                 CustomTextField(
-                  controller: honorBoardController.titleController,
+                  controller:
+                      honorBoardController.honorNameTextEditingController,
                   filled: true,
                   filledColor: AppColor.whiteColor,
                   hint: 'Enter honor board name'.tr,
@@ -104,67 +102,68 @@ class AddHonorBoardScreen extends StatelessWidget {
                 ),
                 10.verticalSpace,
                 Obx(
-                  () => Column(
-                    children: honorBoardController.studentDropDownControllers
-                        .asMap()
-                        .entries
-                        .map((entry) {
-                      int index = entry.key;
-                      TextEditingController controller = entry.value;
-                      return DropDownList(
-                        onSelectedItems: (List<SelectedListItem> selectedItems) {
-                          honorBoardController.updateSelectedStudent(
-                              selectedItems.last.name, index);
-                        },
-                        dataList: honorBoardController.showStudentList
-                            .where((item) => !honorBoardController
-                                .selectedStudents
-                                .contains(item.name))
-                            .toList(),
-                        textEditingController: controller,
-                        hint: 'Choose student'.tr,
-                        isCitySelected: true,
-                      );
-                    }).toList(),
-                  ),
-                ),
-                10.verticalSpace,
-                TextButton(
-                    onPressed: () {
-                      honorBoardController.addStudentDropDown();
-                    },
-                    child: CustomText(
-                      text: 'Add student'.tr,
-                      fontSize: 15.sp,
-                      color: AppColor.primaryColor,
-                      fontWeight: FontWeight.normal,
-                    )),
-                25.verticalSpace,
-                Obx(
-                  () => honorBoardController.isAdding.value
-                      ? const LoadingWidget()
-                      : CustomButton(
-                          text: isUpdate ? 'Update'.tr : 'Add'.tr,
-                          onTap: () {
-                            // honorBoardController
-                            //     .addHonorBoard()
-                            //     .then((value) => Get.back());
-                          },
-                          color: AppColor.primaryColor,
-                          textColor: AppColor.whiteColor,
+                  () => honorBoardController.selectedSubjectId.value.isEmpty
+                      ? const Center(child: CustomText(text: 'Select a grade'))
+                      : Column(
+                          children: honorBoardController.studentDropList
+                              .asMap()
+                              .entries
+                              .map((entry) {
+                            return DropDownList(
+                              onSelectedItems:
+                                  (List<SelectedListItem> selectedItems) {
+                                honorBoardController.selectedStudentsIds.add(
+                                    int.parse(
+                                        selectedItems.first.value.toString()));
+                                honorBoardController.studentDropList
+                                    .removeWhere((e) =>
+                                        e.value == selectedItems.first.value);
+                              },
+                              dataList: honorBoardController.studentDropList,
+                              textEditingController: TextEditingController(),
+                              hint: 'Choose student'.tr,
+                              isCitySelected: true,
+                            );
+                          }).toList(),
                         ),
                 ),
-                5.verticalSpace,
-                isUpdate
-                    ? CustomButton(
-                        text: 'Delete'.tr,
-                        onTap: () {
-                          honorBoardController.deleteHonorBoard(8);
-                        },
-                        color: AppColor.redColor,
-                        textColor: AppColor.whiteColor,
-                      )
-                    : const SizedBox()
+                10.verticalSpace,
+                // TextButton(
+                //     onPressed: () {
+                //       honorBoardController.addStudentDropDown();
+                //     },
+                //     child: CustomText(
+                //       text: 'Add student'.tr,
+                //       fontSize: 15.sp,
+                //       color: AppColor.primaryColor,
+                //       fontWeight: FontWeight.normal,
+                //     )),
+                // 25.verticalSpace,
+                // Obx(
+                //   () => honorBoardController.isAdding.value
+                //       ? const LoadingWidget()
+                //       : CustomButton(
+                //           text: isUpdate ? 'Update'.tr : 'Add'.tr,
+                //           onTap: () {
+                //             // honorBoardController
+                //             //     .addHonorBoard()
+                //             //     .then((value) => Get.back());
+                //           },
+                //           color: AppColor.primaryColor,
+                //           textColor: AppColor.whiteColor,
+                //         ),
+                // ),
+                // 5.verticalSpace,
+                // isUpdate
+                //     ? CustomButton(
+                //         text: 'Delete'.tr,
+                //         onTap: () {
+                //           honorBoardController.deleteHonorBoard(8);
+                //         },
+                //         color: AppColor.redColor,
+                //         textColor: AppColor.whiteColor,
+                //       )
+                //     : const SizedBox()
               ],
             ),
           ],

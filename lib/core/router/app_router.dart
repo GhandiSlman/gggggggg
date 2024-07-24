@@ -92,7 +92,7 @@ class AppRouter {
     GetPage(name: parentHonorBoardScreen, page: () => const HonorBoardScreen()),
     GetPage(
         name: studentHonorBoardScreen,
-        page: () => const StudentHonorBoardScreen()),
+        page: () => StudentHonorBoardScreen(students: Get.arguments)),
     GetPage(name: sonsScreen, page: () => const SonsScreen()),
     GetPage(
         name: sonAchievementScreen, page: () => const SonAchievementScreen()),
