@@ -54,7 +54,7 @@ class CustomDrawer extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CustomText(
-                          text: 'Ghandi Alslman',
+                          text: box.read('name'),
                           color: AppColor.whiteColor,
                           fontSize: 20.sp,
                         ),
@@ -120,63 +120,129 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 )
               : const SizedBox(),
-          ListTile(
-            title: Row(
-              children: [
-                SvgPicture.asset(AppImages.shareImage),
-                SizedBox(
-                  width: 5.w,
-                ),
-                CustomText(
-                  text: 'Share app'.tr,
-                  color: AppColor.primaryColor,
+
+          box.read('userType') == 'teacher' ||
+                  box.read('userType') == 'student' ||
+                  box.read('userType') == 'parent'
+              ? InkWell(
+                  onTap: () {
+                    Get.toNamed(AppRouter.advertisementsScreen);
+                  },
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        SvgPicture.asset(
+                          AppImages.adImage,
+                          color: AppColor.primaryColor,
+                          height: 24,
+                        ),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        CustomText(
+                          text: 'Advertisments'.tr,
+                          color: AppColor.primaryColor,
+                        )
+                      ],
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: AppColor.primaryColor,
+                      size: 20.sp,
+                    ),
+                  ),
                 )
-              ],
-            ),
-            trailing: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: AppColor.primaryColor,
-              size: 20.sp,
-            ),
-          ),
-          ListTile(
-            title: Row(
-              children: [
-                SvgPicture.asset(AppImages.contactUsImage),
-                SizedBox(
-                  width: 5.w,
-                ),
-                CustomText(
-                  text: 'Contact Us'.tr,
-                  color: AppColor.primaryColor,
+              : const SizedBox(),
+
+          box.read('userType') == 'teacher' ||
+                  box.read('userType') == 'student' ||
+                  box.read('userType') == 'parent'
+              ? InkWell(
+                  onTap: () {
+                    Get.toNamed(AppRouter.newsScreen);
+                  },
+                  child: ListTile(
+                    title: Row(
+                      children: [
+                        SvgPicture.asset(
+                          AppImages.newsImage,
+                          color: AppColor.primaryColor,
+                          height: 22,
+                        ),
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        CustomText(
+                          text: 'News'.tr,
+                          color: AppColor.primaryColor,
+                        )
+                      ],
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      color: AppColor.primaryColor,
+                      size: 20.sp,
+                    ),
+                  ),
                 )
-              ],
-            ),
-            trailing: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: AppColor.primaryColor,
-              size: 20.sp,
-            ),
-          ),
-          ListTile(
-            title: Row(
-              children: [
-                SvgPicture.asset(AppImages.aboutImage),
-                SizedBox(
-                  width: 5.w,
-                ),
-                CustomText(
-                  text: 'About Us'.tr,
-                  color: AppColor.primaryColor,
-                )
-              ],
-            ),
-            trailing: Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: AppColor.primaryColor,
-              size: 20.sp,
-            ),
-          ),
+              : const SizedBox(),
+          // ListTile(
+          //   title: Row(
+          //     children: [
+          //       SvgPicture.asset(AppImages.shareImage),
+          //       SizedBox(
+          //         width: 5.w,
+          //       ),
+          //       CustomText(
+          //         text: 'Share app'.tr,
+          //         color: AppColor.primaryColor,
+          //       )
+          //     ],
+          //   ),
+          //   trailing: Icon(
+          //     Icons.arrow_forward_ios_rounded,
+          //     color: AppColor.primaryColor,
+          //     size: 20.sp,
+          //   ),
+          // ),
+          // ListTile(
+          //   title: Row(
+          //     children: [
+          //       SvgPicture.asset(AppImages.contactUsImage),
+          //       SizedBox(
+          //         width: 5.w,
+          //       ),
+          //       CustomText(
+          //         text: 'Contact Us'.tr,
+          //         color: AppColor.primaryColor,
+          //       )
+          //     ],
+          //   ),
+          //   trailing: Icon(
+          //     Icons.arrow_forward_ios_rounded,
+          //     color: AppColor.primaryColor,
+          //     size: 20.sp,
+          //   ),
+          // ),
+          // ListTile(
+          //   title: Row(
+          //     children: [
+          //       SvgPicture.asset(AppImages.aboutImage),
+          //       SizedBox(
+          //         width: 5.w,
+          //       ),
+          //       CustomText(
+          //         text: 'About Us'.tr,
+          //         color: AppColor.primaryColor,
+          //       )
+          //     ],
+          //   ),
+          //   trailing: Icon(
+          //     Icons.arrow_forward_ios_rounded,
+          //     color: AppColor.primaryColor,
+          //     size: 20.sp,
+          //   ),
+          // ),
           InkWell(
             onTap: () {
               Get.toNamed(AppRouter.settingsScreen);

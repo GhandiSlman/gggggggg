@@ -11,6 +11,7 @@ class LocaleController extends GetxController {
   void changeLocale(String langCode) {
     Locale locale = Locale(langCode);
     box.write('langCode', langCode);
+    Get.delete<HomeController>();
     initialLang.value = locale;
     Get.updateLocale(locale);
   }

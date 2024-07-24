@@ -13,7 +13,7 @@ class NewsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    NewsController newsController = Get.find();
+    NewsController newsController = Get.put<NewsController>(Get.find());
     return Scaffold(
       backgroundColor: AppColor.scaffoldColor,
       appBar: CustomAppBar(
@@ -21,13 +21,13 @@ class NewsScreen extends StatelessWidget {
       ),
       body: Obx(() => newsController.isLoadingGetNews.value
           ? ListView.builder(
-            itemCount: 3,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.all(10.h),
-                child: ShimmerWidget(height: 250.h),
-              );
-            })
+              itemCount: 3,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.all(10.h),
+                  child: ShimmerWidget(height: 250.h),
+                );
+              })
           : ListView.builder(
               itemCount: newsController.newsList.length,
               itemBuilder: (context, index) {

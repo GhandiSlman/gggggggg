@@ -13,7 +13,7 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   /// AuthController loginController = Get.find();
+    /// AuthController loginController = Get.find();
     return Stack(
       children: [
         Container(
@@ -30,19 +30,22 @@ class HomeHeader extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.r),
-                      color: AppColor.scaffoldColor),
-                  height: 20.h,
+                // Container(
+                //   decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(5.r),
+                //       color: AppColor.scaffoldColor),
+                //   height: 20.h,
+                //   width: 25.w,
+                //   child: Center(
+                //     child: Icon(
+                //       Icons.notifications_none_sharp,
+                //       color: AppColor.primaryColor2,
+                //       size: 20.sp,
+                //     ),
+                //   ),
+                // ),
+                SizedBox(
                   width: 25.w,
-                  child: Center(
-                    child: Icon(
-                      Icons.notifications_none_sharp,
-                      color: AppColor.primaryColor2,
-                      size: 20.sp,
-                    ),
-                  ),
                 ),
                 CustomText(
                   color: AppColor.primaryColor2,
@@ -90,9 +93,13 @@ class HomeHeader extends StatelessWidget {
                         blurRadius: 2.r)
                   ],
                   borderRadius: BorderRadius.circular(20.r),
-                  color:  box.read('userType') == 'teacher'?
-                   AppColor.redColor : box.read('userType') == 'supervisor'?AppColor.orangeColor : box.read('userType') == 'guardian'?
-                  AppColor.greenHeader : AppColor.amberColor,
+                  color: box.read('userType') == 'teacher'
+                      ? AppColor.redColor
+                      : box.read('userType') == 'supervisor'
+                          ? AppColor.orangeColor
+                          : box.read('userType') == 'guardian'
+                              ? AppColor.greenHeader
+                              : AppColor.amberColor,
                 ),
                 width: double.infinity,
                 height: 125.h,

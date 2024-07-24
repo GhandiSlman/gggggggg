@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
+import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/utils/app_images.dart';
 import 'package:lms/core/widgets/custom_text.dart';
 import 'package:lms/features/posts/controller/post_controller.dart';
@@ -30,6 +31,7 @@ class WeekPlaneCard extends StatelessWidget {
     WeekPlaneController weekPlaneController = Get.find();
     PostController postController = Get.find();
     return Slidable(
+      enabled: box.read('id') == weekPlaneDetails.teacherId,
       startActionPane:
           ActionPane(extentRatio: 0.5, motion: const ScrollMotion(), children: [
         SlidableActionTecherWidget(
@@ -51,7 +53,6 @@ class WeekPlaneCard extends StatelessWidget {
                   weekPlaneDetails.lessonTitle!,
               'dateCon': weekPlaneController.lessonDateController.text =
                   weekPlaneDetails.lessonDate!,
-              
             });
           },
           color: AppColor.primaryColor,
@@ -63,9 +64,9 @@ class WeekPlaneCard extends StatelessWidget {
         onTap: () {
           Get.toNamed(AppRouter.commentScreen, arguments: {
             'isCommentWeekPlane': postController.isCommentWeelPlane == true,
-            'descCon' : weekPlaneController.lessonDateController.text =
-                  weekPlaneDetails.lessonDescription!,
-            'weekPlaneId' : weekPlaneDetails.id,
+            'descCon': weekPlaneController.lessonDateController.text =
+                weekPlaneDetails.lessonDescription!,
+            'weekPlaneId': weekPlaneDetails.id,
           });
         },
         child: Container(

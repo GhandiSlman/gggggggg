@@ -11,19 +11,21 @@ class AdvertisementsRepoImp implements AdvertisementsRepo {
   AdvertisementsRepoImp(this._dataService);
 
   @override
-  Future<DataState> getAdvertisements({required Advertisements advertisements}) async {
+  Future<DataState> getAdvertisements(
+      {required Advertisements advertisements}) async {
+    String endPoint = "";
+    switch (box.read("userType")) {
+      case 'supervisor':
+        endPoint = 'supervisor/advertisements/index';
+      case 'student':
+        endPoint = 'student/advertisements/index';
+      case 'teacher':
+        endPoint = 'teacher/advertisements/index';
+      case 'parent':
+        endPoint = 'parent/advertisements/index';
+    }
     final response = await _dataService.getData<Advertisements>(
-      endPoint: 'supervisor/advertisements/index', 
-      baseUrl: baseUrl,
-      fromJson: (Map<String, dynamic> json) => Advertisements.fromJson(json),
-    );
-    return response;
-  }
-  
-  @override
-  Future<DataState> getMyAdvertisements({required Advertisements advertisements}) async{
-    final response = await _dataService.getData<Advertisements>(
-      endPoint: 'supervisor/advertisements/authIndex', 
+      endPoint: endPoint,
       baseUrl: baseUrl,
       fromJson: (Map<String, dynamic> json) => Advertisements.fromJson(json),
     );
@@ -31,36 +33,51 @@ class AdvertisementsRepoImp implements AdvertisementsRepo {
   }
 
   @override
-  Future<DataState> addAdvertisement({required AddAdvertisementModel addAdvertisementModel})async {
-   final response = await _dataService.postDataWithPhoto<AddAdvertisementModel>(
-      endPoint: 'supervisor/advertisements/store', 
+  Future<DataState> getMyAdvertisements(
+      {required Advertisements advertisements}) async {
+    final response = await _dataService.getData<Advertisements>(
+      endPoint: 'supervisor/advertisements/authIndex',
       baseUrl: baseUrl,
-      fromJson: (Map<String, dynamic> json) => AddAdvertisementModel.fromJson(json), 
+      fromJson: (Map<String, dynamic> json) => Advertisements.fromJson(json),
+    );
+    return response;
+  }
+
+  @override
+  Future<DataState> addAdvertisement(
+      {required AddAdvertisementModel addAdvertisementModel}) async {
+    final response =
+        await _dataService.postDataWithPhoto<AddAdvertisementModel>(
+      endPoint: 'supervisor/advertisements/store',
+      baseUrl: baseUrl,
+      fromJson: (Map<String, dynamic> json) =>
+          AddAdvertisementModel.fromJson(json),
       data: addAdvertisementModel.toJson(),
     );
     return response;
   }
 
   @override
-  Future<DataState> updateAdvertisement({required UpdateAdvertisementModel updateAdvertisementModel})async {
-     final response = await _dataService.postDataWithPhoto<UpdateAdvertisementModel>(
-      endPoint: 'supervisor/advertisements/update', 
+  Future<DataState> updateAdvertisement(
+      {required UpdateAdvertisementModel updateAdvertisementModel}) async {
+    final response =
+        await _dataService.postDataWithPhoto<UpdateAdvertisementModel>(
+      endPoint: 'supervisor/advertisements/update',
       baseUrl: baseUrl,
-      fromJson: (Map<String, dynamic> json) => UpdateAdvertisementModel.fromJson(json), 
+      fromJson: (Map<String, dynamic> json) =>
+          UpdateAdvertisementModel.fromJson(json),
       data: updateAdvertisementModel.toJson(),
     );
     return response;
   }
-  
+
   @override
-  Future<DataState> deleteAdvertisement({required int id}) async{
-     final response = await _dataService.getData<Advertisements>(
-      endPoint: 'supervisor/advertisements/delete/$id', 
+  Future<DataState> deleteAdvertisement({required int id}) async {
+    final response = await _dataService.getData<Advertisements>(
+      endPoint: 'supervisor/advertisements/delete/$id',
       baseUrl: baseUrl,
       fromJson: (Map<String, dynamic> json) => Advertisements.fromJson(json),
     );
     return response;
   }
-
-  
 }

@@ -14,9 +14,25 @@ import 'package:lms/features/teacher/model/add_home_work.dart';
 import 'package:lms/features/teacher/model/get_homework_model.dart';
 import 'package:lms/features/teacher/model/section_and_subjects.dart'
     as new_subjects_model;
+import 'package:lms/features/teacher/model/student_info.dart';
 
 class HomeWorkController extends GetxController
     with GetTickerProviderStateMixin {
+  @override
+  void onInit() {
+    super.onInit();
+    classController = TextEditingController();
+    sectionController = TextEditingController();
+    titleHomeWorkController = TextEditingController();
+    detailsHomeWorkController = TextEditingController();
+    dateController = TextEditingController();
+    tabController = TabController(
+        length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
+        vsync: this);
+    // classController.addListener(updateOnClassChange);
+    box.read('userType') == 'teacher' ? getSubjects() : getStudentInfo();
+  }
+
   final HomeWorkRepo homeWorkRepo;
   final WeekPlaneRepo weekPlaneRepo;
 
@@ -118,6 +134,13 @@ class HomeWorkController extends GetxController
     }
   }
 
+  void getStudentInfo() async {
+    isLoadingSubject.value = true;
+    final DataState result =
+        await weekPlaneRepo.getStudentInfo(studentInfo: StudentInfo());
+    print(result);
+  }
+
   void updateSelectedClass(SelectedListItem className) {
     selectedSectionId.value = int.tryParse(className.value.toString()) ?? -1;
     // print(selectedSectionId.value.toString() + "sdasdd");
@@ -145,7 +168,7 @@ class HomeWorkController extends GetxController
       selectedSectionId.value = sectionId;
     }
   }
-  
+
   Future<void> addHomeWork() async {
     isLoadingAddUpdateHomeWork.value = true;
     final sectionModel = Homework(
@@ -279,21 +302,6 @@ class HomeWorkController extends GetxController
         getHomeWork();
       }
     }
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    classController = TextEditingController();
-    sectionController = TextEditingController();
-    titleHomeWorkController = TextEditingController();
-    detailsHomeWorkController = TextEditingController();
-    dateController = TextEditingController();
-    tabController = TabController(
-        length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
-        vsync: this);
-    // classController.addListener(updateOnClassChange);
-    box.read('userType') == 'teacher' ? getSubjects() : getHomeWork();
   }
 
   @override

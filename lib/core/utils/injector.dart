@@ -83,7 +83,6 @@ class DependencyInjection {
     Get.lazyPut<StudentController>(() => StudentController(Get.find()),
         fenix: true);
 
-
     //weekPlane  Repository lazy Initialization
     Get.lazyPut<WeekPlaneRepo>(() => WeekPlaneRepoImp(Get.find()), fenix: true);
 
@@ -146,7 +145,9 @@ class DependencyInjection {
 
     // Ad Controller lazy
     Get.lazyPut<AdvertisementsController>(
-        () => AdvertisementsController(Get.find()),
+        () => AdvertisementsController(
+              Get.find(),
+            ),
         fenix: true);
 
     // studend status repo init
