@@ -7,7 +7,7 @@ class StudentInfo {
     if (json['subjects'] != null) {
       subjects = <SubjectInfo>[];
       json['subjects'].forEach((v) {
-        subjects!.add(SubjectInfo.fromJson(v['subjects']));
+        subjects!.add(SubjectInfo.fromJson(v));
       });
     }
   }

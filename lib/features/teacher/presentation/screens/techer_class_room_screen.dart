@@ -31,50 +31,49 @@ class TeacherClassRoomScreen extends StatelessWidget {
       backgroundColor: AppColor.scaffoldColor,
       appBar: CustomAppBar(
         title: 'Home Work'.tr,
-        bottom: box.read('userType') == 'teacher'
-            ? PreferredSize(
-                preferredSize: Size.fromHeight(125.h),
-                child: Column(
-                  children: [
-                    Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.w),
-                        child: Obx(
-                          () => homeWorkController.isLoadingSubject.value
-                              ? ShimmerWidget(
-                                  height: 50.h,
-                                )
-                              : Builder(builder: (context) {
-                                  return DropDownList(
-                                      onSelectedItems: (List<SelectedListItem>
-                                          selectedItems) {
-                                        if (selectedItems.isNotEmpty) {
-                                          homeWorkController
-                                              .updateSelectedClass(
-                                                  selectedItems.last);
-                                        }
-                                      },
-                                      dataList: homeWorkController.classList,
-                                      textEditingController:
-                                          homeWorkController.classController,
-                                      hint: 'Choose class'.tr,
-                                      isCitySelected: true);
-                                }),
-                        )),
-                    Obx(
-                      () => TabBar(
-                        indicatorColor: AppColor.primaryColor,
-                        labelColor: AppColor.primaryColor,
-                        controller: homeWorkController.tabController,
-                        tabs: homeWorkController.myTabs.isEmpty
-                            ? homeWorkController.noDataTabs.toList()
-                            : homeWorkController.myTabs.toList(),
-                        onTap: homeWorkController.handleTabSelection,
-                      ),
-                    ),
-                  ],
+        bottom: PreferredSize(
+          preferredSize:
+              Size.fromHeight(box.read("userType") == "student" ? 60.h : 125.h),
+          child: Column(
+            children: [
+              if (box.read("userType") == "teacher")
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    child: Obx(
+                      () => homeWorkController.isLoadingSubject.value
+                          ? ShimmerWidget(
+                              height: 50.h,
+                            )
+                          : Builder(builder: (context) {
+                              return DropDownList(
+                                  onSelectedItems:
+                                      (List<SelectedListItem> selectedItems) {
+                                    if (selectedItems.isNotEmpty) {
+                                      homeWorkController.updateSelectedClass(
+                                          selectedItems.last);
+                                    }
+                                  },
+                                  dataList: homeWorkController.classList,
+                                  textEditingController:
+                                      homeWorkController.classController,
+                                  hint: 'Choose class'.tr,
+                                  isCitySelected: true);
+                            }),
+                    )),
+              Obx(
+                () => TabBar(
+                  indicatorColor: AppColor.primaryColor,
+                  labelColor: AppColor.primaryColor,
+                  controller: homeWorkController.tabController,
+                  tabs: homeWorkController.myTabs.isEmpty
+                      ? homeWorkController.noDataTabs.toList()
+                      : homeWorkController.myTabs.toList(),
+                  onTap: homeWorkController.handleTabSelection,
                 ),
-              )
-            : null,
+              ),
+            ],
+          ),
+        ),
       ),
       body: Obx(
         () => homeWorkController.isLoadingGetHomeWork.value

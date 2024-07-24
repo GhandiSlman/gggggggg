@@ -1,3 +1,4 @@
+import 'package:dartz/dartz_unsafe.dart';
 import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +22,7 @@ class HomeWorkController extends GetxController
   @override
   void onInit() {
     super.onInit();
+
     classController = TextEditingController();
     sectionController = TextEditingController();
     titleHomeWorkController = TextEditingController();
@@ -29,8 +31,9 @@ class HomeWorkController extends GetxController
     tabController = TabController(
         length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
         vsync: this);
-    // classController.addListener(updateOnClassChange);
     box.read('userType') == 'teacher' ? getSubjects() : getStudentInfo();
+
+    // classController.addListener(updateOnClassChange);
   }
 
   final HomeWorkRepo homeWorkRepo;
@@ -134,11 +137,28 @@ class HomeWorkController extends GetxController
     }
   }
 
+  List<SubjectInfo> subjects = <SubjectInfo>[];
+
   void getStudentInfo() async {
     isLoadingSubject.value = true;
     final DataState result =
         await weekPlaneRepo.getStudentInfo(studentInfo: StudentInfo());
-    print(result);
+    isLoadingSubject.value = false;
+    if (result is DataSuccess) {
+      result.data.subjects.forEach((e) {
+        subjects.add(e);
+        myTabs.add(Tab(
+          text: box.read('langCode') == 'ar' ? e.name.ar : e.name.en,
+        ));
+      });
+
+      tabController = TabController(
+          length: myTabs.isEmpty ? noDataTabs.length : myTabs.length,
+          vsync: this);
+      if (myTabs.isNotEmpty) {
+        handleTabSelection(0);
+      }
+    }
   }
 
   void updateSelectedClass(SelectedListItem className) {
@@ -292,16 +312,19 @@ class HomeWorkController extends GetxController
   }
 
   void handleTabSelection(int tabIndex) {
-    if (myTabs.isNotEmpty && tabIndex < myTabs.length) {
-      String tabText = myTabs[tabIndex].text!;
-      String className = selectedSubject.first;
-      if (subjectList[className]?.containsKey(tabText) ?? false) {
-        var sectionId = subjectList[className]![tabText]!.first;
-        var subjectId = sectionSubjectList[className]![tabText]!.first;
-        updateSelectedSectionId(sectionId.id, subjectId.id!);
-        getHomeWork();
+    if (box.read("userType") == 'teacher') {
+      if (myTabs.isNotEmpty && tabIndex < myTabs.length) {
+        String tabText = myTabs[tabIndex].text!;
+        String className = selectedSubject.first;
+        if (subjectList[className]?.containsKey(tabText) ?? false) {
+          var sectionId = subjectList[className]![tabText]!.first;
+          var subjectId = sectionSubjectList[className]![tabText]!.first;
+          updateSelectedSectionId(sectionId.id, subjectId.id!);
+          getHomeWork();
+        }
       }
     }
+    getHomeWork();
   }
 
   @override
