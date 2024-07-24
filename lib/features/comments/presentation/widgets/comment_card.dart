@@ -5,12 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_images.dart';
 import 'package:lms/core/widgets/custom_text.dart';
+import 'package:lms/features/comments/model/get_comment_model.dart';
 
 class CommentCard extends StatelessWidget {
-  final dynamic comments;
+  final Comments comments;
   const CommentCard({
     required this.comments,
-
     super.key,
   });
 
@@ -32,12 +32,12 @@ class CommentCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  text: 'Ghandi Alslman',
+                  text: comments.user?.name ?? "",
                   fontSize: 18.sp,
                   color: AppColor.primaryColor,
                 ),
                 CustomText(
-                  text: 'kmcwqwlkmd',
+                  text: comments.user?.role ?? '',
                   fontSize: 15.sp,
                   color: AppColor.greyColor2,
                 ),

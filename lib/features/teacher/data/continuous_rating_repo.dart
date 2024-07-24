@@ -16,6 +16,6 @@ abstract class ContinuousRatingRepo{
   Future<DataState> deleteContinuousRate({required int id});
   Future<DataState> deleteContinuousRateStudent({required int id});
 
-    Future<DataState> getSubjects(
+    Future<DataState<StudentAttendance>> getSubjects(
       {required StudentAttendance studentAttendance});
  }

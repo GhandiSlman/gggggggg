@@ -45,9 +45,10 @@ class ActivityScreen extends StatelessWidget {
                     () => activityController.isLoadingSection.value
                         ? ShimmerWidget(height: 50.h)
                         : DropDownList(
-                            onSelectedItems: (List<SelectedListItem> selectedItems) {
-                              activityController
-                                  .updateSelectedSection(selectedItems.last.name);
+                            onSelectedItems:
+                                (List<SelectedListItem> selectedItems) {
+                              activityController.updateSelectedSection(
+                                  selectedItems.last.name);
                             },
                             dataList: activityController.showSectionList,
                             textEditingController:
@@ -78,8 +79,9 @@ class ActivityScreen extends StatelessWidget {
                           },
                         )
                       : ListView.builder(
-                          itemCount:
-                             box.read('userType') == 'teacher'?   activityController.activityList.length : activityController.activityList.length,
+                          itemCount: box.read('userType') == 'teacher'
+                              ? activityController.activityList.length
+                              : activityController.activityList.length,
                           itemBuilder: (context, index) => Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 20.w, vertical: 10.h),
@@ -88,7 +90,7 @@ class ActivityScreen extends StatelessWidget {
                                       // sectionName: box.read('langCode') == 'ar'
                                       //     ? activityController
                                       //         .activityList[index]
-                                              
+
                                       //         .name!
                                       //         .ar!
                                       //     : activityController
@@ -99,10 +101,11 @@ class ActivityScreen extends StatelessWidget {
                                       date: activityController
                                           .activityList[index].date!,
                                       desc: activityController
-                                          .activityList[index]
-                                          .description!,
+                                          .activityList[index].description!,
                                       title: activityController
                                           .activityList[index].title!,
+                                      teacherId: activityController
+                                          .activityList[index].teacherId!,
                                       // activityIndex: activityController
                                       //     .activityList[index],
                                     )
@@ -116,6 +119,8 @@ class ActivityScreen extends StatelessWidget {
                                           .activityList[index].title!,
                                       activity: activityController
                                           .activityList[index],
+                                      teacherId: activityController
+                                          .activityList[index].teacherId!,
                                     )),
                         ),
             ),

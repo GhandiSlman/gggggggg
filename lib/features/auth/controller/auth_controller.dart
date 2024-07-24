@@ -39,6 +39,7 @@ class AuthController extends GetxController {
     final loginModel = LoginModel(
       email: email.text.trim(),
       password: password.text.trim(),
+      deviceToken: deviceToken,
     );
 
     final DataState loginResult = await authRepo.logIn(loginModel: loginModel);
@@ -46,8 +47,11 @@ class AuthController extends GetxController {
     if (loginResult is DataSuccess) {
       await box.write('token', loginResult.data!.accessToken);
       await box.write('userType', loginResult.data!.user!.role);
+      await box.write('id', loginResult.data!.user!.id);
       await box.write('name', loginResult.data.user!.name);
       await box.write('email', loginResult.data.user!.email);
+      email.clear();
+      password.clear();
       Get.offAllNamed(AppRouter.homeScreen);
     } else if (loginResult is DataFailed) {
       CustomToast.showToast(

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:get/get.dart';
 import 'package:lms/core/utils/app_color.dart';
-import 'package:lms/core/utils/app_images.dart';
 import 'package:lms/core/widgets/custom_app_bar.dart';
 import 'package:lms/core/widgets/custom_text.dart';
 import 'package:lms/core/widgets/custom_text_field.dart';
 import 'package:lms/core/widgets/shimmer.dart';
 import 'package:lms/features/comments/controller/comment_controller.dart';
+import 'package:lms/features/comments/model/get_comment_model.dart';
 import 'package:lms/features/comments/presentation/widgets/comment_card.dart';
 import 'package:lms/features/comments/presentation/widgets/comment_image_button.dart';
 
@@ -104,10 +103,11 @@ class CommentsScreen extends StatelessWidget {
                                   : commentController
                                       .commentWeekPlaneList.length,
                               itemBuilder: (context, index) {
-                                final comment = isCommentWeekPlane == true
-                                    ? commentController.commentsList[index]
-                                    : commentController
-                                        .commentWeekPlaneList[index];
+                                final Comments comment =
+                                    isCommentWeekPlane == true
+                                        ? commentController.commentsList[index]
+                                        : commentController
+                                            .commentWeekPlaneList[index];
 
                                 return Align(
                                   alignment: Alignment.centerLeft,
@@ -127,50 +127,38 @@ class CommentsScreen extends StatelessWidget {
                         }),
                       ),
                       SizedBox(height: 20.h),
-                      Obx(() => Form(
-                            key: commentController.formKey,
-                            child: CustomTextField(
-                              validator:
-                                  ValidationBuilder().minLength(1).build(),
-                              controller: isCommentWeekPlane == true
-                                  ? commentController.comment
-                                  : commentController.commentWeekPlane,
-                              maxLine: 2,
-                              minLine: 1,
-                              onChanged: (String val) {
-                                val.isEmpty
-                                    ? commentController.isTyping.value = false
-                                    : commentController.isTyping.value = true;
-                              },
-                              hint: 'Write a comment ..'.tr,
-                              filled: true,
-                              filledColor: AppColor.whiteColor,
-                              suffix: Padding(
-                                  padding: EdgeInsets.all(10.h),
-                                  child: commentController.isTyping.value
-                                      ? CommentImageButton(
-                                          onTap: () {
-                                            if (commentController
-                                                .formKey.currentState!
-                                                .validate()) {
-                                              isCommentWeekPlane == true
-                                                  ? commentController
-                                                      .addComment(postId)
-                                                  : commentController
-                                                      .addCommentWeekPlane(
-                                                          weekPlaneId);
-                                            }
-                                          },
-                                          icon: Icon(
-                                            Icons.send,
-                                            color: AppColor.whiteColor,
-                                          ))
-                                      : CommentImageButton(
-                                          icon: SvgPicture.asset(
-                                              AppImages.cameraImage),
-                                        )),
-                            ),
-                          )),
+                      CustomTextField(
+                        validator: ValidationBuilder().minLength(1).build(),
+                        controller: isCommentWeekPlane == true
+                            ? commentController.comment
+                            : commentController.commentWeekPlane,
+                        maxLine: 2,
+                        minLine: 1,
+                        onChanged: (String val) {
+                          val.isEmpty
+                              ? commentController.isTyping.value = false
+                              : commentController.isTyping.value = true;
+                        },
+                        hint: 'Write a comment ..'.tr,
+                        filled: true,
+                        filledColor: AppColor.whiteColor,
+                        suffix: Padding(
+                            padding: EdgeInsets.all(10.h),
+                            child: CommentImageButton(
+                                onTap: () {
+                                  if (commentController.formKey.currentState!
+                                      .validate()) {
+                                    isCommentWeekPlane == true
+                                        ? commentController.addComment(postId)
+                                        : commentController
+                                            .addCommentWeekPlane(weekPlaneId);
+                                  }
+                                },
+                                icon: Icon(
+                                  Icons.send,
+                                  color: AppColor.whiteColor,
+                                ))),
+                      ),
                     ],
                   );
                 },

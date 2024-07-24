@@ -92,13 +92,14 @@ class ContinuousRatingRepoImp implements ContinuousRatingRepo {
   }
 
   @override
-  Future<DataState> getSubjects(
+  Future<DataState<StudentAttendance>> getSubjects(
       {required StudentAttendance studentAttendance}) async {
-    final response = await _dataService.getData(
-      endPoint: box.read('userType') =='teacher' ? 'teacher/studentAttendance/create' : 'stages',
+    final DataState<StudentAttendance> response = await _dataService.getData(
+      endPoint: box.read('userType') == 'teacher'
+          ? 'teacher/studentAttendance/create'
+          : 'stages',
       baseUrl: baseUrl,
-      fromJson: (Map<String, dynamic> json) =>
-          StudentAttendance.fromJson(json),
+      fromJson: (Map<String, dynamic> json) => StudentAttendance.fromJson(json),
     );
     return response;
   }

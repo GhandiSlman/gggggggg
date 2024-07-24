@@ -16,7 +16,7 @@ class ContactModel {
       id: json["id"],
       name: json["name"],
       role: json["role"],
-      lastMessageDate: DateTime.parse(json["last_message_date"].toString()),
+      lastMessageDate: DateTime.tryParse(json["last_message_date"].toString()),
     );
   }
 }

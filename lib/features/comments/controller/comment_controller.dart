@@ -12,10 +12,10 @@ import 'package:lms/features/comments/model/get_comment_model.dart';
 class CommentController extends GetxController {
   final CommentRepo commentRepo;
   CommentController(this.commentRepo);
-  RxList<Comments> commentsList = <Comments>[].obs;
   
   final formKey = GlobalKey<FormState>();
-  RxList<CommentsWeekPlane> commentWeekPlaneList = <CommentsWeekPlane>[].obs;
+  RxList<Comments> commentsList = <Comments>[].obs;
+  RxList<Comments> commentWeekPlaneList = <Comments>[].obs;
 
   RxBool isTyping = false.obs;
   RxBool isLoadingComment = false.obs;
@@ -73,7 +73,7 @@ class CommentController extends GetxController {
   }
 
   Future<void> addCommentWeekPlane(int weekPlaneId) async {
-    var newComment = CommentsWeekPlane(
+    var newComment = Comments(
       comment: commentWeekPlane.text,
     );
     commentWeekPlaneList.add(newComment);

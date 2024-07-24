@@ -64,16 +64,14 @@ class DataService {
           statusCode: HttpStatus.serviceUnavailable,
         );
       }
-
+      print(data);
       var uri = Uri.parse(baseUrl + endPoint);
       var request = http.MultipartRequest('POST', uri);
 
       request.headers.addAll(headers());
 
       data.forEach((key, value) async {
-        if (value is String) {
-          request.fields[key] = value;
-        } else if (value is List<String>) {
+        if (value is List<String>) {
           for (String imagePath in value) {
             File imageFile = File(imagePath);
             request.files.add(
@@ -86,6 +84,19 @@ class DataService {
               ),
             );
           }
+        } else if (key == 'image') {
+          File imageFile = File(value);
+          request.files.add(
+            http.MultipartFile(
+              'image',
+              imageFile.readAsBytes().asStream(),
+              imageFile.lengthSync(),
+              filename: basename(imageFile.path),
+              contentType: MediaType('image', 'jpeg'),
+            ),
+          );
+        } else {
+          request.fields[key] = value.toString();
         }
       });
 

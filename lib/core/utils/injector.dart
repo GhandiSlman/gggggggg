@@ -9,6 +9,9 @@ import 'package:lms/core/local/local_controller.dart';
 import 'package:lms/features/auth/controller/auth_controller.dart';
 import 'package:lms/features/auth/data/auth_repo.dart';
 import 'package:lms/features/auth/data/auth_repo_imp.dart';
+import 'package:lms/features/chat/controller/chat_controller.dart';
+import 'package:lms/features/chat/data/chat_repo.dart';
+import 'package:lms/features/chat/data/chat_repo_imp.dart';
 import 'package:lms/features/comments/data/comment_repo.dart';
 import 'package:lms/features/comments/data/comment_repo_imp.dart';
 import 'package:lms/features/comments/controller/comment_controller.dart';
@@ -177,5 +180,9 @@ class DependencyInjection {
     Get.lazyPut<ContinuousRatingController>(
         () => ContinuousRatingController(Get.find(), Get.find()),
         fenix: true);
+
+    Get.lazyPut<ChatRepo>(() => ChatRepoImp(Get.find()), fenix: true);
+
+    Get.put(ChatController(Get.find()));
   }
 }
