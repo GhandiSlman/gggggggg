@@ -18,22 +18,22 @@ class HonorBoardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HonorBoardController honorBoardController = Get.find();
-
+    honorBoardController.getGrades();
     return Scaffold(
-      floatingActionButton: box.read('userType') == 'teacher'
-          ? FloatingActionButton(
-              backgroundColor: AppColor.primaryColor,
-              child: Icon(
-                Icons.add,
-                color: AppColor.whiteColor,
-              ),
-              onPressed: () {
-                Get.toNamed(AppRouter.addHonorBoardScreen, arguments: {
-                  'isUpdate': honorBoardController.isUpdateHonorBoard == true
-                });
-              },
-            )
-          : null,
+      // floatingActionButton: box.read('userType') == 'teacher'
+      //     ? FloatingActionButton(
+      //         backgroundColor: AppColor.primaryColor,
+      //         child: Icon(
+      //           Icons.add,
+      //           color: AppColor.whiteColor,
+      //         ),
+      //         onPressed: () {
+      //           Get.toNamed(AppRouter.addHonorBoardScreen, arguments: {
+      //             'isUpdate': false,
+      //           });
+      //         },
+      //       )
+      //     : null,
       backgroundColor: AppColor.scaffoldColor,
       appBar: CustomAppBar(
           title: 'Honor board'.tr,
@@ -43,20 +43,30 @@ class HonorBoardScreen extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                         horizontal: 14.4.w, vertical: 10.h),
-                    child: DropDownList(
-                      onSelectedItems: (List<SelectedListItem> selectedItems) {
-                        honorBoardController.updateSelectedClass(selectedItems.first.name);
-                      },
-                      dataList: honorBoardController.showClassList,
-                      textEditingController: honorBoardController.classController,
-                      hint: 'Choose class'.tr,
-                      isCitySelected: true,
-                    ),
+                    child: Obx(() {
+                      if (honorBoardController.isGradesLoading.value) {
+                        return const ShimmerWidget(height: 50);
+                      }
+                      return DropDownList(
+                        onSelectedItems:
+                            (List<SelectedListItem> selectedItems) {
+                          int selectedGradeId = int.tryParse(
+                                  selectedItems.first.value.toString()) ??
+                              -1;
+                          honorBoardController.getHonotBoardByGrade(
+                              gradeId: selectedGradeId);
+                        },
+                        dataList: honorBoardController.gradesDropList,
+                        textEditingController: TextEditingController(),
+                        hint: 'Choose class'.tr,
+                        isCitySelected: true,
+                      );
+                    }),
                   ),
                 )
               : null),
       body: Obx(() {
-        return honorBoardController.isGetHonor.value
+        return honorBoardController.isGetHonorsLoading.value
             ? ListView.builder(
                 itemCount: 3,
                 itemBuilder: (context, index) {
@@ -65,29 +75,28 @@ class HonorBoardScreen extends StatelessWidget {
                     child: ShimmerWidget(height: 75.h),
                   );
                 })
-            :  honorBoardController.selectedSubjects.isEmpty? Center(
-              child: CustomText(text: 'No data availabe'.tr , fontSize: 20.sp,color: AppColor.primaryColor,)
-            ): ListView.builder(
-                itemCount: honorBoardController.selectedSubjects.length,
-                itemBuilder: (context, index) {
-                  final subject = honorBoardController.selectedSubjects[index];
-                  return Padding(
-                    padding: EdgeInsets.all(10.h),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        TeacherHonorBoardCard(
-                          getHonorBoard: honorBoardController.honorBoardList[index],
-                          subjectName: box.read('langCode') == 'ar'
-                              ? subject.name!.ar!
-                              : subject.name!.en!,
-                          subjectId: subject.id!,
+            : honorBoardController.honors.isEmpty
+                ? Center(
+                    child: CustomText(
+                    text: 'No data availabe'.tr,
+                    fontSize: 20.sp,
+                    color: AppColor.primaryColor,
+                  ))
+                : ListView.builder(
+                    itemCount: honorBoardController.honors.length,
+                    itemBuilder: (context, index) {
+                      final honor = honorBoardController.honors[index];
+                      return Padding(
+                        padding: EdgeInsets.all(10.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TeacherHonorBoardCard(honor: honor),
+                          ],
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   );
-                },
-              );
       }),
     );
   }

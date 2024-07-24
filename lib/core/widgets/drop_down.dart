@@ -37,14 +37,15 @@ class DropDownList extends StatelessWidget {
           ),
           filled: true,
           filledColor: AppColor.whiteColor,
-          hint: textEditingController.text.isEmpty ? hint : textEditingController.text,
+          hint: textEditingController.text.isEmpty
+              ? hint
+              : textEditingController.text,
           onTap: isCitySelected
               ? () {
                   FocusScope.of(context).unfocus();
                   DropDownState(
                     heightOfBottomSheet: 600.h,
                     DropDown(
-                      
                       dropDownBackgroundColor: AppColor.whiteColor,
                       isDismissible: true,
                       data: dataList ?? [],

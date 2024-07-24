@@ -33,128 +33,101 @@ class ActivityCard extends StatelessWidget {
   Widget build(BuildContext context) {
     ActivityController activityController = Get.find();
     return Container(
-      height: 175.h,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
         color: AppColor.whiteColor,
       ),
-      child: Column(
+      padding: EdgeInsets.all(14.h),
+      child: Row(
         children: [
-          Padding(
-            padding: EdgeInsets.all(10.h),
-            child: Row(
+          SvgPicture.asset(AppImages.date2Image),
+          SizedBox(width: 16.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SvgPicture.asset(AppImages.date2Image),
-                SizedBox(width: 10.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text: title,
-                        color: AppColor.primaryColor,
-                        fontSize: 20.h,
-                      ),
-                      CustomText(
-                        text: desc,
-                        color: AppColor.greyColor,
-                        fontSize: 18.h,
-                      ),
-                      Row(
-                        children: [
-                          SvgPicture.asset(AppImages.dateImage),
-                          2.horizontalSpace,
-                          FittedBox(
-                            child: CustomText(
-                              text: date,
-                            ),
-                          ),
-                          8.horizontalSpace,
-                        ],
-                      )
-                    ],
-                  ),
+                CustomText(
+                  text: title,
+                  color: AppColor.primaryColor,
+                  fontSize: 17.h,
                 ),
-                if (box.read('userType') == 'teacher' &&
-                    box.read('id') == teacherId)
-                  IconButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Obx(() => activityController
-                                  .isLoadingDelete.value
-                              ? const LoadingWidget()
-                              : Dialog(
-                                  child: SizedBox(
-                                  height: 120,
-                                  child: Center(
-                                    child: Column(
-                                      children: [
-                                        ListTile(
-                                          title: CustomText(text: 'Update'.tr),
-                                          leading: SvgPicture.asset(
-                                              AppImages.updateImage),
-                                          onTap: () {
-                                            Get.toNamed(AppRouter.addActivity,
-                                                arguments: {
-                                                  'activityId': activity!.id,
-                                                  'isUpdate': activityController
-                                                          .isUpdated ==
-                                                      false,
-                                                  'desCon': activityController
-                                                          .descriptionController
-                                                          .text =
-                                                      activity!.description!,
-                                                  'titleCon': activityController
-                                                      .titleController
-                                                      .text = activity!.title!,
-                                                  'dateCon': activityController
-                                                      .dateController
-                                                      .text = activity!.date!,
-                                                });
-                                          },
-                                        ),
-                                        ListTile(
-                                          title: CustomText(text: 'Delete'.tr),
-                                          leading: SvgPicture.asset(
-                                              AppImages.delete2Image),
-                                          onTap: () {
-                                            activityController
-                                                .deleteActivity(activity!.id!)
-                                                .then((value) => Get.back());
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )));
-                        },
-                      );
-                    },
-                    icon: const Icon(Icons.more_horiz),
-                  )
+                4.verticalSpace,
+                CustomText(
+                  text: desc,
+                  color: AppColor.greyColor,
+                  fontSize: 14.h,
+                  maxLine: 5,
+                ),
+                4.verticalSpace,
+                Row(
+                  children: [
+                    SvgPicture.asset(AppImages.dateImage),
+                    2.horizontalSpace,
+                    Expanded(child: CustomText(text: date)),
+                    8.horizontalSpace,
+                  ],
+                )
               ],
             ),
           ),
-          // Expanded(
-          //   child: Padding(
-          //     padding: EdgeInsets.all(10.h),
-          //     child: AutoSizeText(
-          //       desc,
-          //       style: TextStyle(
-          //         color: AppColor.primaryColor,
-          //         //   fontSize: 18.sp,
-          //       ),
-          //       maxLines: 8,
-          //       minFontSize: 10.sp,
-          //       maxFontSize: 16.sp,
-          //       overflow: TextOverflow.visible,
-          //     ),
-          //   ),
-          // ),
+          if (box.read('userType') == 'teacher' && box.read('id') == teacherId)
+            IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Obx(() => activityController.isLoadingDelete.value
+                        ? const LoadingWidget()
+                        : Dialog(
+                            child: SizedBox(
+                            height: 120,
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                    title: CustomText(text: 'Update'.tr),
+                                    leading:
+                                        SvgPicture.asset(AppImages.updateImage),
+                                    onTap: () {
+                                      Get.toNamed(AppRouter.addActivity,
+                                          arguments: {
+                                            'activityId': activity!.id,
+                                            'isUpdate':
+                                                activityController.isUpdated ==
+                                                    false,
+                                            'desCon': activityController
+                                                .descriptionController
+                                                .text = activity!.description!,
+                                            'titleCon': activityController
+                                                .titleController
+                                                .text = activity!.title!,
+                                            'dateCon': activityController
+                                                .dateController
+                                                .text = activity!.date!,
+                                          });
+                                    },
+                                  ),
+                                  ListTile(
+                                    title: CustomText(text: 'Delete'.tr),
+                                    leading: SvgPicture.asset(
+                                        AppImages.delete2Image),
+                                    onTap: () {
+                                      activityController
+                                          .deleteActivity(activity!.id!)
+                                          .then((value) => Get.back());
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )));
+                  },
+                );
+              },
+              icon: const Icon(Icons.more_horiz),
+            )
         ],
       ),
     );

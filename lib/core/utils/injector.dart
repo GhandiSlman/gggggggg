@@ -15,7 +15,6 @@ import 'package:lms/features/chat/data/chat_repo_imp.dart';
 import 'package:lms/features/comments/data/comment_repo.dart';
 import 'package:lms/features/comments/data/comment_repo_imp.dart';
 import 'package:lms/features/comments/controller/comment_controller.dart';
-import 'package:lms/features/home/controller/home_controller.dart';
 import 'package:lms/features/parent/controller/parent_controller.dart';
 import 'package:lms/features/parent/data/parent_repo.dart';
 import 'package:lms/features/parent/data/parent_repo_imp.dart';
