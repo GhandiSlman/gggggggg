@@ -5,23 +5,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:get/get.dart';
-import 'package:lms/core/router/app_router.dart';
 
 import 'package:lms/core/utils/app_color.dart';
-import 'package:lms/core/utils/app_images.dart';
 import 'package:lms/core/widgets/custom_button.dart';
 import 'package:lms/core/widgets/custom_text.dart';
 import 'package:lms/core/widgets/custom_text_field.dart';
 import 'package:lms/core/widgets/loading_widget.dart';
 import 'package:lms/features/auth/controller/auth_controller.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class ForgetPasswordScreen extends StatelessWidget {
+  const ForgetPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final AuthController loginController =
         Get.put(AuthController(Get.find()), permanent: true);
+    final formKey = GlobalKey<FormState>();
 
     return Scaffold(
       backgroundColor: AppColor.primaryColor,
@@ -47,12 +46,12 @@ class LoginScreen extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(right: 20.w, left: 20.w),
                   child: Form(
-                    key: loginController.formKey,
+                    key: formKey,
                     child: Column(
                       children: [
-                        20.verticalSpace,
+                        32.verticalSpace,
                         CustomText(
-                          text: 'Login'.tr,
+                          text: 'Forget Password'.tr,
                           color: AppColor.primaryColor,
                           fontSize: 20.sp,
                           fontWeight: FontWeight.bold,
@@ -63,46 +62,17 @@ class LoginScreen extends StatelessWidget {
                           hint: 'Enter Email'.tr,
                           filled: true,
                           filledColor: AppColor.whiteColor,
-                          suffix: SvgPicture.asset(AppImages.userImage),
                           validator: ValidationBuilder().email().build(),
-                        ),
-                        10.verticalSpace,
-                        CustomTextField(
-                          controller: loginController.password,
-                          hint: 'Enter Password'.tr,
-                          filled: true,
-                          filledColor: AppColor.whiteColor,
-                          suffix: SvgPicture.asset(AppImages.passwordImage),
-                          validator: ValidationBuilder().minLength(8).build(),
-                        ),
-                        16.verticalSpace,
-                        InkWell(
-                          onTap: () =>
-                              Get.toNamed(AppRouter.forgetPasswordScreen),
-                          child: Align(
-                            alignment: AlignmentDirectional.centerStart,
-                            child: Text(
-                              'Forget The Password',
-                              style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  decorationColor: AppColor.primaryColor,
-                                  decorationThickness: 1.0,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColor.primaryColor),
-                            ),
-                          ),
                         ),
                         30.verticalSpace,
                         Obx(
                           () => loginController.isLoading.value
                               ? const LoadingWidget()
                               : CustomButton(
-                                  text: 'Login'.tr,
+                                  text: 'Send'.tr,
                                   onTap: () {
-                                    if (loginController.formKey.currentState!
-                                        .validate()) {
-                                      loginController.login();
+                                    if (formKey.currentState!.validate()) {
+                                      loginController.forgetPassword();
                                     }
                                   },
                                   color: AppColor.green2Color,

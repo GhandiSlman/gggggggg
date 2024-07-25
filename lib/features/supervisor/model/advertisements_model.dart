@@ -18,8 +18,7 @@ class Advertisements {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
     if (advertisements != null) {
-      data['advertisements'] =
-          advertisements!.map((v) => v.toJson()).toList();
+      data['advertisements'] = advertisements!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -28,6 +27,7 @@ class Advertisements {
 class AdvertisementsData {
   int? id;
   List<String>? images;
+  List<String>? videos;
   Description? description;
   int? subAdminId;
   String? createdAt;
@@ -36,9 +36,10 @@ class AdvertisementsData {
 
   AdvertisementsData(
       {this.id,
-      this.images, 
+      this.images,
       this.description,
       this.subAdminId,
+      this.videos,
       this.createdAt,
       this.updatedAt,
       this.subAdmin});
@@ -48,15 +49,17 @@ class AdvertisementsData {
     if (json['images'] != null) {
       images = List<String>.from(json['images']);
     }
+    if (json['videos'] != null) {
+      videos = List<String>.from(json['videos']);
+    }
     description = json['description'] != null
         ? Description.fromJson(json['description'])
         : null;
     subAdminId = json['sub_admin_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    subAdmin = json['sub_admin'] != null
-        ? SubAdmin.fromJson(json['sub_admin'])
-        : null;
+    subAdmin =
+        json['sub_admin'] != null ? SubAdmin.fromJson(json['sub_admin']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -77,7 +80,6 @@ class AdvertisementsData {
     return data;
   }
 }
-
 
 class Description {
   String? en;

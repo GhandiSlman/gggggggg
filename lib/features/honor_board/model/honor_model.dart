@@ -11,29 +11,27 @@ class HonorsModel {
 }
 
 class Honor {
-  final int id;
-  final int teacherId;
+  final int? id;
+  final int? teacherId;
   final int subjectId;
   final String title;
-  final Subject subject;
+  final Subject? subject;
   final List<Student>? students;
   Honor({
-    required this.id,
-    required this.teacherId,
+    this.id,
+    this.teacherId,
     required this.subjectId,
     required this.title,
-    required this.subject,
+    this.subject,
     required this.students,
   });
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'id': id,
-      'teacherId': teacherId,
-      'subjectId': subjectId,
+      'honorBoard_id': id,
+      'subject_id': subjectId,
       'title': title,
-      'subject': subject.toJson(),
-      'students': students?.map((x) => x.toJson()).toList(),
+      'student_ids': students?.map((x) => x.id).toList(),
     };
   }
 
@@ -49,7 +47,9 @@ class Honor {
       teacherId: map['teacher_id'] as int,
       subjectId: map['subject_id'] as int,
       title: map['title'] as String,
-      subject: Subject.fromJson(map['subject'] as Map<String, dynamic>),
+      subject: map['subject'].toString() == 'null'
+          ? null
+          : Subject.fromJson(map['subject'] as Map<String, dynamic>),
       students: List<Student>.from(
         (map['students'] as List<dynamic>).map(
           (x) => Student.fromJson(x as Map<String, dynamic>),

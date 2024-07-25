@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class AppColor {
-  static Color greyColor = const Color(0XFFC5C5C5);
-  static Color primaryColor = const Color(0XFF157DBC);
+  static const Color greyColor = Color(0XFFC5C5C5);
+  static Color primaryColor = const Color(0XFF0BA9D0);
   static Color whiteColor = Colors.white;
   static Color greyColor2 = Colors.grey;
   static Color scaffoldColor = const Color(0XFFEEEEEE);
   static Color primaryColor2 = const Color(0XFF308EC1);
   static Color amberColor = const Color(0XFFebdd58);
   static Color redColor = const Color(0XFFFF484C);
-  static Color amber2Color = const Color(0XFFD4D06D);
+  static Color amber2Color = const Color(0XFFEEDF5E);
   static Color greyColor3 = const Color(0XFF7B7B7B);
   static Color commentScaffoldColor = const Color(0XFFFFFBFB);
   static Color offsetPrimary = const Color(0XFFE1EEF6);

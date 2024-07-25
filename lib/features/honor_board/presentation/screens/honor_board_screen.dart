@@ -20,51 +20,47 @@ class HonorBoardScreen extends StatelessWidget {
     HonorBoardController honorBoardController = Get.find();
     honorBoardController.getGrades();
     return Scaffold(
-      // floatingActionButton: box.read('userType') == 'teacher'
-      //     ? FloatingActionButton(
-      //         backgroundColor: AppColor.primaryColor,
-      //         child: Icon(
-      //           Icons.add,
-      //           color: AppColor.whiteColor,
-      //         ),
-      //         onPressed: () {
-      //           Get.toNamed(AppRouter.addHonorBoardScreen, arguments: {
-      //             'isUpdate': false,
-      //           });
-      //         },
-      //       )
-      //     : null,
+      floatingActionButton: box.read('userType') == 'teacher'
+          ? FloatingActionButton(
+              backgroundColor: AppColor.primaryColor,
+              child: Icon(
+                Icons.add,
+                color: AppColor.whiteColor,
+              ),
+              onPressed: () {
+                Get.toNamed(AppRouter.addHonorBoardScreen, arguments: {
+                  'isUpdate': false,
+                });
+              },
+            )
+          : null,
       backgroundColor: AppColor.scaffoldColor,
       appBar: CustomAppBar(
           title: 'Honor board'.tr,
-          bottom: box.read('userType') == 'teacher'
-              ? PreferredSize(
-                  preferredSize: Size.fromHeight(100.h),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: 14.4.w, vertical: 10.h),
-                    child: Obx(() {
-                      if (honorBoardController.isGradesLoading.value) {
-                        return const ShimmerWidget(height: 50);
-                      }
-                      return DropDownList(
-                        onSelectedItems:
-                            (List<SelectedListItem> selectedItems) {
-                          int selectedGradeId = int.tryParse(
-                                  selectedItems.first.value.toString()) ??
-                              -1;
-                          honorBoardController.getHonotBoardByGrade(
-                              gradeId: selectedGradeId);
-                        },
-                        dataList: honorBoardController.gradesDropList,
-                        textEditingController: TextEditingController(),
-                        hint: 'Choose class'.tr,
-                        isCitySelected: true,
-                      );
-                    }),
-                  ),
-                )
-              : null),
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(100.h),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 14.4.w, vertical: 10.h),
+              child: Obx(() {
+                if (honorBoardController.isGradesLoading.value) {
+                  return const ShimmerWidget(height: 50);
+                }
+                return DropDownList(
+                  onSelectedItems: (List<SelectedListItem> selectedItems) {
+                    int selectedGradeId =
+                        int.tryParse(selectedItems.first.value.toString()) ??
+                            -1;
+                    honorBoardController.getHonotBoardByGrade(
+                        gradeId: selectedGradeId);
+                  },
+                  dataList: honorBoardController.gradesDropList,
+                  textEditingController: TextEditingController(),
+                  hint: 'Choose class'.tr,
+                  isCitySelected: true,
+                );
+              }),
+            ),
+          )),
       body: Obx(() {
         return honorBoardController.isGetHonorsLoading.value
             ? ListView.builder(

@@ -10,7 +10,7 @@ import 'package:lms/core/utils/app_images.dart';
 import 'package:lms/core/widgets/custom_text.dart';
 
 import 'package:lms/features/supervisor/model/news_model.dart';
-import 'package:lms/features/supervisor/presentation/widgets/carousel_slider_ad.dart';
+import 'package:lms/features/supervisor/presentation/widgets/carousel_slider_ad_.dart';
 
 class NewsCard extends StatelessWidget {
   final NewsData newsData;
@@ -22,13 +22,15 @@ class NewsCard extends StatelessWidget {
     Object concatenatedImages = newsData.images is List
         ? (newsData.images as List).join(',')
         : newsData.images ?? '';
+    Object concatenatedVideos = newsData.videos is List
+        ? (newsData.videos as List).join(',')
+        : newsData.videos ?? '';
 
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
         color: AppColor.whiteColor,
       ),
-      height: 250.h,
       width: double.infinity,
       child: Padding(
         padding: EdgeInsets.all(10.h),
@@ -37,11 +39,12 @@ class NewsCard extends StatelessWidget {
           children: [
             SizedBox(
               width: double.infinity,
-              height: 75.h,
+              height: 150.h,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.r),
                 child: CarouselSliderAd(
                   concatenatedImages: concatenatedImages.toString(),
+                  concatenatedVideos: concatenatedVideos.toString(),
                 ),
               ),
             ),

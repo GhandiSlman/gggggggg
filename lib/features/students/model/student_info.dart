@@ -32,7 +32,8 @@ class SubjectsWrapper {
   SubjectsWrapper({this.subjects});
 
   SubjectsWrapper.fromJson(Map<String, dynamic> json) {
-    subjects = json['subjects'] != null ? Subject.fromJson(json['subjects']) : null;
+    subjects =
+        json['subjects'] != null ? Subject.fromJson(json['subjects']) : null;
   }
 
   Map<String, dynamic> toJson() {

@@ -7,11 +7,13 @@ import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_toast.dart';
+import 'package:lms/features/auth/models/forget_password_model.dart';
 import 'package:lms/features/auth/models/login_model.dart';
 import 'package:lms/features/auth/data/auth_repo.dart';
 import 'package:lms/core/data/data_state.dart';
 
 class AuthController extends GetxController {
+  late final TextEditingController code;
   late final TextEditingController email;
   late final TextEditingController password;
 
@@ -28,6 +30,7 @@ class AuthController extends GetxController {
   void onInit() {
     email = TextEditingController();
     password = TextEditingController();
+    code = TextEditingController();
     super.onInit();
   }
 
@@ -62,6 +65,56 @@ class AuthController extends GetxController {
         textColor: AppColor.whiteColor,
         toastDuration: 1,
       );
+    }
+  }
+
+  Future<void> forgetPassword() async {
+    isLoading.value = true;
+    final DataState dataState = await authRepo.forgetPassword(
+        endPoint: 'forgetPassword',
+        forgetPasswordModel: ForgetPasswordModel(email: email.text.trim()));
+    isLoading.value = false;
+    if (dataState is DataSuccess) {
+      Get.offNamed(AppRouter.forgetCodePasswordScreen);
+    } else if (dataState is DataFailed) {
+      CustomToast.customErrorToast("Somthing went wrong !");
+    }
+  }
+
+  Future<void> forgetCodePassword() async {
+    isLoading.value = true;
+    final DataState dataState = await authRepo.forgetPassword(
+        endPoint: 'checkResetPasswordCode',
+        forgetPasswordModel: ForgetPasswordModel(
+          email: email.text.trim(),
+          code: code.text.trim(),
+        ));
+    isLoading.value = false;
+    if (dataState is DataSuccess) {
+      Get.offNamed(AppRouter.resetPasswordScreen);
+    } else if (dataState is DataFailed) {
+      CustomToast.customErrorToast("Somthing went wrong !");
+    }
+  }
+
+  Future<void> resetPassword() async {
+    isLoading.value = true;
+    final DataState dataState = await authRepo.forgetPassword(
+        endPoint: 'resetPassword',
+        forgetPasswordModel: ForgetPasswordModel(
+          email: email.text.trim(),
+          code: code.text.trim(),
+          password: password.text.trim(),
+        ));
+    isLoading.value = false;
+    if (dataState is DataSuccess) {
+      CustomToast.customSuccessToast("Done");
+      Get.offAllNamed(AppRouter.loginScreen);
+      code.clear();
+      password.clear();
+      email.clear();
+    } else if (dataState is DataFailed) {
+      CustomToast.customErrorToast("Somthing went wrong !");
     }
   }
 

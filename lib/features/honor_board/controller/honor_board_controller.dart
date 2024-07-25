@@ -9,8 +9,10 @@ import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/core/widgets/custom_toast.dart';
 import 'package:lms/features/honor_board/model/honor_model.dart';
 import 'package:lms/features/honor_board/data/honor_board_repo.dart';
-import 'package:lms/features/students/data/student_repo.dart';
-import 'package:lms/features/students/model/student_attendance.dart';
+import 'package:lms/features/honor_board/model/students_model.dart';
+import 'package:lms/features/teacher/data/week_plane_repo.dart';
+import 'package:lms/features/teacher/model/coninuous_rating_student.dart';
+import 'package:lms/features/teacher/model/section_and_subjects.dart';
 
 class HonorBoardController extends GetxController {
   HonorBoardRepo honorBoardRepo;
@@ -18,45 +20,35 @@ class HonorBoardController extends GetxController {
   HonorBoardController(this.honorBoardRepo);
 
   RxList<SelectedListItem> gradesDropList = <SelectedListItem>[].obs;
-  RxList<SelectedListItem> subjectDropList = <SelectedListItem>[].obs;
+  // RxList<SelectedListItem> subjectDropList = <SelectedListItem>[].obs;
   RxList<SelectedListItem> studentDropList = <SelectedListItem>[].obs;
+  RxList<Subject> allSubjects = <Subject>[].obs;
+
   RxBool isGradesLoading = false.obs;
   RxString selectedGradesId = ''.obs;
   RxString selectedSubjectId = ''.obs;
-  RxList<int> selectedStudentsIds = <int>[].obs;
   TextEditingController honorNameTextEditingController =
       TextEditingController();
 
   Future<void> getGrades() async {
+    allSubjects.clear();
     isGradesLoading.value = true;
     final DataState result =
-        await Get.find<StudentRepo>().getClasses(StudentAttendance());
-
+        await Get.find<WeekPlaneRepo>().getSectionsAndSubjects();
     if (result is DataSuccess) {
       var createSubject = result.data!;
-      for (var res in createSubject.result!) {
-        for (var grade in res.grades!) {
+      for (var res in createSubject.result) {
+        for (var grade in res.grades) {
           String gradeName =
-              box.read('langCode') == 'ar' ? grade.name!.ar! : grade.name!.en!;
+              box.read('langCode') == 'ar' ? grade.name.ar : grade.name.en!;
           gradesDropList.add(
               SelectedListItem(name: gradeName, value: grade.id.toString()));
-          for (var section in grade.sections!) {
-            for (var subject in section.sectionSubjects!) {
-              String subjectName = box.read('langCode') == 'ar'
-                  ? subject.subject!.name!.ar
-                  : subject.subject!.name!.en!;
-              subjectDropList.add(SelectedListItem(
-                  name: subjectName, value: subject.subject!.id.toString()));
-            }
-            for (var student in section.students) {
-              studentDropList.add(SelectedListItem(
-                  name: student.name!, value: student.id.toString()));
-            }
+          for (var section in grade.sections) {
+            allSubjects.addAll(section.subjects);
           }
         }
       }
-      subjectDropList.value = subjectDropList.toSet().toList();
-      studentDropList.value = studentDropList.toSet().toList();
+      print(allSubjects.map((e) => e.toJson()));
     } else if (DataState is DataFailed) {
       CustomToast.showToast(
         message: result.errorMessage!,
@@ -68,6 +60,26 @@ class HonorBoardController extends GetxController {
       );
     }
     isGradesLoading.value = false;
+  }
+
+  RxInt studentsTotalLength = 0.obs;
+  RxList<Student> studentsTextFeilds = <Student>[Student()].obs;
+  RxBool isGetStudentsBySubjectLoading = false.obs;
+  Future<void> getStudentsBySubject({required int subjectId}) async {
+    isGetStudentsBySubjectLoading.value = true;
+    studentsTextFeilds.value = [Student()];
+    final result =
+        await honorBoardRepo.getStudentsBySubject(subjectId: subjectId);
+    if (result is DataSuccess<StudentsModel>) {
+      studentsTotalLength.value = result.data!.students.length;
+      studentDropList.value = result.data!.students
+          .map((e) =>
+              SelectedListItem(name: e.name.toString(), value: e.id.toString()))
+          .toList();
+    } else {
+      CustomToast.customErrorToast('Failed to load students');
+    }
+    isGetStudentsBySubjectLoading.value = false;
   }
 
   RxList<Honor> honors = <Honor>[].obs;
@@ -84,7 +96,10 @@ class HonorBoardController extends GetxController {
     isGetHonorsLoading.value = false;
   }
 
+  RxBool isDeleteHonorLoading = false.obs;
+
   Future<void> deleteHonorBoard(int honorBoardId) async {
+    isDeleteHonorLoading.value = true;
     final result =
         await honorBoardRepo.deleteHonorBoard(honorBoardId: honorBoardId);
     if (result is DataSuccess) {
@@ -106,5 +121,66 @@ class HonorBoardController extends GetxController {
         toastDuration: 1,
       );
     }
+    isDeleteHonorLoading.value = false;
+  }
+
+  RxBool isAddHonorLoading = false.obs;
+  Future<void> addHonorBoard() async {
+    isAddHonorLoading.value = true;
+    final result = await honorBoardRepo.addHonor(
+        honor: Honor(
+            subjectId: int.parse(selectedSubjectId.value),
+            title: honorNameTextEditingController.text,
+            students: studentsTextFeilds));
+    if (result is DataSuccess) {
+      CustomToast.showToast(
+        message: 'Honor board Added successfully'.tr,
+        backgroundColor: AppColor.greenColor,
+        fontSize: 15.sp,
+        gravity: ToastGravity.BOTTOM,
+        textColor: AppColor.whiteColor,
+        toastDuration: 1,
+      );
+      isGradesLoading = false.obs;
+      selectedGradesId = ''.obs;
+      selectedSubjectId = ''.obs;
+      honorNameTextEditingController = TextEditingController();
+      studentsTotalLength = 0.obs;
+      studentsTextFeilds = <Student>[Student()].obs;
+    } else if (result is DataFailed) {
+      CustomToast.showToast(
+        message: result.errorMessage!,
+        backgroundColor: AppColor.redColor,
+        fontSize: 15.sp,
+        gravity: ToastGravity.BOTTOM,
+        textColor: AppColor.whiteColor,
+        toastDuration: 1,
+      );
+    }
+    isAddHonorLoading.value = false;
+  }
+
+  RxBool isUpdateHonorLoading = false.obs;
+  Future<void> updateHonorBoard(int honorId) async {
+    isUpdateHonorLoading.value = true;
+    final result = await honorBoardRepo.updateHonor(
+        honor: Honor(
+            id: honorId,
+            subjectId: int.parse(selectedSubjectId.value),
+            title: honorNameTextEditingController.text,
+            students: studentsTextFeilds));
+    if (result is DataSuccess) {
+      CustomToast.showToast(
+        message: 'Honor board Updated successfully'.tr,
+        backgroundColor: AppColor.greenColor,
+        fontSize: 15.sp,
+        gravity: ToastGravity.BOTTOM,
+        textColor: AppColor.whiteColor,
+        toastDuration: 1,
+      );
+    } else if (result is DataFailed) {
+      CustomToast.customErrorToast(result.errorMessage!);
+    }
+    isUpdateHonorLoading.value = false;
   }
 }

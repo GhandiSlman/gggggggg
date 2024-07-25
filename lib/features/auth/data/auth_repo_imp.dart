@@ -1,6 +1,8 @@
 import 'package:lms/core/data/data_repo.dart';
 import 'package:lms/core/data/data_state.dart';
+import 'package:lms/core/models/message_model.dart';
 import 'package:lms/core/utils/app_consts.dart';
+import 'package:lms/features/auth/models/forget_password_model.dart';
 import 'package:lms/features/auth/models/login_model.dart';
 import 'package:lms/features/auth/data/auth_repo.dart';
 
@@ -21,15 +23,22 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<DataState> logOut() async {
-    final response =
-        await _dataService.getData(endPoint: 'logout', baseUrl: baseUrl,
-        fromJson: (Map<String, dynamic> json) => GetLoginModel.fromJson(json),
-        );
+    final response = await _dataService.getData(
+      endPoint: 'logout',
+      baseUrl: baseUrl,
+      fromJson: (Map<String, dynamic> json) => GetLoginModel.fromJson(json),
+    );
     return response;
   }
-  
-  // @override
-  // Future<DataState> getInfo({required GetLoginModel getLoginModel}) async{
-  //     final response = await _dataService.getData(endPoint: 'endPoint', baseUrl: baseUrl)
-  // }
+
+  @override
+  Future<DataState> forgetPassword(
+      {required String endPoint,
+      required ForgetPasswordModel forgetPasswordModel}) async {
+    return await _dataService.postData(
+      endPoint: endPoint,
+      data: forgetPasswordModel,
+      fromJson: MessageModel.fromJson,
+    );
+  }
 }
