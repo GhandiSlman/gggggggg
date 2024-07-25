@@ -146,12 +146,17 @@ class CommentsScreen extends StatelessWidget {
                             padding: EdgeInsets.all(10.h),
                             child: CommentImageButton(
                                 onTap: () {
-                                  if (commentController.formKey.currentState!
-                                      .validate()) {
-                                    isCommentWeekPlane == true
-                                        ? commentController.addComment(postId)
-                                        : commentController
-                                            .addCommentWeekPlane(weekPlaneId);
+                                  if (isCommentWeekPlane == false) {
+                                    if (commentController
+                                        .commentWeekPlane.text.isNotEmpty) {
+                                      commentController
+                                          .addCommentWeekPlane(weekPlaneId);
+                                    }
+                                  } else {
+                                    if (commentController
+                                        .comment.text.isNotEmpty) {
+                                      commentController.addComment(postId);
+                                    }
                                   }
                                 },
                                 icon: Icon(

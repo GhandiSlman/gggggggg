@@ -11,7 +11,7 @@ import 'package:lms/core/widgets/custom_text.dart';
 import 'package:lms/core/widgets/loading_widget.dart';
 import 'package:lms/features/supervisor/controller/advertisements_controller.dart';
 import 'package:lms/features/supervisor/model/advertisements_model.dart';
-import 'package:lms/features/supervisor/presentation/widgets/carousel_slider_ad.dart';
+import 'package:lms/features/supervisor/presentation/widgets/carousel_slider_ad_.dart';
 
 class AdvertisementsCard extends StatelessWidget {
   final AdvertisementsData advertisementsData;
@@ -19,7 +19,9 @@ class AdvertisementsCard extends StatelessWidget {
   final bool isAdvertisement;
 
   const AdvertisementsCard(
-      {required this.advertisementsData, required this.isAdvertisement, super.key});
+      {required this.advertisementsData,
+      required this.isAdvertisement,
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +29,15 @@ class AdvertisementsCard extends StatelessWidget {
     Object concatenatedImages = advertisementsData.images is List
         ? (advertisementsData.images as List).join(',')
         : advertisementsData.images ?? '';
+    Object concatenatedVideos = advertisementsData.videos is List
+        ? (advertisementsData.videos as List).join(',')
+        : advertisementsData.videos ?? '';
 
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
         color: AppColor.whiteColor,
       ),
-      height: 250.h,
       width: double.infinity,
       child: Padding(
         padding: EdgeInsets.all(10.h),
@@ -42,11 +46,12 @@ class AdvertisementsCard extends StatelessWidget {
           children: [
             SizedBox(
               width: double.infinity,
-              height: 75.h,
+              height: 150.h,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.r),
+                borderRadius: BorderRadius.circular(5.r),
                 child: CarouselSliderAd(
                   concatenatedImages: concatenatedImages.toString(),
+                  concatenatedVideos: concatenatedVideos.toString(),
                 ),
               ),
             ),
@@ -83,8 +88,7 @@ class AdvertisementsCard extends StatelessWidget {
                                             Get.toNamed(
                                                 AppRouter.addUpdateAdvScreen,
                                                 arguments: {
-                                                  'AdId':
-                                                      advertisementsData.id,
+                                                  'AdId': advertisementsData.id,
                                                   'isUpdate':
                                                       advertisementsController
                                                               .isUpdate ==

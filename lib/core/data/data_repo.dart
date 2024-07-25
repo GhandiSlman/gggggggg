@@ -127,7 +127,7 @@ class DataService {
     String? token,
     required String endPoint,
     required dynamic data,
-    required String baseUrl,
+    String baseUrl = baseUrl,
     required T Function(Map<String, dynamic>) fromJson,
   }) async {
     print(data);

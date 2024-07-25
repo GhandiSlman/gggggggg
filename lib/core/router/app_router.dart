@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 import 'package:lms/core/screens/setting_screen.dart';
+import 'package:lms/features/auth/presentation/screens/forget_code_password_screen.dart';
+import 'package:lms/features/auth/presentation/screens/forget_password_screen.dart';
 import 'package:lms/features/auth/presentation/screens/login_sceen.dart';
+import 'package:lms/features/auth/presentation/screens/reset_password_screen.dart';
 import 'package:lms/features/posts/presentation/screens/add_update_post_screen.dart';
 import 'package:lms/features/supervisor/presentation/screens/add_update_adv_screen.dart';
 import 'package:lms/features/supervisor/presentation/screens/advertisements_screen.dart';
@@ -41,6 +44,9 @@ class AppRouter {
   static const String addPostScreen = '/addPostScreen';
   static const String techerClassRoomScreen = '/techerClassRoomScreen';
   static const String activityScreen = '/activityScreen';
+  static const String forgetPasswordScreen = '/forgetPasswordScreen';
+  static const String forgetCodePasswordScreen = '/forgetCodePasswordScreen';
+  static const String resetPasswordScreen = '/resetPasswordScreen';
   // static const String allchatsScreen = '/allchatsScreen';
   static const String teacherWeekPlane = '/teacherWeekPlane';
   // static const String parentChatScreen = '/parentChatScreen';
@@ -66,6 +72,12 @@ class AppRouter {
   static const String settingsScreen = '/settingsScreen';
 
   static final List<GetPage> pages = [
+    GetPage(
+        name: forgetPasswordScreen, page: () => const ForgetPasswordScreen()),
+    GetPage(
+        name: forgetCodePasswordScreen,
+        page: () => const ForgetCodePasswordScreen()),
+    GetPage(name: resetPasswordScreen, page: () => const ResetPasswordScreen()),
     GetPage(name: loginScreen, page: () => const LoginScreen()),
     GetPage(name: homeScreen, page: () => const HomeScreen()),
     GetPage(name: commentScreen, page: () => const CommentsScreen()),
@@ -92,7 +104,7 @@ class AppRouter {
     GetPage(name: parentHonorBoardScreen, page: () => const HonorBoardScreen()),
     GetPage(
         name: studentHonorBoardScreen,
-        page: () => StudentHonorBoardScreen(students: Get.arguments)),
+        page: () => StudentHonorBoardScreen(honor: Get.arguments)),
     GetPage(name: sonsScreen, page: () => const SonsScreen()),
     GetPage(
         name: sonAchievementScreen, page: () => const SonAchievementScreen()),

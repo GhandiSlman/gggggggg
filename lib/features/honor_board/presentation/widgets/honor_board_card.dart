@@ -20,10 +20,8 @@ class TeacherHonorBoardCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Get.toNamed(AppRouter.studentHonorBoardScreen,
-            arguments: honor.students);
-      },
+      onTap: () =>
+          Get.toNamed(AppRouter.studentHonorBoardScreen, arguments: honor),
       child: Container(
           decoration: BoxDecoration(
               color: AppColor.whiteColor,

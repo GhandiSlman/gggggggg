@@ -13,7 +13,7 @@ class CommentRepoImp implements CommentRepo {
   Future<DataState> addComment(
       {required AddCommentData addCommentModel, required int postId}) async {
     final response = await _dataService.postData(
-      endPoint:box.read('userType') == 'teacher'
+      endPoint: box.read('userType') == 'teacher'
           ? 'teacher/dailyUpdatePost/addComment'
           : box.read('userType') == 'supervisor'
               ? 'supervisor/dailyUpdatePost/addComment'
@@ -38,7 +38,7 @@ class CommentRepoImp implements CommentRepo {
               : box.read('userType') == 'guardian'
                   ? 'parent/dailyUpdatePost/getComments/$postId'
                   : 'student/dailyUpdatePost/getComments/$postId',
-      baseUrl: baseUrl, 
+      baseUrl: baseUrl,
       fromJson: (json) => GetCommentModel.fromJson(json),
     );
     return response;
@@ -48,8 +48,11 @@ class CommentRepoImp implements CommentRepo {
   Future<DataState> addCommentWeekPlane(
       {required AddCommentWeekPlane addCommentWeekPlane,
       required int weekPlaneId}) async {
+    String role = box.read('userType') == 'guardian'
+        ? 'parent'
+        : box.read('userType') ?? '';
     final response = await _dataService.postData(
-      endPoint: 'teacher/weekPlan/addComment',
+      endPoint: '$role/weekPlan/addComment',
       data: addCommentWeekPlane.toJson(),
       baseUrl: baseUrl,
       fromJson: (Map<String, dynamic> json) => AddCommentData.fromJson(json),
@@ -61,8 +64,11 @@ class CommentRepoImp implements CommentRepo {
   Future<DataState> getCommentWeekPlane(
       {required GetCommentWeekPlane getCommentWeekPlane,
       required int weekPlaneId}) async {
+    String role = box.read('userType') == 'guardian'
+        ? 'parent'
+        : box.read('userType') ?? '';
     final response = await _dataService.getData<GetCommentWeekPlane>(
-      endPoint: 'teacher/weekPlan/getComments/$weekPlaneId',
+      endPoint: '$role/weekPlan/getComments/$weekPlaneId',
       baseUrl: baseUrl,
       fromJson: (json) => GetCommentWeekPlane.fromJson(json),
     );

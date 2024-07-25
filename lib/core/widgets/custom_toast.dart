@@ -33,5 +33,14 @@ class CustomToast {
       textColor: AppColor.whiteColor,
       toastDuration: 1,
     );
+  }  static void customSuccessToast(String title) {
+    CustomToast.showToast(
+      message: title,
+      backgroundColor: AppColor.greenColor,
+      fontSize: 15.sp,
+      gravity: ToastGravity.BOTTOM,
+      textColor: AppColor.whiteColor,
+      toastDuration: 1,
+    );
   }
 }

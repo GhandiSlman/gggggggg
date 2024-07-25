@@ -27,7 +27,7 @@ class NewsModel {
 class NewsData {
   int? id;
   List<String>? images;
-  //List<String>? videos;
+  List<String>? videos;
   Description? description;
   int? subAdminId;
   String? type;
@@ -38,7 +38,7 @@ class NewsData {
   NewsData(
       {this.id,
       this.images,
-      //this.videos,
+      this.videos,
       this.description,
       this.subAdminId,
       this.type,
@@ -49,7 +49,7 @@ class NewsData {
   NewsData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     images = json['images'] != null ? List<String>.from(json['images']) : [];
-    //videos = json['videos'] != null ? List<String>.from(json['videos']) : [];
+    videos = json['videos'] != null ? List<String>.from(json['videos']) : [];
     description = json['description'] != null
         ? Description.fromJson(json['description'])
         : null;
@@ -66,7 +66,7 @@ class NewsData {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['images'] = images;
-    //data['videos'] = videos;
+    data['videos'] = videos;
     if (description != null) {
       data['description'] = description!.toJson();
     }

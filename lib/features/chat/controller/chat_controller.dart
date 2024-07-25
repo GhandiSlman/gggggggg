@@ -16,12 +16,6 @@ class ChatController extends GetxController {
   ChatController(this.chatRepo);
   final ScrollController scrollController = ScrollController();
 
-  @override
-  onInit() {
-    getContacts();
-    super.onInit();
-  }
-
   ContactsListModel? contactsModel;
   RxBool getContactsIsLoading = false.obs;
   Future<void> getContacts() async {

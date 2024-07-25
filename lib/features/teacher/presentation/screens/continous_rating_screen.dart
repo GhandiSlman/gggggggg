@@ -53,38 +53,42 @@ class ContinousRatingScreen extends StatelessWidget {
                           color: AppColor.primaryColor,
                         ),
                       )
-                    : ListView.builder(
-                        itemCount: continuousRatingController.ratingList.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.all(10.h),
-                            child: InkWell(
-                              onTap: () {
-                                Get.toNamed(AppRouter.assignRatescreen,
-                                    arguments: {
-                                      'id': continuousRatingController
+                    : Builder(builder: (context) {
+                        return ListView.builder(
+                            itemCount:
+                                continuousRatingController.ratingList.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.all(10.h),
+                                child: InkWell(
+                                  onTap: () {
+                                    Get.toNamed(AppRouter.assignRatescreen,
+                                        arguments: {
+                                          'id': continuousRatingController
+                                              .ratingList[index].id
+                                              .toString(),
+                                        });
+                                    continuousRatingController
+                                        .getContinuousRatingStudent(
+                                      continuousRatingController
                                           .ratingList[index].id
                                           .toString(),
-                                    });
-                                continuousRatingController
-                                    .getContinuousRatingStudent(
-                                  continuousRatingController
-                                      .ratingList[index].id
-                                      .toString(),
-                                );
-                              },
-                              child: ContinuousRatingCard(
-                                continuousRatingData: continuousRatingController
-                                    .ratingList[index],
-                                name: continuousRatingController
-                                    .ratingList[index].name!,
-                                rate: continuousRatingController
-                                    .ratingList[index].xp
-                                    .toString(),
-                              ),
-                            ),
-                          );
-                        }),
+                                    );
+                                  },
+                                  child: ContinuousRatingCard(
+                                    continuousRatingData:
+                                        continuousRatingController
+                                            .ratingList[index],
+                                    name: continuousRatingController
+                                        .ratingList[index].name!,
+                                    rate: continuousRatingController
+                                        .ratingList[index].xp
+                                        .toString(),
+                                  ),
+                                ),
+                              );
+                            });
+                      }),
           )),
     );
   }

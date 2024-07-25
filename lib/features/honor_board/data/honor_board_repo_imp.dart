@@ -4,6 +4,7 @@ import 'package:lms/core/models/message_model.dart';
 import 'package:lms/core/utils/app_consts.dart';
 import 'package:lms/features/honor_board/data/honor_board_repo.dart';
 import 'package:lms/features/honor_board/model/honor_model.dart';
+import 'package:lms/features/honor_board/model/students_model.dart';
 
 class HonorBoardRepoImp implements HonorBoardRepo {
   final DataService _dataService;
@@ -34,9 +35,10 @@ class HonorBoardRepoImp implements HonorBoardRepo {
     String role = box.read('userType') == 'guardian'
         ? 'parent'
         : box.read('userType') ?? '';
-    return await _dataService.getData(
-      endPoint: '$role/honorBoard/index/store',
-      fromJson: (json) => Honor.fromJson(json, isResonse: true),
+    return await _dataService.postData(
+      endPoint: '$role/honorBoard/store',
+      data: honor,
+      fromJson: MessageModel.fromJson,
     );
   }
 
@@ -45,9 +47,19 @@ class HonorBoardRepoImp implements HonorBoardRepo {
     String role = box.read('userType') == 'guardian'
         ? 'parent'
         : box.read('userType') ?? '';
+    return await _dataService.postData(
+      endPoint: '$role/honorBoard/update',
+      data: honor,
+      fromJson: MessageModel.fromJson,
+    );
+  }
+
+  @override
+  Future<DataState<StudentsModel>> getStudentsBySubject(
+      {required int subjectId}) async {
     return await _dataService.getData(
-      endPoint: '$role/honorBoard/index/update',
-      fromJson: (json) => Honor.fromJson(json, isResonse: true),
+      endPoint: 'teacher/studentsBySubject/$subjectId',
+      fromJson: StudentsModel.fromJson,
     );
   }
 }

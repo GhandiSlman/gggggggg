@@ -34,7 +34,8 @@ class ContinuousRatingCard extends StatelessWidget {
             children: [
               SlidableActionTecherWidget(
                 onTap: () {
-                  continuousRatingController.deleteRate(continuousRatingData!.id!);
+                  continuousRatingController
+                      .deleteRate(continuousRatingData!.id!);
                 },
                 color: AppColor.redColor,
                 label: 'Delete'.tr,
