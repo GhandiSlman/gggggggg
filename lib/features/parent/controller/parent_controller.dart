@@ -11,16 +11,28 @@ class ParentController extends GetxController {
   ParentRepo parentRepo;
   ParentController(this.parentRepo);
 
+  @override
+  void onInit() {
+    print("hello from on init");
+    getMyChildren();
+    super.onInit();
+  }
+
   RxBool isLoadingGetChild = false.obs;
-  RxList<Children> myChildrenList = <Children>[].obs;
+
+  MyChildren? myChildren;
 
   Future<void> getMyChildren() async {
+    print("zzzzzzzzz");
     isLoadingGetChild.value = true;
-    final result = await parentRepo.getMyChildren(myChildren: MyChildren());
-    isLoadingGetChild.value = false;
+    final result = await parentRepo.getMyChildren();
+    print(" prrrrrrrrrrr:    ${result.data}");
     if (result is DataSuccess) {
-      myChildrenList.addAll(result.data!.data!.children!);
+      myChildren = result.data;
+      isLoadingGetChild.value = false;
     } else if (result is DataFailed) {
+      isLoadingGetChild.value = false;
+
       CustomToast.showToast(
         message: 'Failed to load data',
         backgroundColor: AppColor.redColor,
@@ -30,11 +42,5 @@ class ParentController extends GetxController {
         toastDuration: 1,
       );
     }
-  }
-
-  @override
-  void onInit() {
-    getMyChildren();
-    super.onInit();
   }
 }

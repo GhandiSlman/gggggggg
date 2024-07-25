@@ -8,20 +8,17 @@ import 'package:lms/core/router/app_router.dart';
 import 'package:lms/core/utils/app_color.dart';
 import 'package:lms/core/utils/app_images.dart';
 import 'package:lms/core/widgets/custom_text.dart';
+import 'package:lms/features/parent/model/my_children.dart';
 
 class SonCard extends StatelessWidget {
-  String sonName;
-  String gradeName;
-  SonCard({super.key,
-  required this.sonName,
-  required this.gradeName,
-  });
+  SonModel son;
+  SonCard({super.key, required this.son});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.toNamed(AppRouter.sonAchievementScreen);
+        Get.toNamed(AppRouter.sonAchievementScreen, arguments: son);
       },
       child: Container(
           decoration: BoxDecoration(
@@ -41,16 +38,16 @@ class SonCard extends StatelessWidget {
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(10.r),
                       child: Image.asset(
-                         AppImages.childImage,
+                        AppImages.childImage,
                         fit: BoxFit.cover,
                       )),
                 ),
                 title: CustomText(
-                  text: sonName,
+                  text: son.name,
                   fontSize: 20.sp,
                   color: AppColor.primaryColor,
                 ),
-                subtitle:  CustomText(text: gradeName),
+                subtitle: CustomText(text: ""),
                 trailing: SvgPicture.asset(AppImages.cupImage),
               ))),
     );

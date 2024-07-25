@@ -9,9 +9,19 @@ class ParentRepoImp implements ParentRepo {
   ParentRepoImp(this._dataService);
 
   @override
-  Future<DataState> getMyChildren({required MyChildren myChildren}) async {
+  Future<DataState> getMyChildren() async {
     final response = await _dataService.getData(
         endPoint: 'parent/children/index',
+        baseUrl: baseUrl,
+        fromJson: (Map<String, dynamic> json) => MyChildren.fromJson(json));
+    return response;
+  }
+
+  @override
+  Future<DataState> getSonSubjectAttendence(
+      {required int studentId, required int subjectId}) async {
+    final response = await _dataService.getData(
+        endPoint: 'parent/children/index/$subjectId/$studentId',
         baseUrl: baseUrl,
         fromJson: (Map<String, dynamic> json) => MyChildren.fromJson(json));
     return response;

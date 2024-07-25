@@ -7,9 +7,10 @@ import 'package:lms/core/utils/app_images.dart';
 import 'package:lms/core/widgets/custom_text.dart';
 
 class SonRateCard extends StatelessWidget {
-  const SonRateCard({
-    super.key,
-  });
+  final int xp;
+  final String name;
+
+  const SonRateCard({super.key, required this.name, required this.xp});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class SonRateCard extends StatelessWidget {
                           width: 20.w,
                           child: FittedBox(
                             child: CustomText(
-                              text: '500',
+                              text: '$xp',
                               color: AppColor.primaryColor,
                               fontSize: 15.sp,
                             ),
@@ -60,17 +61,15 @@ class SonRateCard extends StatelessWidget {
                 SvgPicture.asset(AppImages.cup2Image),
               ],
             ),
-            SizedBox(
-              width: 10.w
-            ),
+            SizedBox(width: 10.w),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 SizedBox(
-                  width:  100.w,
+                  width: 100.w,
                   child: FittedBox(
                     child: CustomText(
-                      text: 'Ghandi Alslman',
+                      text: name,
                       color: AppColor.primaryColor,
                       fontSize: 20.sp,
                     ),

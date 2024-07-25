@@ -25,21 +25,22 @@ class SonsScreen extends StatelessWidget {
                   itemCount: 3,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding:  EdgeInsets.all(10.h),
+                      padding: EdgeInsets.all(10.h),
                       child: ShimmerWidget(height: 75.h),
                     );
                   })
               : ListView.builder(
-                  itemCount: parentController.myChildrenList.length,
+                  itemCount: parentController.myChildren!.data.children.length,
                   itemBuilder: (context, index) {
-                    var child = parentController.myChildrenList[index];
+                    var child =
+                        parentController.myChildren!.data.children[index];
                     return Padding(
                       padding: EdgeInsets.all(10.h),
-                      child: SonCard(
-                          sonName: child.name!,
-                          gradeName: box.read('langCode') == 'ar'
-                              ? child.section![0].grade!.name!.ar!
-                              : child.section![0].grade!.name!.en!),
+                      child: SonCard(son: child
+                          //  box.read('langCode') == 'ar'
+                          //     ? child
+                          //     : child.section![0].grade!.name!.en!
+                          ),
                     );
                     // }
                     // }
